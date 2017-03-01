@@ -1,0 +1,27 @@
+.menuButton{
+    -fx-border-style: none;
+    /*-fx-background-color: linear-gradient(from 50% 0% to 50% 100%, black,white 50%,black);*/
+    -fx-background-color: none;
+    -fx-text-fill: radial-gradient(radius 50%, purple, mediumpurple 75%);
+    -fx-font-size: 300%;
+    -fx-font-weight: bold;
+}
+.menuButton:hover{
+    -fx-background-color: radial-gradient(radius 0%, rgba(128,0,128,0),rgba(128,0,128,0.5));
+    -fx-text-fill: radial-gradient(radius 50%, blue, midnightblue 75%);
+}
+.menuButtonBox{
+
+}
+.body{
+    -fx-background-color: radial-gradient(radius 40%, orange, yellow, aquamarine)
+}
+.menuLabelFooter{
+    -fx-background-color: green;
+    -fx-text-fill: yellow;
+}
+.title{
+    -fx-text-fill: radial-gradient(radius 50%, darkmagenta, darkorchid 75%);
+    -fx-font-size: 500%;
+    -fx-font-weight: bold;
+}
