@@ -42,4 +42,8 @@ public class SokobanModel {
     public int getMaxColumns(){
         return levelLoader.getMaxColumns();
     }
+
+    public void move(int move) {
+        //TODO ...
+    }
 }

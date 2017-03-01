@@ -1,6 +1,7 @@
 package be.kdg.sokoban.view.game;
 
 import be.kdg.sokoban.SokobanMain;
+import be.kdg.sokoban.model.Objects.FieldObject;
 import be.kdg.sokoban.model.SokobanModel;
 import javafx.scene.input.KeyCode;
 
@@ -48,13 +49,13 @@ public class GamePresenter {
         });
         view.getScene().setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.LEFT)) {
-//model.move(FieldObject.MOVE_LEFT)
+                model.move(FieldObject.MOVE_LEFT);
             } else if (event.getCode().equals(KeyCode.RIGHT)) {
-
+                model.move(FieldObject.MOVE_RIGHT);
             } else if (event.getCode().equals(KeyCode.UP)) {
-
+                model.move(FieldObject.MOVE_UP);
             } else if (event.getCode().equals(KeyCode.DOWN)) {
-
+                model.move(FieldObject.MOVE_DOWN);
             }
         });
     }
