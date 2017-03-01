@@ -7,8 +7,8 @@ package be.kdg.sokoban.model.Objects;
 public class Goal extends FieldObject {
     private boolean filled;
 
-    public Goal(){
-        super();
+    public Goal(int x, int y){
+        super(x, y);
         this.filled = false;
     }
 

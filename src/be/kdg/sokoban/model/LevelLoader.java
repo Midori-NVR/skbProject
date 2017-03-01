@@ -49,7 +49,6 @@ public class LevelLoader {
         }
 
         FieldObject[][] levelObjects = new FieldObject[levelChars.length][];
-        // TODO on goal objects, -> list?
         maxRows = levelChars.length;
         for (int row = 0; row < levelChars.length; row++) {
             //TODO - 1 ???
@@ -59,13 +58,17 @@ public class LevelLoader {
             levelObjects[row] = new FieldObject[levelChars[row].length];
             for (int column = 0; column < levelChars[row].length; column++) {
                 if (levelChars[row][column] == '#') {
-                    levelObjects[row][column] = new Wall();
+                    levelObjects[row][column] = new Wall(column, row);
                 } else if (levelChars[row][column] == '$') {
-                    levelObjects[row][column] = new Crate();
+                    levelObjects[row][column] = new Crate(false, column, row);
+                } else if (levelChars[row][column] == '*') {
+                    levelObjects[row][column] = new Crate(true, column, row);
                 } else if (levelChars[row][column] == '.') {
-                    levelObjects[row][column] = new Goal();
+                    levelObjects[row][column] = new Goal(column, row);
                 } else if (levelChars[row][column] == '@') {
-                    levelObjects[row][column] = new Player();
+                    levelObjects[row][column] = new Player(false, column, row);
+                }else if (levelChars[row][column] == '+') {
+                    levelObjects[row][column] = new Player(true, column, row);
                 }
 
             }
@@ -111,7 +114,7 @@ public class LevelLoader {
     private static boolean isValidLevel(String line) {
 
         if (line.trim().matches("^\\d[\\s\\S]*#$")) {
-            if (line.length() - line.replace("@", "").length() == 1 && line.length() - line.replace("$", "").length() == line.length() - line.replace(".", "").length()) {
+            if ((line.length() - line.replace("@", "").length() == 1 || line.length() - line.replace("+", "").length() == 1)&& (line.length() - line.replace("$", "").length())+(line.length() - line.replace("*", "").length()) == line.length() - line.replace(".", "").length()) {
                 return true;
             }
         }
@@ -130,5 +133,18 @@ public class LevelLoader {
             //TODO make exception
             return null;
         }
+    }
+
+    public Player getPlayer(FieldObject[][] level){
+        for (int row = 0; row < level.length; row++) {
+            for (int column = 0; column < level[row].length; column++) {
+                if (level[row][column] != null && level[row][column] instanceof Player){
+                    Player player = (Player) level[row][column];
+                    player.setPosition(column, row);
+                    return player;
+                }
+            }
+        }
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package be.kdg.sokoban;
 
+import be.kdg.sokoban.model.Objects.FieldObject;
 import be.kdg.sokoban.model.SokobanModel;
 
 
@@ -11,6 +12,7 @@ public class SokobanTest {
     public static void main(String[] args) {
         SokobanMain.DEBUG = true;
         SokobanModel model = new SokobanModel();
-        model.startLevel(model.getLevel(50));
+        model.startLevel(50);
+        System.out.println(model.move(FieldObject.MOVE_RIGHT));
     }
 }

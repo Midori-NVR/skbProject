@@ -22,7 +22,9 @@ public class GamePresenter {
         this.levelNumber = levelNumber;
         addStyleSheets();
         addEventHandlers();
-        view.getGameViewLevel().setLevel(model.generateLevel(levelNumber), model.getMaxRows(), model.getMaxColumns());
+        model.startLevel(levelNumber);
+
+        view.getGameViewLevel().setLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
 
         updateView();
         if (SokobanMain.DEBUG)
