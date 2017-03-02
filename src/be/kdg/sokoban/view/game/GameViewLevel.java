@@ -10,15 +10,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Niels Van Reeth
  * @version 1.0 2/21/2017 11:43 AM
  */
 public class GameViewLevel extends GridPane {
-    private Image crateImage, goalImage, wallImage, floorImage, playerImage;
-    private FieldObject[][] level;
+    private Image crateImage, goalImage, wallImage, floorImage, playerImage, playerOnGoalImage, crateOnGoalImage;
     private ImageView[][] levelLayout;
     private int maxRows, maxColumns;
 
@@ -33,6 +36,8 @@ public class GameViewLevel extends GridPane {
         floorImage = new Image("be/kdg/sokoban/view/game/images/floor.png");
         playerImage = new Image("be/kdg/sokoban/view/game/images/player.png");
         wallImage = new Image("be/kdg/sokoban/view/game/images/wall.png");
+        playerOnGoalImage= new Image("be/kdg/sokoban/view/game/images/playerOnGoal.png");
+        crateOnGoalImage= new Image("be/kdg/sokoban/view/game/images/crateOnGoal.png");
     }
 
     private void setup() {
@@ -63,38 +68,50 @@ public class GameViewLevel extends GridPane {
             System.out.println("-----STATS-----");
             System.out.printf("Rows: %d%n Columns: %d%n", maxRows, maxColumns);
         }
-
-        ColumnConstraints cc = new ColumnConstraints();
-        cc.setHgrow(Priority.ALWAYS);
-        RowConstraints rc = new RowConstraints();
-        rc.setVgrow(Priority.ALWAYS);
-
-        if (maxColumns <= maxRows) {
-            rc.setPercentHeight(100.0 / maxRows);
-            cc.setPercentWidth(100.0 / maxRows);
-            for (int i = 0; i < maxRows; i++) {
-                this.getRowConstraints().add(rc);
-                this.getColumnConstraints().add(cc);
-            }
-        } else {
-            rc.setPercentHeight(100.0 / maxColumns);
-            cc.setPercentWidth(100.0 / maxColumns);
-            for (int i = 0; i < maxColumns; i++) {
-                this.getColumnConstraints().add(cc);
-                this.getRowConstraints().add(rc);
-            }
+    ColumnConstraints cc = new ColumnConstraints();
+    cc.setHgrow(Priority.ALWAYS);
+    RowConstraints rc = new RowConstraints();
+    rc.setVgrow(Priority.ALWAYS);
+    if (maxColumns <= maxRows) {
+        rc.setPercentHeight(100.0 / maxRows);
+        cc.setPercentWidth(100.0 / maxRows);
+        for (int i = 0; i < maxRows; i++) {
+            this.getRowConstraints().add(rc);
+            this.getColumnConstraints().add(cc);
         }
-
-        this.level = level;
+    } else {
+        rc.setPercentHeight(100.0 / maxColumns);
+        cc.setPercentWidth(100.0 / maxColumns);
+        for (int i = 0; i < maxColumns; i++) {
+            this.getColumnConstraints().add(cc);
+            this.getRowConstraints().add(rc);
+        }
+    }
         levelLayout = new ImageView[level.length][];
         if (SokobanMain.DEBUG) this.setGridLinesVisible(true);
+        setImages(level);
+
+    }
+    //TODO change to update info -> with events what needs to happen.
+    public void updateLevel(FieldObject[][] level){
+        this.getChildren().removeAll(this.getChildren());
+        setImages(level);
+    }
+
+    public void setImages(FieldObject[][] level){
         for (int row = 0; row < level.length; row++) {
             levelLayout[row] = new ImageView[level[row].length];
             for (int column = 0; column < level[row].length; column++) {
                 if (level[row][column] != null) {
                     if (level[row][column] instanceof Crate) {
-                        levelLayout[row][column] = new ImageView(crateImage);
+                        if (((Crate)level[row][column]).isOnGoal()){
+                            levelLayout[row][column] = new ImageView(crateOnGoalImage);
+                        }else
+                            levelLayout[row][column] = new ImageView(crateImage);
                     } else if (level[row][column] instanceof Player) {
+                        if (((Player)level[row][column]).isOnGoal()) {
+                            levelLayout[row][column] = new ImageView(playerOnGoalImage);
+                        }
                         levelLayout[row][column] = new ImageView(playerImage);
                     } else if (level[row][column] instanceof Wall) {
                         levelLayout[row][column] = new ImageView(wallImage);
@@ -105,16 +122,10 @@ public class GameViewLevel extends GridPane {
                     //TODO scale images
                     levelLayout[row][column].setPreserveRatio(true);
                     this.add(levelLayout[row][column], maxRows>maxColumns ? column + (int) Math.floor(((double)maxRows-maxColumns)/2): column, maxRows<maxColumns ? row + (int) Math.floor(((double)maxColumns-maxRows)/2): row);
-
                 }
             }
         }
-
-
-    }
-
-    public void update() {
-
+        resizeLevel();
     }
 
     void resizeLevel() {

@@ -19,6 +19,7 @@ public class SokobanModel {
     private Player player = null;
 
     public SokobanModel() {
+
         try {
             levelLoader = new LevelLoader();
         } catch (IOException e) {
@@ -267,6 +268,6 @@ public class SokobanModel {
                 }
             }
         }
-        return true
+        return true;
     }
 }

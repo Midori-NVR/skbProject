@@ -24,15 +24,17 @@ public class GamePresenter {
         addEventHandlers();
         model.startLevel(levelNumber);
 
-        view.getGameViewLevel().setLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
-
-        updateView();
+view.startLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
         if (SokobanMain.DEBUG)
             System.out.println("LoadTime LevelSelect: " + (System.currentTimeMillis() - time) + " milliseconds");
     }
 
-    private void updateView() {
+    private void resizeView() {
         view.getGameViewLevel().resizeLevel();
+    }
+
+    private void updateView() {
+        view.updateLevel(model.getCurrentLevel());
     }
 
     private void addEventHandlers() {
@@ -45,17 +47,21 @@ public class GamePresenter {
     }
 
     public void addWindowEventHandlers() {
-        view.getScene().widthProperty().addListener(observable -> updateView());
-        view.getScene().heightProperty().addListener(observable -> updateView());
+        view.getScene().widthProperty().addListener(observable -> resizeView());
+        view.getScene().heightProperty().addListener(observable -> resizeView());
         view.getScene().setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.LEFT)) {
                 model.move(FieldObject.MOVE_LEFT);
+                updateView();
             } else if (event.getCode().equals(KeyCode.RIGHT)) {
                 model.move(FieldObject.MOVE_RIGHT);
+                updateView();
             } else if (event.getCode().equals(KeyCode.UP)) {
                 model.move(FieldObject.MOVE_UP);
+                updateView();
             } else if (event.getCode().equals(KeyCode.DOWN)) {
                 model.move(FieldObject.MOVE_DOWN);
+                updateView();
             }
         });
     }
