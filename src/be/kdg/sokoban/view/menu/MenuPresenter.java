@@ -22,7 +22,8 @@ public class MenuPresenter {
         this.addEventHandlers();
         this.addStyleSheets();
         this.update();
-        if (SokobanMain.DEBUG) System.out.println("LoadTime Menu: " + (System.currentTimeMillis()-time) + " milliseconds");
+        if (SokobanMain.DEBUG)
+            System.out.println("LoadTime Menu: " + (System.currentTimeMillis() - time) + " milliseconds");
     }
 
     private void addStyleSheets() {

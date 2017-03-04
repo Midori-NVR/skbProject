@@ -13,6 +13,6 @@ public class SokobanTest {
         SokobanMain.DEBUG = true;
         SokobanModel model = new SokobanModel();
         model.startLevel(50);
-        System.out.println(model.move(FieldObject.MOVE_RIGHT));
+        model.move(FieldObject.MOVE_RIGHT);
     }
 }

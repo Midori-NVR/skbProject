@@ -5,8 +5,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
@@ -82,7 +80,7 @@ public class MenuView extends BorderPane {
         return lblFooter;
     }
 
-    public Label getLblTitle() {
+    Label getLblTitle() {
         return lblTitle;
     }
 }

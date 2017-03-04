@@ -7,7 +7,7 @@ package be.kdg.sokoban.model.Objects;
 public class Crate extends FieldObject {
     private boolean onGoal;
 
-    public Crate(boolean onGoal, int x, int y){
+    public Crate(boolean onGoal, int x, int y) {
         super(x, y);
         this.onGoal = onGoal;
     }
@@ -18,11 +18,6 @@ public class Crate extends FieldObject {
 
     public void setOnGoal(boolean onGoal) {
         this.onGoal = onGoal;
-    }
-
-    @Override
-    public boolean isMovable() {
-        return true;
     }
 
     @Override

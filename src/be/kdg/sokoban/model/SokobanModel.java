@@ -1,11 +1,10 @@
 package be.kdg.sokoban.model;
 
+import be.kdg.sokoban.SokobanMain;
 import be.kdg.sokoban.model.Objects.*;
 import javafx.scene.control.Alert;
 
-import javax.swing.*;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -17,6 +16,7 @@ public class SokobanModel {
     private LevelLoader levelLoader;
     private FieldObject[][] currentLevel;
     private Player player = null;
+    private boolean levelFinished;
 
     public SokobanModel() {
 
@@ -32,14 +32,9 @@ public class SokobanModel {
         return levelLoader.getLevels();
     }
 
-    public FieldObject[][] startLevel(int levelnumber) {
-        currentLevel = levelLoader.generateLvl(levelLoader.getLevel(levelnumber));
+    public FieldObject[][] startLevel(int levelNumber) {
+        currentLevel = levelLoader.generateLvl(levelLoader.getLevel(levelNumber));
         return currentLevel;
-    }
-
-    public String getLevel(int level) {
-        return levelLoader.getLevel(level);
-
     }
 
     public FieldObject[][] getCurrentLevel() {
@@ -54,28 +49,36 @@ public class SokobanModel {
         return levelLoader.getMaxColumns();
     }
 
-    public boolean move(int direction) {
-        if (player == null) {
+    public void move(int direction) {
+        if (player != null) {
+            System.out.println("Player(" + player.getPosY() + ", " + player.getPosX() + ")");
+        } else {
             this.player = levelLoader.getPlayer(currentLevel);
+        }
+        if (SokobanMain.DEBUG) {
+            FieldObject tmpNextObject = getNextObject(player, direction);
+            System.out.println("CHECK" +
+                    "\n -----" +
+                    "\nplayer«" + player.getPosX() + "," + player.getPosY() + "»(x,y)");
+            if (tmpNextObject != null)
+                System.out.println("\n" + tmpNextObject.getClass() + "«" + tmpNextObject.getPosX() + "," + tmpNextObject.getPosY() + "»(x,y)");
+            else
+                System.out.println("floor");
         }
 
         if (isValidPush(player, direction)) {
             moveCrate(player, direction);
-            return true;
 
         }
 
         if (isValidStep(player, direction)) {
             movePlayer(player, direction);
-            return true;
-        } else {
-            return false;
         }
     }
 
-    public void moveCrate(Player player, int direction) {
-        int posX = getNextX(player, direction);
-        int posY = getNextY(player, direction);
+    private void moveCrate(Player player, int direction) {
+        int posX = getNextObject(player, direction).getPosX();
+        int posY = getNextObject(player, direction).getPosY();
         Crate crate = (Crate) getNextObject(player, direction);
 
         boolean wasGoal = false;
@@ -86,6 +89,7 @@ public class SokobanModel {
 
         if (crate.isOnGoal()) {
             currentLevel[crate.getPosY()][crate.getPosX()] = new Goal(crate.getPosX(), crate.getPosY());
+            crate.setOnGoal(false);
         } else {
             currentLevel[crate.getPosY()][crate.getPosX()] = null;
         }
@@ -93,9 +97,7 @@ public class SokobanModel {
         if (wasGoal) {
             crate.setOnGoal(true);
             //Every goal filled?
-            if (filledAllGoals()){
-
-            };
+            levelFinished = filledAllGoals();
         }
 
         setPos(crate, posX, posY, direction);
@@ -103,7 +105,7 @@ public class SokobanModel {
         currentLevel[crate.getPosY()][crate.getPosX()] = crate;
     }
 
-    public void movePlayer(Player player, int direction) {
+    private void movePlayer(Player player, int direction) {
         int posX = player.getPosX();
         int posY = player.getPosY();
         boolean wasGoal = false;
@@ -112,13 +114,15 @@ public class SokobanModel {
             wasGoal = true;
         }
 
-        setPos(player, posX, posY, direction);
 
         if (player.isOnGoal()) {
             currentLevel[posY][posX] = new Goal(posX, posY);
+            player.setOnGoal(false);
         } else {
             currentLevel[posY][posX] = null;
         }
+
+        setPos(player, posX, posY, direction);
 
         if (wasGoal) {
             player.setOnGoal(true);
@@ -126,148 +130,83 @@ public class SokobanModel {
         currentLevel[player.getPosY()][player.getPosX()] = player;
     }
 
-    public void setPos(FieldObject object, int posX, int posY, int direction) {
+    private void setPos(FieldObject object, int posX, int posY, int direction) {
         switch (direction) {
             case FieldObject.MOVE_UP:
-                if (isValidRow(posY - 1)) {
-                    object.setPosY(posY - 1);
-                }
+                object.setPosY(posY - 1);
                 break;
             case FieldObject.MOVE_RIGHT:
-                if (isValidColumn(posY, posX + 1)) {
-                    object.setPosX(posX + 1);
-                }
+                object.setPosX(posX + 1);
                 break;
             case FieldObject.MOVE_DOWN:
-                if (isValidRow(posY + 1)) {
-                    object.setPosY(posY + 1);
-                }
+                object.setPosY(posY + 1);
                 break;
             case FieldObject.MOVE_LEFT:
-                if (isValidColumn(posY, posX - 1)) {
-                    object.setPosX(posX - 1);
-                }
+                object.setPosX(posX - 1);
                 break;
         }
     }
-    //TODO ^^
 
-    /*public boolean isMovableObject(FieldObject object, int direction) {
-        FieldObject object2 = getNextObject(direction, object);
-
-        return (object.isMovable() && object2 == null);
-    }*/
-
-    /*public boolean isValidMove(Player player, int direction){
-        if (getNextObject(player, direction) instanceof Crate){
-            return isValidPush(player, direction);
-        } else {
-            return isValidStep(player, direction);
-        }
-    }*/
-
-    public boolean isValidStep(Player player, int direction) {
+    private boolean isValidStep(Player player, int direction) {
         FieldObject object = getNextObject(player, direction);
 
         return (!(object instanceof Wall) && !(object instanceof Crate));
     }
 
-    public boolean isValidPush(Player player, int direction) {
+    private boolean isValidPush(Player player, int direction) {
         FieldObject object1 = getNextObject(player, direction);
-        FieldObject object2 = getNextObject(object1, direction);
+        if (object1 != null && !(object1 instanceof Wall)) {
+            FieldObject object2 = getNextObject(object1, direction);
 
-        return (object1 instanceof Crate && (object2 instanceof Goal || object2 == null));
-    }
-
-    public FieldObject getNextObject(FieldObject fieldObject, int direction) {
-        if (fieldObject != null) {
-            int row = fieldObject.getPosY();
-            int column = fieldObject.getPosX();
-
-            if (direction == FieldObject.MOVE_UP) {
-                if (isValidRow(row - 1)) {
-                    return currentLevel[row - 1][column];
-                }
-            } else if (direction == FieldObject.MOVE_RIGHT) {
-                if (isValidColumn(row, column + 1)) {
-                    return currentLevel[row][column + 1];
-                }
-            } else if (direction == FieldObject.MOVE_DOWN) {
-                if (isValidRow(row + 1)) {
-                    return currentLevel[row + 1][column];
-                }
-            } else if (direction == FieldObject.MOVE_LEFT) {
-                if (isValidColumn(row, column - 1)) {
-                    return currentLevel[row][column - 1];
-                }
-            }
+            return (object1 instanceof Crate && (object2 instanceof Goal || object2 == null));
         }
-        return null;
+        return false;
     }
 
-    public int getNextX(FieldObject fieldObject, int direction) {
+    private FieldObject getNextObject(FieldObject fieldObject, int direction) {
+        FieldObject nextObject = null;
         int row = fieldObject.getPosY();
         int column = fieldObject.getPosX();
 
-        if (direction == FieldObject.MOVE_UP || direction == FieldObject.MOVE_DOWN) {
-            return column;
+
+        if (direction == FieldObject.MOVE_UP) {
+            nextObject = currentLevel[row - 1][column];
+            if (nextObject != null)
+                nextObject.setPosition(column, row - 1);
+
         } else if (direction == FieldObject.MOVE_RIGHT) {
-            if (isValidColumn(row, column + 1)) {
-                return (column + 1);
-            } else {
-                return -1;
-            }
-        } else if (direction == FieldObject.MOVE_LEFT) {
-            if (isValidColumn(row, column - 1)) {
-                return (column - 1);
-            } else {
-                return -1;
-            }
-        } else {
-            return -1;
-        }
-    }
+            nextObject = currentLevel[row][column + 1];
+            if (nextObject != null)
+                nextObject.setPosition(column + 1, row);
 
-    public int getNextY(FieldObject fieldObject, int direction) {
-        int row = fieldObject.getPosY();
-        int column = fieldObject.getPosX();
-
-        if (direction == FieldObject.MOVE_RIGHT || direction == FieldObject.MOVE_LEFT) {
-            return row;
-
-        } else if (direction == FieldObject.MOVE_UP) {
-            if (isValidRow(row - 1)) {
-                return (row - 1);
-            } else {
-                return -1;
-            }
         } else if (direction == FieldObject.MOVE_DOWN) {
-            if (isValidRow(row + 1)) {
-                return (row + 1);
-            } else {
-                return -1;
-            }
-        } else {
-            return -1;
+            nextObject = currentLevel[row + 1][column];
+            if (nextObject != null)
+                nextObject.setPosition(column, row + 1);
+
+        } else if (direction == FieldObject.MOVE_LEFT) {
+            nextObject = currentLevel[row][column - 1];
+            if (nextObject != null)
+                nextObject.setPosition(column - 1, row);
+
         }
+        return nextObject;
     }
 
-    public boolean isValidRow(int row) {
-        return (row < currentLevel.length && row >= 0);
-    }
-
-    public boolean isValidColumn(int row, int column) {
-        return (column < currentLevel[row].length && column >= 0);
-    }
-
-    public boolean filledAllGoals(){
-        for (int row = 0; row < currentLevel.length; row++) {
-            for (int column = 0; column < currentLevel[row].length; column++) {
-                if (currentLevel[row][column] instanceof  Goal){
-
+    private boolean filledAllGoals() {
+        for (FieldObject[] currentLevelRow : currentLevel) {
+            for (FieldObject currentLevelField : currentLevelRow) {
+                if (currentLevelField instanceof Crate) {
+                    if (!((Crate) currentLevelField).isOnGoal()) {
+                        return false;
+                    }
                 }
             }
         }
         return true;
+    }
+
+    public boolean isLevelFinished() {
+        return levelFinished;
     }
 }

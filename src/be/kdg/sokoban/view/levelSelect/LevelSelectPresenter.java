@@ -21,7 +21,6 @@ public class LevelSelectPresenter {
     private GameView gameView;
 
 
-
     public LevelSelectPresenter(SokobanModel model, LevelSelectView view) {
         long time = System.currentTimeMillis();
         this.model = model;
@@ -32,7 +31,8 @@ public class LevelSelectPresenter {
         addStyleSheets();
         addEventHandlers();
         updateView();
-        if (SokobanMain.DEBUG) System.out.println("LoadTime LevelSelect: " + (System.currentTimeMillis()-time) + " milliseconds");
+        if (SokobanMain.DEBUG)
+            System.out.println("LoadTime LevelSelect: " + (System.currentTimeMillis() - time) + " milliseconds");
     }
 
     private void addStyleSheets() {
@@ -51,7 +51,6 @@ public class LevelSelectPresenter {
     }
 
     //TODO selecting level with arrows.
-    //TODO check right way to call or view.getScene().getWindow()
     public void addWindowEventHandlers() {
         view.getScene().setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.LEFT)) {
@@ -75,7 +74,7 @@ public class LevelSelectPresenter {
             view.getButtonLevels().get(i).setOnAction(event -> {
                 gameView = new GameView();
                 view.getScene().setRoot(gameView);
-                gamePresenter = new GamePresenter(model, gameView, ((LevelButton)event.getSource()).getNumber());
+                gamePresenter = new GamePresenter(model, gameView, ((LevelButton) event.getSource()).getNumber());
                 //gameView.getScene().getWindow().sizeToScene();
                 gamePresenter.addWindowEventHandlers();
             });

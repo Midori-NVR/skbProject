@@ -1,20 +1,19 @@
 package be.kdg.sokoban.model.Objects;
 
 
-
 /**
  * @author Niels Van Reeth
  * @version 1.0 2/9/2017 3:34 PM
  */
 public abstract class FieldObject {
     private int posX, posY;
-    public static final int MOVE_UP=0, MOVE_DOWN=1, MOVE_LEFT=2, MOVE_RIGHT=3;
+    public static final int MOVE_UP = 0, MOVE_DOWN = 1, MOVE_LEFT = 2, MOVE_RIGHT = 3;
 
-    FieldObject(){
+    FieldObject() {
 
     }
 
-    FieldObject(int x, int y){
+    FieldObject(int x, int y) {
         setPosX(x);
         setPosY(y);
     }
@@ -36,11 +35,10 @@ public abstract class FieldObject {
         this.posY = posY;
     }
 
-    public void setPosition(int posX,int posY){
+    public void setPosition(int posX, int posY) {
         setPosX(posX);
         setPosY(posY);
     }
-    public boolean isMovable(){return false;}
 
     @Override
     public String toString() {

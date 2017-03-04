@@ -4,11 +4,9 @@ import be.kdg.sokoban.model.Objects.FieldObject;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.util.Duration;
 
 /**
  * @author Niels Van Reeth & Lies Van der Haegen
@@ -46,7 +44,10 @@ public class GameView extends BorderPane {
     private void initialise() {
         gameViewLevel = new GameViewLevel();
 
-        timer = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1),event -> {time++;updateStats();}));
+        timer = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), event -> {
+            time++;
+            updateStats();
+        }));
         timer.setCycleCount(Animation.INDEFINITE);
         statsBar = new HBox();
         lblMoves = new Label();
@@ -57,12 +58,13 @@ public class GameView extends BorderPane {
         return gameViewLevel;
     }
 
-    public void updateLevel(FieldObject[][] level) {
+    void updateLevel(FieldObject[][] level) {
         moves++;
+        updateStats();
         gameViewLevel.updateLevel(level);
     }
 
-    public void startLevel(FieldObject[][] currentLevel, int maxRows, int maxColumns) {
+    void startLevel(FieldObject[][] currentLevel, int maxRows, int maxColumns) {
         gameViewLevel.setLevel(currentLevel, maxRows, maxColumns);
         timer.play();
     }
@@ -71,5 +73,9 @@ public class GameView extends BorderPane {
     private void updateStats() {
         lblTime.setText("Time:" + time);
         lblMoves.setText("Moves:" + moves);
+    }
+
+    void levelFinished() {
+
     }
 }

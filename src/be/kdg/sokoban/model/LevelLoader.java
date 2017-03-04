@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,11 +21,11 @@ public class LevelLoader {
     private List<String> levels;
     private int maxRows;
 
-    public int getMaxRows() {
+    int getMaxRows() {
         return maxRows;
     }
 
-    public int getMaxColumns() {
+    int getMaxColumns() {
         return maxColumns;
     }
 
@@ -67,16 +68,18 @@ public class LevelLoader {
                     levelObjects[row][column] = new Goal(column, row);
                 } else if (levelChars[row][column] == '@') {
                     levelObjects[row][column] = new Player(false, column, row);
-                }else if (levelChars[row][column] == '+') {
+                    System.out.println("Player: (" + row + ", " + column + ")");
+                } else if (levelChars[row][column] == '+') {
                     levelObjects[row][column] = new Player(true, column, row);
+                    System.out.println("Player: (" + row + ", " + column + ")");
                 }
-
             }
         }
-        if (SokobanMain.DEBUG) System.out.println(levelObjects);
+        if (SokobanMain.DEBUG) System.out.println(Arrays.deepToString(levelObjects));
         return levelObjects;
     }
 
+    //TODO set key for reload
     public void reloadLevels() throws IOException {
         levels = loadLevels();
     }
@@ -88,7 +91,7 @@ public class LevelLoader {
     private List<String> loadLevels() throws IOException {
         Path levelsFile = Paths.get("src/be/kdg/sokoban/model/files/levels.txt");
         List<String> levelList;
-        try(Scanner sc = new Scanner(levelsFile)) {
+        try (Scanner sc = new Scanner(levelsFile)) {
             sc.useDelimiter(";");
             String line;
             levelList = new ArrayList<>();
@@ -104,8 +107,8 @@ public class LevelLoader {
                     System.out.println("---------------------");
                 }
             }
-        } catch (IOException e){
-            //To make sure the scanner is closed.
+        } catch (IOException e) {
+            //TODO To make sure the scanner is closed.
             throw e;
         }
         return levelList;
@@ -114,7 +117,7 @@ public class LevelLoader {
     private static boolean isValidLevel(String line) {
 
         if (line.trim().matches("^\\d[\\s\\S]*#$")) {
-            if ((line.length() - line.replace("@", "").length() == 1 || line.length() - line.replace("+", "").length() == 1)&& (line.length() - line.replace("$", "").length())+(line.length() - line.replace("*", "").length()) == line.length() - line.replace(".", "").length()) {
+            if ((line.length() - line.replace("@", "").length() == 1 || line.length() - line.replace("+", "").length() == 1) && (line.length() - line.replace("$", "").length()) + (line.length() - line.replace("*", "").length()) == line.length() - line.replace(".", "").length()) {
                 return true;
             }
         }
@@ -135,10 +138,10 @@ public class LevelLoader {
         }
     }
 
-    public Player getPlayer(FieldObject[][] level){
+    Player getPlayer(FieldObject[][] level) {
         for (int row = 0; row < level.length; row++) {
             for (int column = 0; column < level[row].length; column++) {
-                if (level[row][column] != null && level[row][column] instanceof Player){
+                if (level[row][column] != null && level[row][column] instanceof Player) {
                     Player player = (Player) level[row][column];
                     player.setPosition(column, row);
                     return player;

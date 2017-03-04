@@ -24,7 +24,7 @@ public class GamePresenter {
         addEventHandlers();
         model.startLevel(levelNumber);
 
-view.startLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
+        view.startLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
         if (SokobanMain.DEBUG)
             System.out.println("LoadTime LevelSelect: " + (System.currentTimeMillis() - time) + " milliseconds");
     }
@@ -35,6 +35,9 @@ view.startLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns
 
     private void updateView() {
         view.updateLevel(model.getCurrentLevel());
+        if (model.isLevelFinished()) {
+            view.levelFinished();
+        }
     }
 
     private void addEventHandlers() {

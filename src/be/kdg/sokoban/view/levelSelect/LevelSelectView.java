@@ -77,7 +77,7 @@ public class LevelSelectView extends BorderPane {
               1.2 2.2 3.2
               1.3 2.3 3.3
              */
-            LevelButton button = new LevelButton(stringLevels == null ? "ERROR" : "Level " + (i + 1), i % 3, (int) Math.floor((double) i / 3), i);
+            LevelButton button = new LevelButton(stringLevels == null ? "ERROR" : "Level " + (i + 1), i);
             buttonLevels.add(button);
         }
         setupLevels();
