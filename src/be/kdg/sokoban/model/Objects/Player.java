@@ -7,12 +7,12 @@ package be.kdg.sokoban.model.Objects;
  */
 public class Player extends FieldObject {
     private boolean onGoal;
-    private int watchingDir;
+    private int watchingDirection;
 
     public Player(boolean onGoal, int x, int y) {
         super(x, y);
         this.onGoal = onGoal;
-        watchingDir = FieldObject.MOVE_UP;
+        watchingDirection = FieldObject.MOVE_UP;
     }
 
     public boolean isOnGoal() {
@@ -26,5 +26,13 @@ public class Player extends FieldObject {
     @Override
     public String toString() {
         return "@";
+    }
+
+    public int getWatchingDirection() {
+        return watchingDirection;
+    }
+
+    public void setWatchingDirection(int direction) {
+        this.watchingDirection = direction;
     }
 }

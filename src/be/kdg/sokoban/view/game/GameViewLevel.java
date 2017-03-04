@@ -112,8 +112,10 @@ class GameViewLevel extends GridPane {
                     } else if (level[row][column] instanceof Player) {
                         if (((Player) level[row][column]).isOnGoal()) {
                             levelLayout[row][column] = new ImageView(playerOnGoalImage);
+                        }else {
+                            levelLayout[row][column] = new ImageView(playerImage);
                         }
-                        levelLayout[row][column] = new ImageView(playerImage);
+                        levelLayout[row][column].setRotate(90*((Player) level[row][column]).getWatchingDirection());
                     } else if (level[row][column] instanceof Wall) {
                         levelLayout[row][column] = new ImageView(wallImage);
                     } else if (level[row][column] instanceof Goal) {

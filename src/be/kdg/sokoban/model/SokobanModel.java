@@ -66,6 +66,8 @@ public class SokobanModel {
                 System.out.println("floor");
         }
 
+        player.setWatchingDirection(direction);
+
         if (isValidPush(player, direction)) {
             moveCrate(player, direction);
 

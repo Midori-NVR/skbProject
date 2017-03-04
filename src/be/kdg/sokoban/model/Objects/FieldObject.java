@@ -7,7 +7,7 @@ package be.kdg.sokoban.model.Objects;
  */
 public abstract class FieldObject {
     private int posX, posY;
-    public static final int MOVE_UP = 0, MOVE_DOWN = 1, MOVE_LEFT = 2, MOVE_RIGHT = 3;
+    public static final int MOVE_UP = 2, MOVE_DOWN = 0, MOVE_LEFT = 1, MOVE_RIGHT = 3;
 
     FieldObject() {
 
