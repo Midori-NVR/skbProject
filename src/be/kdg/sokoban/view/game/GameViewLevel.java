@@ -1,7 +1,10 @@
 package be.kdg.sokoban.view.game;
 
 import be.kdg.sokoban.SokobanMain;
+import be.kdg.sokoban.model.MoveAction;
 import be.kdg.sokoban.model.Objects.*;
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,8 +12,11 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.transform.Translate;
+import javafx.util.Duration;
 
 import java.util.Arrays;
+//TODO Clean-up code: remove goal image checks and removes only keep for array; remove extra checks and rotations.
 
 /**
  * @author Niels Van Reeth
@@ -94,9 +100,59 @@ class GameViewLevel extends GridPane {
     }
 
     //TODO change to update info -> with events what needs to happen.
+    @Deprecated
     void updateLevel(FieldObject[][] level) {
         this.getChildren().removeAll(this.getChildren());
         setImages(level);
+    }
+
+    void updateLevel(MoveAction moveAction) {
+        if (moveAction.getActionType() == MoveAction.ACTION_NULL) {
+            //TODO animate blockage
+        } else {
+            ImageView player = levelLayout[moveAction.getPlayer().getPosY() - FieldObject.getYMove(moveAction.getDirection())][moveAction.getPlayer().getPosX() - FieldObject.getXMove(moveAction.getDirection())];
+            ImageView crate = null;
+            if (moveAction.getActionType() == MoveAction.ACTION_PUSH) {
+                crate = levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()];
+            }
+            //TODO SETUP animation
+            TranslateTransition playerMove = new TranslateTransition(Duration.seconds(5), player);
+            playerMove.setToY(playerMove.getFromY() - 50);
+
+            TranslateTransition crateMove = new TranslateTransition(Duration.seconds(5), crate);
+            crateMove.setToY(crateMove.getFromY() - 50);
+
+
+            //DELETE FROM field
+            this.getChildren().remove(player);
+            this.getChildren().remove(crate);
+            //TODO PLAY animation
+            playerMove.play();
+            crateMove.play();
+            //UPDATE images
+            if (moveAction.getPlayer().isOnGoal()) {
+                player.setImage(playerOnGoalImage);
+            } else {
+                player.setImage(playerImage);
+            }
+
+            player.setRotate(90 * moveAction.getPlayer().getWatchingDirection());
+            if (crate != null) {
+                if (((Crate) moveAction.getNextObject()).isOnGoal()) {
+                    crate.setImage(crateOnGoalImage);
+                } else {
+                    crate.setImage(crateImage);
+                }
+            }
+            //ADD TO field
+            if (crate != null) {
+                levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()] = crate;
+                this.add(crate, moveAction.getNextObject().getPosX() + getColumnTopSpacing(), moveAction.getNextObject().getPosY() + getRowLeftSpacing());
+            }
+            levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()] = player;
+            levelLayout[moveAction.getPlayer().getPosY() - FieldObject.getYMove(moveAction.getDirection())][moveAction.getPlayer().getPosX() - FieldObject.getXMove(moveAction.getDirection())] = null;
+            this.add(player, moveAction.getPlayer().getPosX() + getColumnTopSpacing(), moveAction.getPlayer().getPosY() + getRowLeftSpacing());
+        }
     }
 
     private void setImages(FieldObject[][] level) {
@@ -112,21 +168,29 @@ class GameViewLevel extends GridPane {
                     } else if (level[row][column] instanceof Player) {
                         if (((Player) level[row][column]).isOnGoal()) {
                             levelLayout[row][column] = new ImageView(playerOnGoalImage);
-                        }else {
+                        } else {
                             levelLayout[row][column] = new ImageView(playerImage);
                         }
-                        levelLayout[row][column].setRotate(90*((Player) level[row][column]).getWatchingDirection());
+                        levelLayout[row][column].setRotate(90 * ((Player) level[row][column]).getWatchingDirection());
                     } else if (level[row][column] instanceof Wall) {
                         levelLayout[row][column] = new ImageView(wallImage);
                     } else if (level[row][column] instanceof Goal) {
                         levelLayout[row][column] = new ImageView(goalImage);
                     }
                     levelLayout[row][column].setPreserveRatio(true);
-                    this.add(levelLayout[row][column], maxRows > maxColumns ? column + (int) Math.floor(((double) maxRows - maxColumns) / 2) : column, maxRows < maxColumns ? row + (int) Math.floor(((double) maxColumns - maxRows) / 2) : row);
+                    this.add(levelLayout[row][column], column + getColumnTopSpacing(), row + getRowLeftSpacing());
                 }
             }
         }
         resizeLevel();
+    }
+
+    public int getColumnTopSpacing() {
+        return maxRows > maxColumns ? (int) Math.floor(((double) maxRows - maxColumns) / 2) : 0;
+    }
+
+    public int getRowLeftSpacing() {
+        return maxRows < maxColumns ? (int) Math.floor(((double) maxColumns - maxRows) / 2) : 0;
     }
 
     void resizeLevel() {

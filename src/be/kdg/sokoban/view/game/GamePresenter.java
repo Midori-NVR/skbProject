@@ -1,6 +1,7 @@
 package be.kdg.sokoban.view.game;
 
 import be.kdg.sokoban.SokobanMain;
+import be.kdg.sokoban.model.MoveAction;
 import be.kdg.sokoban.model.Objects.FieldObject;
 import be.kdg.sokoban.model.SokobanModel;
 import javafx.scene.input.KeyCode;
@@ -33,8 +34,9 @@ public class GamePresenter {
         view.getGameViewLevel().resizeLevel();
     }
 
-    private void updateView() {
-        view.updateLevel(model.getCurrentLevel());
+    private void updateView(MoveAction moveAction) {
+        //view.updateLevel(model.getCurrentLevel());
+        view.updateLevel(moveAction);
         if (model.isLevelFinished()) {
             view.levelFinished();
         }
@@ -54,17 +56,17 @@ public class GamePresenter {
         view.getScene().heightProperty().addListener(observable -> resizeView());
         view.getScene().setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.LEFT)) {
-                model.move(FieldObject.MOVE_LEFT);
-                updateView();
+
+                updateView(model.move(FieldObject.MOVE_LEFT));
             } else if (event.getCode().equals(KeyCode.RIGHT)) {
-                model.move(FieldObject.MOVE_RIGHT);
-                updateView();
+
+                updateView(model.move(FieldObject.MOVE_RIGHT));
             } else if (event.getCode().equals(KeyCode.UP)) {
-                model.move(FieldObject.MOVE_UP);
-                updateView();
+
+                updateView(model.move(FieldObject.MOVE_UP));
             } else if (event.getCode().equals(KeyCode.DOWN)) {
-                model.move(FieldObject.MOVE_DOWN);
-                updateView();
+
+                updateView(model.move(FieldObject.MOVE_DOWN));
             }
         });
     }

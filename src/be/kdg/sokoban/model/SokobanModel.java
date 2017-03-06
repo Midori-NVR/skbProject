@@ -49,7 +49,7 @@ public class SokobanModel {
         return levelLoader.getMaxColumns();
     }
 
-    public void move(int direction) {
+    public MoveAction move(int direction) {
         if (player != null) {
             System.out.println("Player(" + player.getPosY() + ", " + player.getPosX() + ")");
         } else {
@@ -70,12 +70,15 @@ public class SokobanModel {
 
         if (isValidPush(player, direction)) {
             moveCrate(player, direction);
+            return new MoveAction(direction, player, MoveAction.ACTION_PUSH, movePlayer(player, direction),getNextObject(player, direction));
+
 
         }
 
         if (isValidStep(player, direction)) {
-            movePlayer(player, direction);
+            return new MoveAction(direction, player, MoveAction.ACTION_MOVE, movePlayer(player, direction),getNextObject(player, direction));
         }
+        return new MoveAction(direction, player, MoveAction.ACTION_NULL,false,getNextObject(player,direction));
     }
 
     private void moveCrate(Player player, int direction) {
@@ -107,7 +110,13 @@ public class SokobanModel {
         currentLevel[crate.getPosY()][crate.getPosX()] = crate;
     }
 
-    private void movePlayer(Player player, int direction) {
+    /**
+     *
+     * @param player
+     * @param direction
+     * @return wasOnGoal
+     */
+    private boolean movePlayer(Player player, int direction) {
         int posX = player.getPosX();
         int posY = player.getPosY();
         boolean wasGoal = false;
@@ -130,6 +139,7 @@ public class SokobanModel {
             player.setOnGoal(true);
         }
         currentLevel[player.getPosY()][player.getPosX()] = player;
+        return wasGoal;
     }
 
     private void setPos(FieldObject object, int posX, int posY, int direction) {
