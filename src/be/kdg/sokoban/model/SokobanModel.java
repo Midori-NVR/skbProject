@@ -4,8 +4,9 @@ import be.kdg.sokoban.SokobanMain;
 import be.kdg.sokoban.model.Objects.*;
 import javafx.scene.control.Alert;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +18,10 @@ public class SokobanModel {
     private FieldObject[][] currentLevel;
     private Player player = null;
     private boolean levelFinished;
+    private final File FILE = new File("src/be/kdg/sokoban/save.txt");
+    private List<User> users;
 
     public SokobanModel() {
-
         try {
             levelLoader = new LevelLoader();
         } catch (IOException e) {
@@ -206,6 +208,76 @@ public class SokobanModel {
             }
         }
         return true;
+    }
+
+    public void loadSaveFile() {
+        if (FILE.exists()) {
+            try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(FILE))) {
+                users = (List<User>) input.readObject();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            System.out.println(users.get(0).getName());
+            users.get(0).getHighscores();
+        } else {
+            try {
+                FILE.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            users = new ArrayList<>();
+            users.add(new User("Ëmpty"));
+            users.add(new User("Ëmpty"));
+            users.add(new User("Ëmpty"));
+            for (int i = 0; i < 3; i++) {
+                users.get(i).resetHighscores();
+            }
+            users.get(0).getHighscores();
+
+            try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(FILE))) {
+                output.writeObject(users);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void save() {
+        FILE.delete();
+        try {
+            FILE.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            /*TODO exceptions*/
+        }
+
+        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(FILE))) {
+            output.writeObject(users);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void addUser(int userNr, User user){
+        users.set(userNr-1, user);
+    }
+
+    public boolean deleteUser(User user){
+        if (users.contains(user)) {
+            int index = users.indexOf(user);
+            users.get(index).setName("Empty");
+            users.get(index).resetHighscores();
+            users.get(index).getHighscores();
+            return true;
+        }
+        return false;
     }
 
     public boolean isLevelFinished() {

@@ -5,6 +5,8 @@ import be.kdg.sokoban.view.levelSelect.LevelSelectPresenter;
 import be.kdg.sokoban.view.levelSelect.LevelSelectView;
 import be.kdg.sokoban.model.SokobanModel;
 
+import java.io.*;
+
 /**
  * @author Niels Van Reeth
  * @version 1.0 7-2-2017 10:23
@@ -21,6 +23,7 @@ public class MenuPresenter {
         this.view = view;
         this.addEventHandlers();
         this.addStyleSheets();
+        model.loadSaveFile();
         this.update();
         if (SokobanMain.DEBUG)
             System.out.println("LoadTime Menu: " + (System.currentTimeMillis() - time) + " milliseconds");
@@ -54,6 +57,7 @@ public class MenuPresenter {
             lsPresenter.addWindowEventHandlers();
         });
     }
+
 
     public void addWindowEventHandlers() {
 

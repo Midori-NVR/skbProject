@@ -20,6 +20,7 @@ public class GameView extends BorderPane {
     private Timeline timer;
     private int time = 0;
     private Label lblTime;
+    //private int highScore = 0;
 
     public GameView() {
         initialise();
@@ -52,6 +53,7 @@ public class GameView extends BorderPane {
         statsBar = new HBox();
         lblMoves = new Label();
         lblTime = new Label();
+        //lblHighscore = new Label("Highscore: ");
     }
 
     GameViewLevel getGameViewLevel() {
