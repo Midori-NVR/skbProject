@@ -1,5 +1,4 @@
 package be.kdg.sokoban;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -24,7 +23,6 @@ public class SokobanMain extends Application {
 
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         for (String arg : args) {
