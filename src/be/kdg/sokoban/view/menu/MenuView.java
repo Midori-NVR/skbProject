@@ -9,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 
+//TODO add option screen: option to disable animation
 /**
  * @author Niels Van Reeth
  * @version 1.0 7-2-2017 09:08

@@ -117,7 +117,7 @@ public class LevelLoader {
     private static boolean isValidLevel(String line) {
 
         if (line.trim().matches("^\\d[\\s\\S]*#$")) {
-            if ((line.length() - line.replace("@", "").length() == 1 || line.length() - line.replace("+", "").length() == 1) && (line.length() - line.replace("$", "").length()) + (line.length() - line.replace("*", "").length()) == line.length() - line.replace(".", "").length()) {
+            if ((line.length() - line.replace("@", "").length() == 1 || line.length() - line.replace("+", "").length() == 1) && (line.length() - line.replace("$", "").length()) == line.length() - line.replace(".", "").length()) {
                 return true;
             }
         }

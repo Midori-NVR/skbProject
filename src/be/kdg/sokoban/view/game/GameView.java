@@ -1,5 +1,7 @@
 package be.kdg.sokoban.view.game;
 
+import be.kdg.sokoban.SokobanMain;
+import be.kdg.sokoban.model.MoveAction;
 import be.kdg.sokoban.model.Objects.FieldObject;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -16,11 +18,13 @@ public class GameView extends BorderPane {
     private GameViewLevel gameViewLevel;
     private HBox statsBar;
     private Label lblMoves;
-    private int moves = 0;
+    private Label lblPushes;
+    private int moves = 0, pushes = 0;
     private Timeline timer;
     private int time = 0;
     private Label lblTime;
-    //private int highScore = 0;
+    private Label lblPlayerCoords;
+    private int playerX = 0, playerY = 0;
 
     public GameView() {
         initialise();
@@ -32,10 +36,12 @@ public class GameView extends BorderPane {
         this.setBottom(statsBar);
 
         updateStats();
-        statsBar.getChildren().addAll(lblMoves, lblTime);
+        statsBar.getChildren().addAll(lblMoves, lblPushes, lblTime, lblPlayerCoords);
         statsBar.setStyle("-fx-background-color: white");
         lblMoves.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
+        lblPushes.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
         lblTime.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
+        lblPlayerCoords.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
 
         //TODO center imageViewLevel
         /*setAlignment(gameViewLevel, Pos.CENTER);
@@ -52,18 +58,32 @@ public class GameView extends BorderPane {
         timer.setCycleCount(Animation.INDEFINITE);
         statsBar = new HBox();
         lblMoves = new Label();
+        lblPushes = new Label();
         lblTime = new Label();
-        //lblHighscore = new Label("Highscore: ");
+        lblPlayerCoords = new Label();
     }
 
     GameViewLevel getGameViewLevel() {
         return gameViewLevel;
     }
 
-    void updateLevel(FieldObject[][] level) {
-        moves++;
-        updateStats();
-        gameViewLevel.updateLevel(level);
+    void updateLevel(MoveAction moveAction) {
+        if (moveAction.getActionType() == MoveAction.ACTION_MOVE) {
+            moves++;
+            updateStats();
+        } else if (moveAction.getActionType() == MoveAction.ACTION_PUSH) {
+            moves++;
+            pushes++;
+            updateStats();
+        } else if (moveAction.getActionType() == MoveAction.ACTION_NULL) {
+            //nothing atm
+        }
+        if (SokobanMain.DEBUG) {
+            this.playerX = moveAction.getPlayer().getPosX();
+            this.playerY = moveAction.getPlayer().getPosY();
+        }
+        //gameViewLevel.updateLevel(moveAction);
+        gameViewLevel.updateLevel(moveAction);
     }
 
     void startLevel(FieldObject[][] currentLevel, int maxRows, int maxColumns) {
@@ -75,9 +95,13 @@ public class GameView extends BorderPane {
     private void updateStats() {
         lblTime.setText("Time:" + time);
         lblMoves.setText("Moves:" + moves);
+        lblPushes.setText("Pushes:" + pushes);
+        if (SokobanMain.DEBUG) lblPlayerCoords.setText("(" + playerX + "," + playerY + ")");
     }
 
     void levelFinished() {
-
+//TODO finish level
     }
+
+    //TODO restart level and quit level
 }
