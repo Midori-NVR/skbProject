@@ -52,7 +52,6 @@ public class LevelLoader {
         FieldObject[][] levelObjects = new FieldObject[levelChars.length][];
         maxRows = levelChars.length;
         for (int row = 0; row < levelChars.length; row++) {
-            //TODO - 1 ???
             if (maxColumns < levelChars[row].length - 1) {
                 maxColumns = levelChars[row].length - 1;
             }
@@ -107,9 +106,6 @@ public class LevelLoader {
                     System.out.println("---------------------");
                 }
             }
-        } catch (IOException e) {
-            //TODO To make sure the scanner is closed.
-            throw e;
         }
         return levelList;
     }
@@ -133,7 +129,7 @@ public class LevelLoader {
             return getLevels().get(levelnumber);
         } catch (IndexOutOfBoundsException e) {
             if (SokobanMain.DEBUG) e.printStackTrace();
-            //TODO make exception
+            //TODO exception ??
             return null;
         }
     }

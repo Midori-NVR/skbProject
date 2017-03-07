@@ -128,7 +128,7 @@ class GameViewLevel extends GridPane {
     }
 
 
-    //TODO fix one millisecond disappearing glitch after movement
+    //FIXME fix one millisecond disappearing glitch after movement
     //TODO make sound
     void updateLevel(MoveAction moveAction) {
         int squareSize = (int) (this.getHeight() * this.getRowConstraints().get(0).getPercentHeight() / 100);

@@ -113,10 +113,7 @@ public class SokobanModel {
     }
 
     /**
-     *
-     * @param player
-     * @param direction
-     * @return wasOnGoal
+     * @return true when the player was on a goal.
      */
     private boolean movePlayer(Player player, int direction) {
         int posX = player.getPosX();

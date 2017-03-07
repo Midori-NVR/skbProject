@@ -44,7 +44,7 @@ public class GameView extends BorderPane {
         lblTime.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
         lblPlayerCoords.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
 
-        //TODO center imageViewLevel
+        //FIXME center imageViewLevel
         /*setAlignment(gameViewLevel, Pos.CENTER);
         gameViewLevel.setAlignment(Pos.CENTER);*/
     }
