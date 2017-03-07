@@ -9,6 +9,7 @@ import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 /**
  * @author Niels Van Reeth & Lies Van der Haegen
@@ -51,11 +52,11 @@ public class GameView extends BorderPane {
     private void initialise() {
         gameViewLevel = new GameViewLevel();
 
-        timer = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), event -> {
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             time++;
             updateStats();
         }));
-        timer.setCycleCount(Animation.INDEFINITE);
+        timer.setCycleCount(Timeline.INDEFINITE);
         statsBar = new HBox();
         lblMoves = new Label();
         lblPushes = new Label();
