@@ -3,7 +3,9 @@ package be.kdg.sokoban.view.game;
 import be.kdg.sokoban.SokobanMain;
 import be.kdg.sokoban.model.MoveAction;
 import be.kdg.sokoban.model.Objects.*;
-import javafx.animation.*;
+import javafx.animation.RotateTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -122,7 +124,8 @@ class GameViewLevel extends GridPane {
     }
 
 
-    //TODO fix one millisecond dissapearing glitch after movement
+    //TODO fix one millisecond disappearing glitch after movement
+    //TODO make sound
     void updateLevel(MoveAction moveAction) {
         int squareSize = (int) (this.getHeight() * this.getRowConstraints().get(0).getPercentHeight() / 100);
         if (moveAction.getActionType() == MoveAction.ACTION_NULL) {
