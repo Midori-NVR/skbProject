@@ -6,6 +6,7 @@ import be.kdg.sokoban.model.Objects.*;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -163,11 +164,13 @@ class GameViewLevel extends GridPane {
                     if (level[row][column] instanceof Crate) {
                         if (((Crate) level[row][column]).isOnGoal()) {
                             levelLayout[row][column] = new ImageView(crateOnGoalImage);
+                            this.add(new ImageView(goalImage), column + getColumnTopSpacing(), row + getRowLeftSpacing());
                         } else
                             levelLayout[row][column] = new ImageView(crateImage);
                     } else if (level[row][column] instanceof Player) {
                         if (((Player) level[row][column]).isOnGoal()) {
                             levelLayout[row][column] = new ImageView(playerOnGoalImage);
+                            this.add(new ImageView(goalImage), column + getColumnTopSpacing(), row + getRowLeftSpacing());
                         } else {
                             levelLayout[row][column] = new ImageView(playerImage);
                         }
@@ -214,13 +217,11 @@ class GameViewLevel extends GridPane {
                 }
             }
         } else {
-            for (ImageView[] levelLayoutRow : levelLayout) {
-                for (ImageView levelLayoutImage : levelLayoutRow) {
-                    if (levelLayoutImage != null) {
-                        double size = this.getWidth() / maxColumns;
-                        levelLayoutImage.setFitWidth(size);
-                        levelLayoutImage.setFitHeight(size);
-                    }
+            for (Node node : this.getChildren()) {
+                if (node != null && node instanceof ImageView) {
+                    double size = this.getWidth() / maxColumns;
+                    ((ImageView)node).setFitWidth(size);
+                    ((ImageView)node).setFitHeight(size);
                 }
             }
         }
