@@ -202,7 +202,6 @@ class GameViewLevel extends GridPane {
                     }
                 }
                 player.setImage(playerImage[playerAnimationCount]);
-                System.out.println("test " + playerAnimationCount);
             }));
             playerAnimation.setCycleCount(Timeline.INDEFINITE);
 
