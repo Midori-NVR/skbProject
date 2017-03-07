@@ -8,6 +8,19 @@ package be.kdg.sokoban.model.Objects;
 public abstract class FieldObject {
     private int posX, posY;
     public static final int MOVE_UP = 2, MOVE_DOWN = 0, MOVE_LEFT = 1, MOVE_RIGHT = 3;
+    public static int getOppositeMove(int direction){
+        switch (direction){
+            case FieldObject.MOVE_UP:
+                return FieldObject.MOVE_DOWN;
+            case FieldObject.MOVE_DOWN:
+                return FieldObject.MOVE_UP;
+            case FieldObject.MOVE_LEFT:
+                return FieldObject.MOVE_RIGHT;
+            case FieldObject.MOVE_RIGHT:
+                return FieldObject.MOVE_LEFT;
+        }
+        return direction;
+    }
     public static int getXMove(int direction){
         if (direction == FieldObject.MOVE_LEFT){
             return -1;

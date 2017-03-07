@@ -55,18 +55,20 @@ public class GamePresenter {
         view.getScene().widthProperty().addListener(observable -> resizeView());
         view.getScene().heightProperty().addListener(observable -> resizeView());
         view.getScene().setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.LEFT)) {
+            if (!view.getGameViewLevel().isAnimationRunning()) {
+                if (event.getCode().equals(KeyCode.LEFT)) {
 
-                updateView(model.move(FieldObject.MOVE_LEFT));
-            } else if (event.getCode().equals(KeyCode.RIGHT)) {
+                    updateView(model.move(FieldObject.MOVE_LEFT));
+                } else if (event.getCode().equals(KeyCode.RIGHT)) {
 
-                updateView(model.move(FieldObject.MOVE_RIGHT));
-            } else if (event.getCode().equals(KeyCode.UP)) {
+                    updateView(model.move(FieldObject.MOVE_RIGHT));
+                } else if (event.getCode().equals(KeyCode.UP)) {
 
-                updateView(model.move(FieldObject.MOVE_UP));
-            } else if (event.getCode().equals(KeyCode.DOWN)) {
+                    updateView(model.move(FieldObject.MOVE_UP));
+                } else if (event.getCode().equals(KeyCode.DOWN)) {
 
-                updateView(model.move(FieldObject.MOVE_DOWN));
+                    updateView(model.move(FieldObject.MOVE_DOWN));
+                }
             }
         });
     }

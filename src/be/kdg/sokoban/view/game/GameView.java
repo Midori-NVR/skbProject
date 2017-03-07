@@ -36,12 +36,13 @@ public class GameView extends BorderPane {
         this.setBottom(statsBar);
 
         updateStats();
-        statsBar.getChildren().addAll(lblMoves,lblPushes, lblTime, lblPlayerCoords);
+        statsBar.getChildren().addAll(lblMoves, lblPushes, lblTime, lblPlayerCoords);
         statsBar.setStyle("-fx-background-color: white");
         lblMoves.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
         lblPushes.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
         lblTime.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
-lblPlayerCoords.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
+        lblPlayerCoords.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
+
         //TODO center imageViewLevel
         /*setAlignment(gameViewLevel, Pos.CENTER);
         gameViewLevel.setAlignment(Pos.CENTER);*/
@@ -66,28 +67,18 @@ lblPlayerCoords.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
         return gameViewLevel;
     }
 
-    @Deprecated
-    void updateLevel(FieldObject[][] level) {
-        moves++;
-        updateStats();
-        gameViewLevel.updateLevel(level);
-    }
-
-    //TODO think about mechanic: moves++ if moveAction_NULL?; moves++ if moveAction_PUSH
     void updateLevel(MoveAction moveAction) {
         if (moveAction.getActionType() == MoveAction.ACTION_MOVE) {
             moves++;
             updateStats();
-        }
-        else if (moveAction.getActionType() == MoveAction.ACTION_PUSH){
+        } else if (moveAction.getActionType() == MoveAction.ACTION_PUSH) {
             moves++;
             pushes++;
             updateStats();
-        }
-        else if(moveAction.getActionType() == MoveAction.ACTION_NULL){
+        } else if (moveAction.getActionType() == MoveAction.ACTION_NULL) {
             //nothing atm
         }
-        if (SokobanMain.DEBUG){
+        if (SokobanMain.DEBUG) {
             this.playerX = moveAction.getPlayer().getPosX();
             this.playerY = moveAction.getPlayer().getPosY();
         }
@@ -105,10 +96,12 @@ lblPlayerCoords.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
         lblTime.setText("Time:" + time);
         lblMoves.setText("Moves:" + moves);
         lblPushes.setText("Pushes:" + pushes);
-        if (SokobanMain.DEBUG) lblPlayerCoords.setText("("+playerX+","+playerY+")");
+        if (SokobanMain.DEBUG) lblPlayerCoords.setText("(" + playerX + "," + playerY + ")");
     }
 
     void levelFinished() {
-
+//TODO finish level
     }
+
+    //TODO restart level and quit level
 }

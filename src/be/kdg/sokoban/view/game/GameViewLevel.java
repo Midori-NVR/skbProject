@@ -3,8 +3,7 @@ package be.kdg.sokoban.view.game;
 import be.kdg.sokoban.SokobanMain;
 import be.kdg.sokoban.model.MoveAction;
 import be.kdg.sokoban.model.Objects.*;
-import javafx.animation.Transition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -13,7 +12,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 
 import java.util.Arrays;
@@ -32,6 +30,7 @@ class GameViewLevel extends GridPane {
     private Image crateOnGoalImage;
     private ImageView[][] levelLayout;
     private int maxRows, maxColumns;
+    private boolean animationRunning;
 
     GameViewLevel() {
         initialise();
@@ -100,59 +99,133 @@ class GameViewLevel extends GridPane {
 
     }
 
-    //TODO change to update info -> with events what needs to happen.
-    @Deprecated
-    void updateLevel(FieldObject[][] level) {
-        this.getChildren().removeAll(this.getChildren());
-        setImages(level);
+    private void setAnimationByDirection(TranslateTransition transition, int direction, int distance) {
+        switch (direction) {
+            case FieldObject.MOVE_DOWN:
+                transition.setByY(distance);
+                break;
+            case FieldObject.MOVE_RIGHT:
+                transition.setByX(distance);
+                break;
+            case FieldObject.MOVE_UP:
+                transition.setByY(-distance);
+                break;
+            case FieldObject.MOVE_LEFT:
+                transition.setByX(-distance);
+                break;
+        }
     }
 
+
+    boolean isAnimationRunning() {
+        return animationRunning;
+    }
+
+
+    //TODO fix one millisecond dissapearing glitch after movement
     void updateLevel(MoveAction moveAction) {
+        int squareSize = (int) (this.getHeight() * this.getRowConstraints().get(0).getPercentHeight() / 100);
         if (moveAction.getActionType() == MoveAction.ACTION_NULL) {
-            //TODO animate blockage
+            animationRunning = true;
+            ImageView wall = levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()];
+            TranslateTransition moveBack = new TranslateTransition(Duration.millis(50), wall);
+            TranslateTransition moveForward = new TranslateTransition(Duration.millis(150), wall);
+            setAnimationByDirection(moveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize / 10);
+            setAnimationByDirection(moveForward, moveAction.getDirection(), squareSize / 10);
+            SequentialTransition wallMove = new SequentialTransition(moveForward, moveBack);
+            wallMove.setOnFinished(event -> animationRunning = false);
+            wallMove.play();
         } else {
+            animationRunning = true;
             ImageView player = levelLayout[moveAction.getPlayer().getPosY() - FieldObject.getYMove(moveAction.getDirection())][moveAction.getPlayer().getPosX() - FieldObject.getXMove(moveAction.getDirection())];
-            ImageView crate = null;
+            final ImageView crate;
             if (moveAction.getActionType() == MoveAction.ACTION_PUSH) {
                 crate = levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()];
-            }
-            //TODO SETUP animation
-            TranslateTransition playerMove = new TranslateTransition(Duration.seconds(5), player);
-            playerMove.setToY(playerMove.getFromY() - 50);
-
-            TranslateTransition crateMove = new TranslateTransition(Duration.seconds(5), crate);
-            crateMove.setToY(crateMove.getFromY() - 50);
-
-
-            //DELETE FROM field
-            this.getChildren().remove(player);
-            this.getChildren().remove(crate);
-            //TODO PLAY animation
-            playerMove.play();
-            crateMove.play();
-            //UPDATE images
-            if (moveAction.getPlayer().isOnGoal()) {
-                player.setImage(playerOnGoalImage);
             } else {
-                player.setImage(playerImage);
+                crate = null;
+            }
+            boolean rotationRequired = 90 * moveAction.getPlayer().getWatchingDirection() != player.getRotate();
+            TranslateTransition playerMove = new TranslateTransition(Duration.millis(200), player);
+
+
+            SequentialTransition playerSequence;
+            if (rotationRequired) {
+                RotateTransition playerRotate = new RotateTransition(Duration.millis(150), player);
+                playerRotate.setToAngle(90 * moveAction.getPlayer().getWatchingDirection());
+                playerSequence = new SequentialTransition(player, playerRotate, playerMove);
+            } else {
+                playerMove.setDuration(Duration.millis(350));
+                playerSequence = new SequentialTransition(player, playerMove);
+            }
+            player.setImage(playerImage);
+
+
+            setAnimationByDirection(playerMove, moveAction.getDirection(), squareSize);
+
+
+            playerSequence.setOnFinished(event -> {
+
+
+                TranslateTransition playerMoveBack = new TranslateTransition(Duration.ONE, player);
+                setAnimationByDirection(playerMoveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize);
+
+
+                //UPDATE images
+
+                if (moveAction.getPlayer().isOnGoal()) {
+                    player.setImage(playerOnGoalImage);
+                }
+                player.setRotate(90 * moveAction.getPlayer().getWatchingDirection());
+                if (crate != null) {
+                    if (((Crate) moveAction.getNextObject()).isOnGoal()) {
+                        crate.setImage(crateOnGoalImage);
+                    } else {
+                        crate.setImage(crateImage);
+                    }
+                }
+
+
+                playerMoveBack.setOnFinished(event1 -> {
+                    //ADD TO field
+                    if (crate != null) {
+                        this.add(crate, moveAction.getNextObject().getPosX() + getColumnTopSpacing(), moveAction.getNextObject().getPosY() + getRowLeftSpacing());
+                    }
+                    this.add(player, moveAction.getPlayer().getPosX() + getColumnTopSpacing(), moveAction.getPlayer().getPosY() + getRowLeftSpacing());
+
+                    animationRunning = false;
+                });
+                if (crate != null) {
+                    levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()] = crate;
+                }
+                levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()] = player;
+                levelLayout[moveAction.getPlayer().getPosY() - FieldObject.getYMove(moveAction.getDirection())][moveAction.getPlayer().getPosX() - FieldObject.getXMove(moveAction.getDirection())] = null;
+
+                //DELETE FROM field
+                this.getChildren().remove(player);
+                this.getChildren().remove(crate);
+                playerMoveBack.play();
+
+            });
+            playerSequence.play();
+            if (crate != null) {
+
+                TranslateTransition crateMove = new TranslateTransition(Duration.millis(100), crate);
+                if (rotationRequired) {
+                    crateMove.setDelay(Duration.millis(250));
+                } else {
+                    crateMove.setDuration(Duration.millis(200));
+                    crateMove.setDelay(Duration.millis(150));
+                }
+                TranslateTransition crateMoveBack = new TranslateTransition(Duration.ONE, crate);
+                setAnimationByDirection(crateMove, moveAction.getDirection(), squareSize);
+
+                setAnimationByDirection(crateMoveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize);
+                SequentialTransition crateSequence = new SequentialTransition(crateMove, crateMoveBack);
+
+                crateSequence.play();
             }
 
-            player.setRotate(90 * moveAction.getPlayer().getWatchingDirection());
-            if (crate != null) {
-                if (((Crate) moveAction.getNextObject()).isOnGoal()) {
-                    crate.setImage(crateOnGoalImage);
-                } else {
-                    crate.setImage(crateImage);
-                }
-            }
-            //ADD TO field
-            if (crate != null) {
-                levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()] = crate;
-                this.add(crate, moveAction.getNextObject().getPosX() + getColumnTopSpacing(), moveAction.getNextObject().getPosY() + getRowLeftSpacing());
-            }
-            levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()] = player;
-            levelLayout[moveAction.getPlayer().getPosY() - FieldObject.getYMove(moveAction.getDirection())][moveAction.getPlayer().getPosX() - FieldObject.getXMove(moveAction.getDirection())] = null;
-            this.add(player, moveAction.getPlayer().getPosX() + getColumnTopSpacing(), moveAction.getPlayer().getPosY() + getRowLeftSpacing());
+
         }
     }
 
@@ -188,11 +261,11 @@ class GameViewLevel extends GridPane {
         resizeLevel();
     }
 
-    public int getColumnTopSpacing() {
+    private int getColumnTopSpacing() {
         return maxRows > maxColumns ? (int) Math.floor(((double) maxRows - maxColumns) / 2) : 0;
     }
 
-    public int getRowLeftSpacing() {
+    private int getRowLeftSpacing() {
         return maxRows < maxColumns ? (int) Math.floor(((double) maxColumns - maxRows) / 2) : 0;
     }
 
@@ -220,8 +293,8 @@ class GameViewLevel extends GridPane {
             for (Node node : this.getChildren()) {
                 if (node != null && node instanceof ImageView) {
                     double size = this.getWidth() / maxColumns;
-                    ((ImageView)node).setFitWidth(size);
-                    ((ImageView)node).setFitHeight(size);
+                    ((ImageView) node).setFitWidth(size);
+                    ((ImageView) node).setFitHeight(size);
                 }
             }
         }
