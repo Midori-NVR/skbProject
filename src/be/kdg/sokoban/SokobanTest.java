@@ -18,7 +18,6 @@ public class SokobanTest {
         model.addUser(1, new User("Niels"));
         model.addUser(2, new User("Empty"));
         model.addUser(3, new User("Empty"));
-
         model.save();
 
     }

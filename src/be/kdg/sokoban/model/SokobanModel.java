@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,12 +19,13 @@ public class SokobanModel {
     private FieldObject[][] currentLevel;
     private Player player = null;
     private boolean levelFinished;
-    private final File FILE = new File("src/be/kdg/sokoban/save.txt");
+    private File file;
     private List<User> users;
 
     public SokobanModel() {
         try {
             levelLoader = new LevelLoader();
+            file = new File("src/be/kdg/sokoban/save.txt");
         } catch (IOException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Levels not found, " + Paths.get("src/be/kdg/sokoban/model/files/levels.txt").toAbsolutePath() + "\n" + e.getMessage());
@@ -218,24 +220,23 @@ public class SokobanModel {
     }
 
     public void loadSaveFile() {
-        if (FILE.exists()) {
-            try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(FILE))) {
-                users = (List<User>) input.readObject();
-            } catch (FileNotFoundException e) {
+        if (file.exists()) {
+            try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(file))) {
+                users = Arrays.asList((User[]) input.readObject());
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                //TODO exception
             }
             System.out.println(users.get(0).getName());
             users.get(0).getHighscores();
         } else {
             try {
-                FILE.createNewFile();
+                if(!file.createNewFile()){
+                    //TODO exception
+                }
             } catch (IOException e) {
                 e.printStackTrace();
+                //TODO exception
             }
 
             users = new ArrayList<>();
@@ -247,27 +248,33 @@ public class SokobanModel {
             }
             users.get(0).getHighscores();
 
-            try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(FILE))) {
-                output.writeObject(users);
+            try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file))) {
+                output.writeObject(users.toArray(new User[users.size()]));
             } catch (IOException e) {
                 e.printStackTrace();
+                //TODO exception
             }
         }
     }
 
     public void save() {
-        FILE.delete();
+        if (!file.delete()){
+            //TODO exception
+        }
         try {
-            FILE.createNewFile();
+            if (!file.createNewFile()){
+                //TODO exception
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            /*TODO exceptions*/
+            //TODO exception
         }
 
-        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(FILE))) {
-            output.writeObject(users);
+        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file))) {
+            output.writeObject(users.toArray(new User[users.size()]));
         } catch (IOException e) {
             e.printStackTrace();
+            //TODO exception
         }
 
     }
