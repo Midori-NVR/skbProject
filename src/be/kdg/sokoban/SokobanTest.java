@@ -15,7 +15,11 @@ public class SokobanTest {
         SokobanMain.DEBUG = true;
         SokobanModel model = new SokobanModel();
         model.loadSaveFile();
-        //model.addUser(1, new User("Niels"));
+        model.addUser(1, new User("Niels"));
+        model.addUser(2, new User("Empty"));
+        model.addUser(3, new User("Empty"));
+
         model.save();
+
     }
 }

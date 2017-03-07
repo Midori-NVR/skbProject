@@ -232,9 +232,9 @@ public class SokobanModel {
             }
 
             users = new ArrayList<>();
-            users.add(new User("Ëmpty"));
-            users.add(new User("Ëmpty"));
-            users.add(new User("Ëmpty"));
+            users.add(new User("Empty"));
+            users.add(new User("Empty"));
+            users.add(new User("Empty"));
             for (int i = 0; i < 3; i++) {
                 users.get(i).resetHighscores();
             }
@@ -280,7 +280,15 @@ public class SokobanModel {
         return false;
     }
 
+    public User getUser(int userNr){
+        return users.get(userNr-1);
+    }
+
     public boolean isLevelFinished() {
         return levelFinished;
+    }
+
+    public List<User> getUsers() {
+        return users;
     }
 }

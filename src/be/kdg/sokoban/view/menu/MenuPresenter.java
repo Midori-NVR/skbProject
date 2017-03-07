@@ -1,11 +1,11 @@
 package be.kdg.sokoban.view.menu;
 
 import be.kdg.sokoban.SokobanMain;
+import be.kdg.sokoban.model.SokobanModel;
 import be.kdg.sokoban.view.levelSelect.LevelSelectPresenter;
 import be.kdg.sokoban.view.levelSelect.LevelSelectView;
-import be.kdg.sokoban.model.SokobanModel;
-
-import java.io.*;
+import be.kdg.sokoban.view.userSelect.UserSelectPresenter;
+import be.kdg.sokoban.view.userSelect.UserSelectView;
 
 /**
  * @author Niels Van Reeth
@@ -16,6 +16,8 @@ public class MenuPresenter {
     private MenuView view;
     private LevelSelectView lsView;
     private LevelSelectPresenter lsPresenter;
+    private UserSelectPresenter usPresenter;
+    private UserSelectView usView;
 
     public MenuPresenter(SokobanModel model, MenuView view) {
         long time = System.currentTimeMillis();
@@ -55,6 +57,12 @@ public class MenuPresenter {
             view.getScene().setRoot(lsView);
             //lsView.getScene().getWindow().sizeToScene();
             lsPresenter.addWindowEventHandlers();
+        });
+
+        view.getBtnChangeUser().setOnAction(event -> {
+            usView = new UserSelectView();
+            usPresenter = new UserSelectPresenter(model, usView);
+            view.getScene().setRoot(usView);
         });
     }
 
