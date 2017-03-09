@@ -34,6 +34,9 @@ class GameViewLevel extends GridPane {
     private int maxRows, maxColumns;
     private boolean animationRunning;
     private boolean resizeLvl;
+    private int playerAnimationCount = 0;
+    private boolean playerAnimationReverse = false;
+
 
     GameViewLevel() {
         initialise();
@@ -197,7 +200,6 @@ class GameViewLevel extends GridPane {
                     this.add(player, moveAction.getPlayer().getPosX() + getColumnTopSpacing(), moveAction.getPlayer().getPosY() + getRowLeftSpacing());
 
                     animationRunning = false;
-                    if (resizeLvl) resizeLevel();
                 });
                 if (crate != null) {
                     levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()] = crate;
@@ -275,39 +277,35 @@ class GameViewLevel extends GridPane {
     }
 
     void resizeLevel() {
-        if (!animationRunning) {
-            if (getScene().getWidth() <= getScene().getHeight()) {
-                //Set to width
-                resize(getScene().getWidth(), getScene().getWidth());
+        if (getScene().getWidth() <= getScene().getHeight()) {
+            //Set to width
+            resize(getScene().getWidth(), getScene().getWidth());
 
-            } else {
-                //Set to height
-                resize(getScene().getHeight(), getScene().getHeight());
-
-            }
-            if (maxRows > maxColumns) {
-                for (ImageView[] levelLayoutRow : levelLayout) {
-                    for (ImageView levelLayoutImage : levelLayoutRow) {
-                        if (levelLayoutImage != null) {
-                            double size = this.getHeight() / maxRows;
-                            levelLayoutImage.setFitWidth(size);
-                            levelLayoutImage.setFitHeight(size);
-                        }
-                    }
-                }
-            } else {
-                for (Node node : this.getChildren()) {
-                    if (node != null && node instanceof ImageView) {
-                        double size = this.getWidth() / maxColumns;
-                        ((ImageView) node).setFitWidth(size);
-                        ((ImageView) node).setFitHeight(size);
-                    }
-                }
-            }
-            resizeLvl = false;
         } else {
-            resizeLvl = true;
+            //Set to height
+            resize(getScene().getHeight(), getScene().getHeight());
+
         }
+        if (maxRows > maxColumns) {
+            for (ImageView[] levelLayoutRow : levelLayout) {
+                for (ImageView levelLayoutImage : levelLayoutRow) {
+                    if (levelLayoutImage != null) {
+                        double size = this.getHeight() / maxRows;
+                        levelLayoutImage.setFitWidth(size);
+                        levelLayoutImage.setFitHeight(size);
+                    }
+                }
+            }
+        } else {
+            for (Node node : this.getChildren()) {
+                if (node != null && node instanceof ImageView) {
+                    double size = this.getWidth() / maxColumns;
+                    ((ImageView) node).setFitWidth(size);
+                    ((ImageView) node).setFitHeight(size);
+                }
+            }
+        }
+
     }
 
 
