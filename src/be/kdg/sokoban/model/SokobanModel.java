@@ -76,15 +76,15 @@ public class SokobanModel {
 
         if (isValidPush(player, direction)) {
             moveCrate(player, direction);
-            return new MoveAction(direction, player, MoveAction.ACTION_PUSH, movePlayer(player, direction), getNextObject(player, direction));
+            return new MoveAction(direction, player, MoveAction.ACTION_PUSH, movePlayer(player, direction),getNextObject(player, direction));
 
 
         }
 
         if (isValidStep(player, direction)) {
-            return new MoveAction(direction, player, MoveAction.ACTION_MOVE, movePlayer(player, direction), getNextObject(player, direction));
+            return new MoveAction(direction, player, MoveAction.ACTION_MOVE, movePlayer(player, direction),getNextObject(player, direction));
         }
-        return new MoveAction(direction, player, MoveAction.ACTION_NULL, false, getNextObject(player, direction));
+        return new MoveAction(direction, player, MoveAction.ACTION_NULL,false,getNextObject(player,direction));
     }
 
     private void moveCrate(Player player, int direction) {
@@ -224,11 +224,13 @@ public class SokobanModel {
     public void loadSaveFile() {
         if (file.exists()) {
             try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(file))) {
-                users = Arrays.asList((User[]) input.readObject());
-            } catch (IOException | ClassNotFoundException e) {
+                users = (User[]) input.readObject();
+            } catch (IOException | ClassNotFoundException e) {                
                 e.printStackTrace();
                 //TODO exception
             }
+            System.out.println(users.get(0).getName());
+            users.get(0).getHighscores();
         } else {
             try {
                 if(!file.createNewFile()){
@@ -239,14 +241,14 @@ public class SokobanModel {
                 //TODO exception
             }
 
-            users = new User[max_users];
-            for (int i = 0; i < max_users; i++) {
-                users[i] = new User("Empty");
+            users = new ArrayList<>();
+            users.add(new User("Empty"));
+            users.add(new User("Empty"));
+            users.add(new User("Empty"));
+            for (int i = 0; i < 3; i++) {
+                users.get(i).resetHighscores();
             }
-
-            for (int i = 0; i < max_users; i++) {
-                users[i].resetHighscores();
-            }
+            users.get(0).getHighscores();
 
             try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file))) {
                 output.writeObject(users.toArray(new User[users.size()]));
@@ -279,51 +281,30 @@ public class SokobanModel {
 
     }
 
-    public User[] addUser(int userNr, String name) {
-        userNr--;
-        if (name != null && users[userNr] != null) {
-            users[userNr].setName(name.toString());
-            System.out.println(users[userNr]);
-        } else {
-            users[userNr] = new User(name);
-            System.out.println(users[userNr]);
-        }
-        //TODO update
-        return users;
+    public void addUser(int userNr, User user){
+        users.set(userNr-1, user);
     }
 
-    public boolean deleteUser(int userNr) {
-        userNr--;
-        if (users[userNr].getName() != "Empty") {
-            users[userNr].setName("Empty");
-            users[userNr].resetHighscores();
-            users[userNr].getHighscores();
+    public boolean deleteUser(User user){
+        if (users.contains(user)) {
+            int index = users.indexOf(user);
+            users.get(index).setName("Empty");
+            users.get(index).resetHighscores();
+            users.get(index).getHighscores();
             return true;
         }
         return false;
     }
 
-    public User getUser(int userNr) {
-        return users[userNr - 1];
+    public User getUser(int userNr){
+        return users.get(userNr-1);
     }
 
     public boolean isLevelFinished() {
         return levelFinished;
     }
 
-    public User[] getUsers() {
+    public List<User> getUsers() {
         return users;
-    }
-
-    public User getCurrentUser() {
-        return currentUser;
-    }
-
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
-    }
-
-    public int getMax_users() {
-        return max_users;
     }
 }
