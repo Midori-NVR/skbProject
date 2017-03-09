@@ -14,9 +14,6 @@ public class SokobanTest {
         SokobanMain.DEBUG = true;
         SokobanModel model = new SokobanModel();
         model.loadSaveFile();
-        model.addUser(1,"Niels");
-        model.addUser(2,"Empty");
-        model.addUser(3,"Empty");
 
         model.save();
 

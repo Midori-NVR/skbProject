@@ -23,6 +23,7 @@ public class User implements Serializable {
         this.name = name;
     }
 
+    //TODO remove comments
     public void getHighscores() {
         for (int i = 0; i < highscores.length; i++) {
             System.out.println("Lvl " + (i+1) + ": " + this.getHighscore(i+1));

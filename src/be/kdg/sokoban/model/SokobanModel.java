@@ -6,8 +6,6 @@ import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,9 +18,16 @@ public class SokobanModel {
     private Player player = null;
     private boolean levelFinished;
     private User[] users;
-    private User currentUser;
-    private int max_users = 3;
     private File file;
+    private int currentUserIndex;
+
+    public int getCurrentUserIndex() {
+        return currentUserIndex;
+    }
+
+    public void setCurrentUserIndex(int currentUserIndex) {
+        this.currentUserIndex = currentUserIndex;
+    }
 
     public SokobanModel() {
         try {
@@ -57,7 +62,7 @@ public class SokobanModel {
 
     public MoveAction move(int direction) {
         if (player != null) {
-            System.out.println("Player(" + player.getPosY() + ", " + player.getPosX() + ")");
+            if (SokobanMain.DEBUG) System.out.println("Player(" + player.getPosY() + ", " + player.getPosX() + ")");
         } else {
             this.player = levelLoader.getPlayer(currentLevel);
         }
@@ -76,15 +81,15 @@ public class SokobanModel {
 
         if (isValidPush(player, direction)) {
             moveCrate(player, direction);
-            return new MoveAction(direction, player, MoveAction.ACTION_PUSH, movePlayer(player, direction),getNextObject(player, direction));
+            return new MoveAction(direction, player, MoveAction.ACTION_PUSH, movePlayer(player, direction), getNextObject(player, direction));
 
 
         }
 
         if (isValidStep(player, direction)) {
-            return new MoveAction(direction, player, MoveAction.ACTION_MOVE, movePlayer(player, direction),getNextObject(player, direction));
+            return new MoveAction(direction, player, MoveAction.ACTION_MOVE, movePlayer(player, direction), getNextObject(player, direction));
         }
-        return new MoveAction(direction, player, MoveAction.ACTION_NULL,false,getNextObject(player,direction));
+        return new MoveAction(direction, player, MoveAction.ACTION_NULL, false, getNextObject(player, direction));
     }
 
     private void moveCrate(Player player, int direction) {
@@ -221,6 +226,7 @@ public class SokobanModel {
         return true;
     }
 
+    //TODO split in 2 functions
     public void loadSaveFile() {
         if (file.exists()) {
             try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(file))) {
@@ -229,8 +235,6 @@ public class SokobanModel {
                 e.printStackTrace();
                 //TODO exception
             }
-            System.out.println(users.get(0).getName());
-            users.get(0).getHighscores();
         } else {
             try {
                 if(!file.createNewFile()){
@@ -241,21 +245,7 @@ public class SokobanModel {
                 //TODO exception
             }
 
-            users = new ArrayList<>();
-            users.add(new User("Empty"));
-            users.add(new User("Empty"));
-            users.add(new User("Empty"));
-            for (int i = 0; i < 3; i++) {
-                users.get(i).resetHighscores();
-            }
-            users.get(0).getHighscores();
-
-            try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file))) {
-                output.writeObject(users.toArray(new User[users.size()]));
-            } catch (IOException e) {
-                e.printStackTrace();
-                //TODO exception
-            }
+            users = new User[3];
         }
     }
 
@@ -273,7 +263,7 @@ public class SokobanModel {
         }
 
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file))) {
-            output.writeObject(users.toArray(new User[users.size()]));
+            output.writeObject(users);
         } catch (IOException e) {
             e.printStackTrace();
             //TODO exception
@@ -281,30 +271,21 @@ public class SokobanModel {
 
     }
 
-    public void addUser(int userNr, User user){
-        users.set(userNr-1, user);
-    }
+    //FIXME add user
 
-    public boolean deleteUser(User user){
-        if (users.contains(user)) {
-            int index = users.indexOf(user);
-            users.get(index).setName("Empty");
-            users.get(index).resetHighscores();
-            users.get(index).getHighscores();
-            return true;
-        }
-        return false;
-    }
-
-    public User getUser(int userNr){
-        return users.get(userNr-1);
+    public void deleteUser(int index) {
+        users[index] = null;
     }
 
     public boolean isLevelFinished() {
         return levelFinished;
     }
 
-    public List<User> getUsers() {
+    public User[] getUsers() {
         return users;
+    }
+
+    public void addUser(int index, User user) {
+        users[index] = user;
     }
 }

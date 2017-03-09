@@ -2,6 +2,7 @@ package be.kdg.sokoban.view.userSelect;
 
 import be.kdg.sokoban.SokobanMain;
 import be.kdg.sokoban.model.SokobanModel;
+import be.kdg.sokoban.model.User;
 import javafx.scene.control.TextInputDialog;
 
 /**
@@ -16,7 +17,7 @@ public class UserSelectPresenter {
         long time = System.currentTimeMillis();
         this.model = model;
         this.view = view;
-        view.getUserView().setUsers(model.getUsers(),model.getMax_users());
+        view.getUserView().setUsers(model.getUsers());
         addStyleSheets();
         addEventHandlers();
         if (SokobanMain.DEBUG)
@@ -35,19 +36,24 @@ public class UserSelectPresenter {
         }*/
         //TODO loop for all buttons at ones?
         //TODO add createNewUser();
-        view.getUserView().getBtnUser(0).setOnAction(event -> {
-            if (!model.getUser(1).getName().equals("Empty")) {
-                model.setCurrentUser(model.getUser(1));
-                System.out.println("loaded user 1: " + model.getUser(1).getName());
-            } else {
-                TextInputDialog dialog = new TextInputDialog();
-                dialog.setTitle("Create User");
-                dialog.setContentText("Give your character a name:");
-                String name = dialog.showAndWait().toString();
-                model.addUser(1, name);
-                updateView();
-            }
-        });
+        //TODO make custom button with position to remove final statement.
+        for (int i = 0; i < view.getUserView().getBtnUser().length; i++) {
+            final int j = i;
+            view.getUserView().getBtnUser()[i].setOnAction(event -> {
+                if (model.getUsers()[j] != null) {
+                    model.setCurrentUserIndex(j);
+                } else {
+                    //TODO check if correct way and correct output
+                    TextInputDialog dialog = new TextInputDialog();
+                    dialog.setTitle("Create User");
+                    dialog.setContentText("Give your character a name:");
+                    String name = dialog.showAndWait().toString();
+                    model.addUser(j, new User(name));
+                    updateView();
+                }
+            });
+        }
+
     }
 
     private void updateView() {
@@ -56,9 +62,8 @@ public class UserSelectPresenter {
 
     private void addStyleSheets() {
         view.getStylesheets().add("/be/kdg/sokoban/view/userSelect/css/userSelect.css");
-        for (int i = 0; i < model.getMax_users(); i++) {
-            System.out.println(view.getUserView().getBtnUser(i).getText());
-            view.getUserView().getBtnUser(i).getStyleClass().add("userButton");
+        for (int i = 0; i < view.getUserView().getBtnUser().length; i++) {
+            view.getUserView().getBtnUser()[i].getStyleClass().add("userButton");
         }
         if (SokobanMain.DEBUG) System.out.println("StyleSheets loaded!");
     }

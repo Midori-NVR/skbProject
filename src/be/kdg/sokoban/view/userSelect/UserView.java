@@ -10,48 +10,33 @@ import javafx.scene.layout.VBox;
  * @version 1.0 3/7/2017 9:52 AM
  */
 public class UserView extends VBox {
-    private int max_users;
     private Button[] btnUser;
-    private User[] users;
 
-    UserView() {
-        initialise();
-        setup();
+    public Button[] getBtnUser() {
+        return btnUser;
     }
 
-    private void initialise() {
-
-    }
-
-    //TODO autoscale
-    private void setup() {
-
-    }
-
-    public void setUsers(User[] users, int max_users) {
-        this.max_users = max_users;
-        btnUser = new Button[max_users];
+    void setUsers(User[] users) {
+        btnUser = new Button[users.length];
         for (int i = 0; i < users.length; i++) {
             btnUser[i] = new Button();
             btnUser[i].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            btnUser[i].setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE / max_users);
+            btnUser[i].setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE / users.length);
             setVgrow(btnUser[i], Priority.ALWAYS);
-            btnUser[i].setText(users[i].getName());
             this.getChildren().add(btnUser[i]);
         }
-    }
 
-    public Button getBtnUser(int index) {
-        if (index < btnUser.length) {
-            return btnUser[index];
-        }
-        return null;
+        updateUsers(users);
     }
 
     public void updateUsers(User[] users){
-        this.users = users;
-        for (int i = 0; i < max_users; i++) {
-            btnUser[i].setText(users[i].getName());
+        for (int i = 0; i < users.length; i++) {
+            if (users[i] != null) {
+                btnUser[i].setText(users[i].getName());
+            }
+            else{
+                btnUser[i].setText("+ new user");
+            }
         }
     }
 }
