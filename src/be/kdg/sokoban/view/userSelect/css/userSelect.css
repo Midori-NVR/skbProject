@@ -1,4 +1,16 @@
-.userButton{
+.userButton {
     -fx-font-weight: bold;
-    -fx-font-size: 90em;
+    /*-fx-font-size: 90px;*/
+    -fx-font-size: 2em;
+    -fx-pref-height: 100px;
+    -fx-border-color: #00005b;
+    /*-fx-background-color: darkblue;*/
+    -fx-background-color: radial-gradient(radius 75%, orange, orangered);
+    -fx-text-fill: radial-gradient(radius 75%, #ff8800, #ff0009);
+
+    /*color: #d59f00;*/
+}
+
+.userButton: hover {
+    -fx-background-color: darkorange;
 }

@@ -42,4 +42,9 @@ public class User implements Serializable {
             this.setHighscore(i+1, 0);
         }
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
