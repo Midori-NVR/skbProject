@@ -1,50 +1,34 @@
 package be.kdg.sokoban.view.userSelect;
 
-import be.kdg.sokoban.model.User;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 
 /**
  * @author Lies Van der Haegen
- * @version 1.0 3/7/2017 9:52 AM
+ * @version 1.0 3/8/2017 12:23 PM
  */
-public class UserSelectView extends VBox {
-    private List<User> users = new ArrayList();
-    private Button[] btnUser = new Button[3];
+public class UserSelectView extends BorderPane {
+    private UserView userView;
+    private Label lblTitle;
 
-
-    public UserSelectView() {
+    public UserSelectView(){
         initialise();
         setup();
     }
 
-    private void initialise() {
-        for (int i = 0; i < 3; i++) {
-            btnUser[i] = new Button();
-        }
-    }
     private void setup() {
-        for (int i = 0; i < 3; i++) {
-            btnUser[i].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            btnUser[i].setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE/3);
-            setVgrow(btnUser[i], Priority.ALWAYS);
-            this.getChildren().add(btnUser[i]);
-        }
-
+        this.setCenter(userView);
+        this.setTop(lblTitle);
+        //TODO set label css and scaling.
     }
 
-    public void setUsers(List<User> users){
-       this.users = users;
-        for (int i = 0; i < 3; i++) {
-            btnUser[i].setText(users.get(i).getName());
-        }
+    public UserView getUserView() {
+        return userView;
     }
 
-    public Button[] getBtnUser() {
-        return btnUser;
+    private void initialise() {
+        userView = new UserView();
+        lblTitle = new Label();
+
     }
 }

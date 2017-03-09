@@ -19,8 +19,10 @@ public class SokobanModel {
     private FieldObject[][] currentLevel;
     private Player player = null;
     private boolean levelFinished;
+    private User[] users;
+    private User currentUser;
+    private int max_users = 3;
     private File file;
-    private List<User> users;
 
     public SokobanModel() {
         try {
@@ -74,15 +76,15 @@ public class SokobanModel {
 
         if (isValidPush(player, direction)) {
             moveCrate(player, direction);
-            return new MoveAction(direction, player, MoveAction.ACTION_PUSH, movePlayer(player, direction),getNextObject(player, direction));
+            return new MoveAction(direction, player, MoveAction.ACTION_PUSH, movePlayer(player, direction), getNextObject(player, direction));
 
 
         }
 
         if (isValidStep(player, direction)) {
-            return new MoveAction(direction, player, MoveAction.ACTION_MOVE, movePlayer(player, direction),getNextObject(player, direction));
+            return new MoveAction(direction, player, MoveAction.ACTION_MOVE, movePlayer(player, direction), getNextObject(player, direction));
         }
-        return new MoveAction(direction, player, MoveAction.ACTION_NULL,false,getNextObject(player,direction));
+        return new MoveAction(direction, player, MoveAction.ACTION_NULL, false, getNextObject(player, direction));
     }
 
     private void moveCrate(Player player, int direction) {
@@ -227,8 +229,6 @@ public class SokobanModel {
                 e.printStackTrace();
                 //TODO exception
             }
-            System.out.println(users.get(0).getName());
-            users.get(0).getHighscores();
         } else {
             try {
                 if(!file.createNewFile()){
@@ -239,14 +239,14 @@ public class SokobanModel {
                 //TODO exception
             }
 
-            users = new ArrayList<>();
-            users.add(new User("Empty"));
-            users.add(new User("Empty"));
-            users.add(new User("Empty"));
-            for (int i = 0; i < 3; i++) {
-                users.get(i).resetHighscores();
+            users = new User[max_users];
+            for (int i = 0; i < max_users; i++) {
+                users[i] = new User("Empty");
             }
-            users.get(0).getHighscores();
+
+            for (int i = 0; i < max_users; i++) {
+                users[i].resetHighscores();
+            }
 
             try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file))) {
                 output.writeObject(users.toArray(new User[users.size()]));
@@ -279,30 +279,51 @@ public class SokobanModel {
 
     }
 
-    public void addUser(int userNr, User user){
-        users.set(userNr-1, user);
+    public User[] addUser(int userNr, String name) {
+        userNr--;
+        if (name != null && users[userNr] != null) {
+            users[userNr].setName(name.toString());
+            System.out.println(users[userNr]);
+        } else {
+            users[userNr] = new User(name);
+            System.out.println(users[userNr]);
+        }
+        //TODO update
+        return users;
     }
 
-    public boolean deleteUser(User user){
-        if (users.contains(user)) {
-            int index = users.indexOf(user);
-            users.get(index).setName("Empty");
-            users.get(index).resetHighscores();
-            users.get(index).getHighscores();
+    public boolean deleteUser(int userNr) {
+        userNr--;
+        if (users[userNr].getName() != "Empty") {
+            users[userNr].setName("Empty");
+            users[userNr].resetHighscores();
+            users[userNr].getHighscores();
             return true;
         }
         return false;
     }
 
-    public User getUser(int userNr){
-        return users.get(userNr-1);
+    public User getUser(int userNr) {
+        return users[userNr - 1];
     }
 
     public boolean isLevelFinished() {
         return levelFinished;
     }
 
-    public List<User> getUsers() {
+    public User[] getUsers() {
         return users;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public int getMax_users() {
+        return max_users;
     }
 }

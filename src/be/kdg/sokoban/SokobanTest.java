@@ -1,7 +1,6 @@
 package be.kdg.sokoban;
 
 import be.kdg.sokoban.model.SokobanModel;
-import be.kdg.sokoban.model.User;
 
 import java.io.IOException;
 
@@ -15,9 +14,10 @@ public class SokobanTest {
         SokobanMain.DEBUG = true;
         SokobanModel model = new SokobanModel();
         model.loadSaveFile();
-        model.addUser(1, new User("Niels"));
-        model.addUser(2, new User("Empty"));
-        model.addUser(3, new User("Empty"));
+        model.addUser(1,"Niels");
+        model.addUser(2,"Empty");
+        model.addUser(3,"Empty");
+
         model.save();
 
     }
