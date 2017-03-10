@@ -16,6 +16,7 @@ public class MenuPresenter {
     private MenuView view;
     private LevelSelectView lsView;
     private LevelSelectPresenter lsPresenter;
+    @SuppressWarnings("unused")
     private UserSelectPresenter usPresenter;
     private UserSelectView usView;
 
@@ -23,16 +24,16 @@ public class MenuPresenter {
         long time = System.currentTimeMillis();
         this.model = model;
         this.view = view;
+        view.setUsername(model.getUsers()[model.getCurrentUserIndex()].getName());
         this.addEventHandlers();
         this.addStyleSheets();
-        model.loadSaveFile();
-        this.update();
         if (SokobanMain.DEBUG)
             System.out.println("LoadTime Menu: " + (System.currentTimeMillis() - time) + " milliseconds");
     }
 
     private void addStyleSheets() {
         view.getStylesheets().add("/be/kdg/sokoban/view/menu/css/menu.css");
+        view.getLblUsername().getStyleClass().add("username");
         view.getBtnLvlSelect().getStyleClass().add("menuButton");
         view.getBtnOptions().getStyleClass().add("menuButton");
         view.getBtnChangeUser().getStyleClass().add("menuButton");
@@ -42,10 +43,6 @@ public class MenuPresenter {
         view.getStyleClass().add("body");
         view.getLblTitle().getStyleClass().add("title");
         if (SokobanMain.DEBUG) System.out.println("StyleSheets loaded!");
-    }
-
-    private void update() {
-
     }
 
     //EVENTS
@@ -64,10 +61,5 @@ public class MenuPresenter {
             usPresenter = new UserSelectPresenter(model, usView);
             view.getScene().setRoot(usView);
         });
-    }
-
-
-    public void addWindowEventHandlers() {
-
     }
 }

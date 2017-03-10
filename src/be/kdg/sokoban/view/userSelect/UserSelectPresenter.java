@@ -3,7 +3,11 @@ package be.kdg.sokoban.view.userSelect;
 import be.kdg.sokoban.SokobanMain;
 import be.kdg.sokoban.model.SokobanModel;
 import be.kdg.sokoban.model.User;
+import be.kdg.sokoban.view.menu.MenuPresenter;
+import be.kdg.sokoban.view.menu.MenuView;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
+
 
 /**
  * @author Lies Van der Haegen
@@ -12,14 +16,19 @@ import javafx.scene.control.TextInputDialog;
 public class UserSelectPresenter {
     private SokobanModel model;
     private UserSelectView view;
+    @SuppressWarnings("unused")
+    private MenuPresenter mPresenter;
+    private MenuView mView;
 
     public UserSelectPresenter(SokobanModel model, UserSelectView view) {
         long time = System.currentTimeMillis();
         this.model = model;
         this.view = view;
+        model.loadSaveFile();
         view.getUserView().setUsers(model.getUsers());
         addStyleSheets();
         addEventHandlers();
+
         if (SokobanMain.DEBUG)
             System.out.println("LoadTime LevelSelect: " + (System.currentTimeMillis() - time) + " milliseconds");
     }
@@ -42,13 +51,24 @@ public class UserSelectPresenter {
             view.getUserView().getBtnUser()[i].setOnAction(event -> {
                 if (model.getUsers()[j] != null) {
                     model.setCurrentUserIndex(j);
+                    mView = new MenuView();
+                    mPresenter = new MenuPresenter(model, mView);
+                    view.getScene().setRoot(mView);
                 } else {
                     //TODO check if correct way and correct output
                     TextInputDialog dialog = new TextInputDialog();
                     dialog.setTitle("Create User");
-                    dialog.setContentText("Give your character a name:");
-                    String name = dialog.showAndWait().toString();
-                    model.addUser(j, new User(name));
+                    dialog.setContentText("Give your character a name (only letters):");
+                    String name = null;
+                    while (name == null){
+                        name = dialog.showAndWait().get();
+                        if (!name.trim().matches("^[A-Za-z' éèçáàêâëä]+$")){
+                            name = null;
+                            new Alert(Alert.AlertType.ERROR,"Only letters and spaces are allowed:\n(A-Za-z' éèçáàêâëä)").showAndWait();
+                        }
+
+                    }
+                    model.addUser(j, new User(name.trim()));
                     updateView();
                 }
             });

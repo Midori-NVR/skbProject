@@ -13,6 +13,12 @@
 .menuButtonBox{
 
 }
+.username{
+    -fx-text-fill: radial-gradient(radius 50%, blue, royalblue 75%);
+    -fx-font-size: 150%;
+    -fx-font-weight: bolder;
+}
+
 .body{
     -fx-background-color: radial-gradient(radius 40%, orange, yellow, aquamarine)
 }

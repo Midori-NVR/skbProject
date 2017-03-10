@@ -23,6 +23,7 @@ public class MenuView extends BorderPane {
     private Button btnExit;
     private Label lblFooter;
     private VBox buttonBox;
+    private Label lblUsername;
 
     public MenuView() {
         initialise();
@@ -32,6 +33,7 @@ public class MenuView extends BorderPane {
     private void initialise() {
         lblTitle = new Label("Sokoban");
         buttonBox = new VBox();
+        lblUsername = new Label("Welcome");
         btnLvlSelect = new Button("Level Select");
         btnOptions = new Button("Options");
         btnChangeUser = new Button("Change User");
@@ -42,7 +44,7 @@ public class MenuView extends BorderPane {
     private void setup() {
         setAlignment(lblTitle, Pos.TOP_CENTER);
         this.setTop(lblTitle);
-        buttonBox.getChildren().addAll(btnLvlSelect, btnOptions, btnChangeUser, btnExit);
+        buttonBox.getChildren().addAll(lblUsername, btnLvlSelect, btnOptions, btnChangeUser, btnExit);
         buttonBox.setAlignment(Pos.CENTER);
         for (Node node : buttonBox.getChildren()) {
             setMargin(node, new Insets(5));
@@ -54,6 +56,10 @@ public class MenuView extends BorderPane {
         lblFooter.setTextAlignment(TextAlignment.CENTER);
         lblFooter.setAlignment(Pos.CENTER);
         this.setBottom(lblFooter);
+    }
+
+    void setUsername(String name){
+        lblUsername.setText("Welcome " + name);
     }
 
     //GETTERS
@@ -83,5 +89,9 @@ public class MenuView extends BorderPane {
 
     Label getLblTitle() {
         return lblTitle;
+    }
+
+    Label getLblUsername() {
+        return lblUsername;
     }
 }

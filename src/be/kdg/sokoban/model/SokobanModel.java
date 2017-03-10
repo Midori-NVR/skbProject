@@ -236,20 +236,12 @@ public class SokobanModel {
                 //TODO exception
             }
         } else {
-            try {
-                if(!file.createNewFile()){
-                    //TODO exception
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                //TODO exception
-            }
-
             users = new User[3];
         }
     }
 
     public void save() {
+        //FIXME overwrite
         if (!file.delete()){
             //TODO exception
         }
@@ -275,6 +267,7 @@ public class SokobanModel {
 
     public void deleteUser(int index) {
         users[index] = null;
+        save();
     }
 
     public boolean isLevelFinished() {
@@ -287,5 +280,6 @@ public class SokobanModel {
 
     public void addUser(int index, User user) {
         users[index] = user;
+        save();
     }
 }

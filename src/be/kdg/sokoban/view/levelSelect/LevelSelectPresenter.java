@@ -1,12 +1,12 @@
 package be.kdg.sokoban.view.levelSelect;
 
 import be.kdg.sokoban.SokobanMain;
+import be.kdg.sokoban.model.SokobanModel;
 import be.kdg.sokoban.view.game.GamePresenter;
 import be.kdg.sokoban.view.game.GameView;
-import javafx.scene.input.KeyCode;
-import be.kdg.sokoban.model.SokobanModel;
 import be.kdg.sokoban.view.menu.MenuPresenter;
 import be.kdg.sokoban.view.menu.MenuView;
+import javafx.scene.input.KeyCode;
 
 /**
  * @author Niels Van Reeth
@@ -15,6 +15,7 @@ import be.kdg.sokoban.view.menu.MenuView;
 public class LevelSelectPresenter {
     private SokobanModel model;
     private LevelSelectView view;
+    @SuppressWarnings("unused")
     private MenuPresenter mPresenter;
     private MenuView mView;
     private GamePresenter gamePresenter;

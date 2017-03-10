@@ -1,8 +1,8 @@
 package be.kdg.sokoban;
 
 import be.kdg.sokoban.model.SokobanModel;
-import be.kdg.sokoban.view.menu.MenuPresenter;
-import be.kdg.sokoban.view.menu.MenuView;
+import be.kdg.sokoban.view.userSelect.UserSelectPresenter;
+import be.kdg.sokoban.view.userSelect.UserSelectView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -15,12 +15,11 @@ public class SokobanMain extends Application {
         primaryStage.setTitle("Sokoban" + (DEBUG ? " [debug mode enabled]" : ""));
         SokobanModel model =
                 new SokobanModel();
-        MenuView view =
-                new MenuView();
-        MenuPresenter presenter =
-                new MenuPresenter(model, view);
+        UserSelectView view =
+                new UserSelectView();
+        UserSelectPresenter presenter =
+                new UserSelectPresenter(model, view);
         primaryStage.setScene(new Scene(view, 600, 700));
-        presenter.addWindowEventHandlers();
 
         primaryStage.show();
     }
