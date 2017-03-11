@@ -46,14 +46,14 @@ public class LevelLoader {
         String[] rows = level.split("\r\n");
         levelChars = new char[rows.length][];
         for (int i = 0; i < rows.length; i++) {
-            levelChars[i] = rows[i].toCharArray();
+            levelChars[i] = rows[i].replaceFirst("\\s+$", "").toCharArray();
         }
 
         FieldObject[][] levelObjects = new FieldObject[levelChars.length][];
         maxRows = levelChars.length;
         for (int row = 0; row < levelChars.length; row++) {
-            if (maxColumns < levelChars[row].length - 1) {
-                maxColumns = levelChars[row].length - 1;
+            if (maxColumns < levelChars[row].length) {
+                maxColumns = levelChars[row].length;
             }
             levelObjects[row] = new FieldObject[levelChars[row].length];
             for (int column = 0; column < levelChars[row].length; column++) {

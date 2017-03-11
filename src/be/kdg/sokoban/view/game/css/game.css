@@ -1,3 +1,8 @@
 .body {
     -fx-background-image: url("../images/floor.png");
 }
+.finishBody{
+    -fx-pref-width: 75%;
+    -fx-pref-height: 60%;
+    -fx-background-color: white;
+}
