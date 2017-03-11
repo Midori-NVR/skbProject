@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 public class SokobanMain extends Application {
     public static boolean DEBUG = false;
+//FIXME format lines
 
     @Override
     public void start(Stage primaryStage) throws Exception {

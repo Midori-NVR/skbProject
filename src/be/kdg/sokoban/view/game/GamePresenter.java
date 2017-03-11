@@ -26,6 +26,7 @@ public class GamePresenter {
         model.startLevel(levelNumber);
 
         view.startLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
+        resizeView();
         if (SokobanMain.DEBUG)
             System.out.println("LoadTime LevelSelect: " + (System.currentTimeMillis() - time) + " milliseconds");
     }
@@ -48,14 +49,15 @@ public class GamePresenter {
 
     private void addStyleSheets() {
         view.getStylesheets().add("be/kdg/sokoban/view/game/css/game.css");
-        view.getStyleClass().add("body");
+        view.getMainPane().getStyleClass().add("body");
+        view.getGameEndView().getStyleClass().add("finishBody");
     }
 
     public void addWindowEventHandlers() {
         view.getScene().widthProperty().addListener(observable -> resizeView());
         view.getScene().heightProperty().addListener(observable -> resizeView());
         view.getScene().setOnKeyPressed(event -> {
-            if (!view.getGameViewLevel().isAnimationRunning()) {
+            if (!view.getGameViewLevel().isAnimationRunning() && !model.isLevelFinished()) {
                 if (event.getCode().equals(KeyCode.LEFT)) {
 
                     updateView(model.move(FieldObject.MOVE_LEFT));

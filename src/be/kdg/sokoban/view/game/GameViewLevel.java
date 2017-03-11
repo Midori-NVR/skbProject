@@ -8,10 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.util.Arrays;
@@ -304,7 +301,6 @@ class GameViewLevel extends GridPane {
                 }
             }
         }
-        resizeLevel();
     }
 
     private int getColumnTopSpacing() {
@@ -316,13 +312,15 @@ class GameViewLevel extends GridPane {
     }
 
     void resizeLevel() {
-        if (getScene().getWidth() <= getScene().getHeight()) {
+        double width = ((Pane)getParent()).getWidth();
+        double height = ((Pane)getParent()).getHeight();
+        if (width <= height) {
             //Set to width
-            resize(getScene().getWidth(), getScene().getWidth());
+            resize(width, width);
 
         } else {
             //Set to height
-            resize(getScene().getHeight(), getScene().getHeight());
+            resize(height, height);
 
         }
         if (maxRows > maxColumns) {
