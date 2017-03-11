@@ -1,5 +1,6 @@
 package be.kdg.sokoban.view.userSelect;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
@@ -17,8 +18,9 @@ public class UserSelectView extends BorderPane {
     }
 
     private void setup() {
-        this.setCenter(userView);
+        setAlignment(lblTitle, Pos.CENTER);
         this.setTop(lblTitle);
+        this.setCenter(userView);
         //TODO set label css and scaling.
     }
 
@@ -27,8 +29,11 @@ public class UserSelectView extends BorderPane {
     }
 
     private void initialise() {
+        lblTitle = new Label("User Select");
         userView = new UserView();
-        lblTitle = new Label();
+    }
 
+    public Label getLblTitle() {
+        return lblTitle;
     }
 }

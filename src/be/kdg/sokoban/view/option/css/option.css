@@ -1,0 +1,53 @@
+.title {
+    -fx-text-fill: radial-gradient(radius 75%, #ff8800, #ff0009);
+    -fx-font-size: 450%;
+    -fx-font-weight: bold;
+}
+
+.title .text {
+    -fx-stroke-width: 1px;
+    -fx-stroke: grey;
+}
+
+.option {
+    -fx-font-size: 200%;
+    -fx-min-width: 60%;
+}
+
+.setting {
+    -fx-font-size: 200%;
+    -fx-min-width: 100%;
+    -fx-font-weight: bold;
+}
+
+.gridPane {
+    -fx-min-width: 100%;
+}
+
+.borderPane {
+    -fx-background-color: radial-gradient(radius 75%, orange, orangered);
+    -fx-text-fill: radial-gradient(radius 75%, #ff8800, #ff0009);
+}
+
+.btnBack {
+    -fx-border-color: none;
+    -fx-border-width: none;
+    -fx-background-color: none;
+
+    -fx-text-fill: radial-gradient(radius 75%, #ff8800, #ff0009);
+    -fx-font-size: 225%;
+    -fx-font-weight: bold;
+}
+
+.btnBack:hover {
+    -fx-text-fill: radial-gradient(radius 50%, slategrey, dimgrey 75%);
+}
+
+.btnBack:hover .text {
+    -fx-stroke: dimgray;
+}
+
+.btnBack .text {
+    -fx-stroke-width: 1px;
+    -fx-stroke: grey;
+}

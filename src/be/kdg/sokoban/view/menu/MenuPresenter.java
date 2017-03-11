@@ -4,6 +4,8 @@ import be.kdg.sokoban.SokobanMain;
 import be.kdg.sokoban.model.SokobanModel;
 import be.kdg.sokoban.view.levelSelect.LevelSelectPresenter;
 import be.kdg.sokoban.view.levelSelect.LevelSelectView;
+import be.kdg.sokoban.view.option.OptionPresenter;
+import be.kdg.sokoban.view.option.OptionView;
 import be.kdg.sokoban.view.userSelect.UserSelectPresenter;
 import be.kdg.sokoban.view.userSelect.UserSelectView;
 
@@ -19,6 +21,8 @@ public class MenuPresenter {
     @SuppressWarnings("unused")
     private UserSelectPresenter usPresenter;
     private UserSelectView usView;
+    private OptionView oView;
+    private OptionPresenter oPresenter;
 
     public MenuPresenter(SokobanModel model, MenuView view) {
         long time = System.currentTimeMillis();
@@ -60,6 +64,12 @@ public class MenuPresenter {
             usView = new UserSelectView();
             usPresenter = new UserSelectPresenter(model, usView);
             view.getScene().setRoot(usView);
+        });
+
+        view.getBtnOptions().setOnAction(event -> {
+            oView = new OptionView();
+            oPresenter = new OptionPresenter(model, oView);
+            view.getScene().setRoot(oView);
         });
     }
 }

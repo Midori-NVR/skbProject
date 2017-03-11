@@ -34,15 +34,6 @@ public class UserSelectPresenter {
     }
 
     private void addEventHandlers() {
-        /*for (int i = 0; i < model.getMax_users(); i++) {
-            view.getBtnUser(i).setOnAction(event -> {
-                for (int j = 0; j < model.getMax_users(); j++) {
-                    if (model.getUser(j).getName() == view.getBtnUser(i).getText()){
-                        model.setCurrentUser(model.getUser(j));
-                    }
-                }
-            });
-        }*/
         //TODO loop for all buttons at ones?
         //TODO add createNewUser();
         //TODO make custom button with position to remove final statement.
@@ -73,18 +64,20 @@ public class UserSelectPresenter {
                 }
             });
         }
-
     }
 
     private void updateView() {
         view.getUserView().updateUsers(model.getUsers());
     }
 
+    //TODO bind selection with keys
     private void addStyleSheets() {
         view.getStylesheets().add("/be/kdg/sokoban/view/userSelect/css/userSelect.css");
         for (int i = 0; i < view.getUserView().getBtnUser().length; i++) {
             view.getUserView().getBtnUser()[i].getStyleClass().add("userButton");
         }
+        view.getLblTitle().getStyleClass().add("title");
+        view.getStyleClass().add("borderPane");
         if (SokobanMain.DEBUG) System.out.println("StyleSheets loaded!");
     }
 }

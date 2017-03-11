@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author Niels Van Reeth
@@ -32,7 +33,6 @@ public class SokobanModel {
     public SokobanModel() {
         try {
             levelLoader = new LevelLoader();
-            file = new File("src/be/kdg/sokoban/save.txt");
         } catch (IOException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Levels not found, " + Paths.get("src/be/kdg/sokoban/model/files/levels.txt").toAbsolutePath() + "\n" + e.getMessage());
@@ -228,6 +228,8 @@ public class SokobanModel {
 
     //TODO split in 2 functions
     public void loadSaveFile() {
+        file = new File("src/be/kdg/sokoban/model/files/save.txt");
+
         if (file.exists()) {
             try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(file))) {
                 users = (User[]) input.readObject();
@@ -243,6 +245,7 @@ public class SokobanModel {
     public void save() {
         //FIXME overwrite
         if (!file.delete()){
+
             //TODO exception
         }
         try {
@@ -261,6 +264,52 @@ public class SokobanModel {
             //TODO exception
         }
 
+    }
+
+    public void saveConfig(Properties properties){
+
+        File configFile = new File("src/be/kdg/sokoban/model/files/config.properties");
+        //todo check if works
+        if (!configFile.exists()){
+            try {
+                if (!configFile.createNewFile()){
+                    //TODO exception
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                //TODO exception
+            }
+        }
+        try (FileOutputStream output = new FileOutputStream(configFile)) {
+            properties.store(output, "---Config Sokoban---");
+        } catch (IOException e) {
+            e.printStackTrace();
+            //TODO exception
+        }
+
+    }
+
+    public Properties loadConfig(){
+        //todo check if works
+        File configFile = new File("src/be/kdg/sokoban/model/files/config.properties");
+        Properties config = new Properties();
+        if (configFile.exists()) {
+            try (FileInputStream input = new FileInputStream(configFile)) {
+
+                config.load(input);
+                return config;
+            } catch (IOException e) {
+                e.printStackTrace();
+                //TODO exception
+                return null;
+            }
+        } else {
+            config = new Properties();
+            config.setProperty("animation", "true");
+            saveConfig(config);
+            return config;
+            //TODO defaultProperties
+        }
     }
 
     //FIXME add user
@@ -282,4 +331,5 @@ public class SokobanModel {
         users[index] = user;
         save();
     }
+
 }
