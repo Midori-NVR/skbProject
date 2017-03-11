@@ -170,6 +170,7 @@ class GameViewLevel extends GridPane {
             } else {
                 crate = null;
             }
+            //FIXME use config
             boolean rotationRequired = 90 * moveAction.getPlayer().getWatchingDirection() != player.getRotate();
             TranslateTransition playerMove = new TranslateTransition(Duration.millis(200), player);
 

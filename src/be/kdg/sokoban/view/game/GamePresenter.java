@@ -26,7 +26,7 @@ public class GamePresenter {
         model.startLevel(levelNumber);
 
         view.startLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
-        resizeView();
+        //FIXME resize later
         if (SokobanMain.DEBUG)
             System.out.println("LoadTime LevelSelect: " + (System.currentTimeMillis() - time) + " milliseconds");
     }
