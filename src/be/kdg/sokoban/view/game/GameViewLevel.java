@@ -106,21 +106,19 @@ class GameViewLevel extends GridPane {
     }
 
     private void setAnimationByDirection(TranslateTransition transition, int direction, int distance) {
-        if (Boolean.valueOf(config.get("Animation").toString())) {
-            switch (direction) {
-                case FieldObject.MOVE_DOWN:
-                    transition.setByY(distance);
-                    break;
-                case FieldObject.MOVE_RIGHT:
-                    transition.setByX(distance);
-                    break;
-                case FieldObject.MOVE_UP:
-                    transition.setByY(-distance);
-                    break;
-                case FieldObject.MOVE_LEFT:
-                    transition.setByX(-distance);
-                    break;
-            }
+        switch (direction) {
+            case FieldObject.MOVE_DOWN:
+                transition.setByY(distance);
+                break;
+            case FieldObject.MOVE_RIGHT:
+                transition.setByX(distance);
+                break;
+            case FieldObject.MOVE_UP:
+                transition.setByY(-distance);
+                break;
+            case FieldObject.MOVE_LEFT:
+                transition.setByX(-distance);
+                break;
         }
     }
 
@@ -136,37 +134,37 @@ class GameViewLevel extends GridPane {
         int squareSize = (int) (this.getHeight() * this.getRowConstraints().get(0).getPercentHeight() / 100);
 
         if (moveAction.getActionType() == MoveAction.ACTION_NULL) {
+            if (Boolean.valueOf(config.get("Animation").toString())) {
+                animationRunning = true;
+                ImageView player = levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()];
+                ImageView wall = levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()];
+                TranslateTransition moveBack = new TranslateTransition(Duration.millis(50), wall);
+                TranslateTransition moveForward = new TranslateTransition(Duration.millis(150), wall);
+                setAnimationByDirection(moveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize / 10);
+                setAnimationByDirection(moveForward, moveAction.getDirection(), squareSize / 10);
+                SequentialTransition wallMove = new SequentialTransition(moveForward, moveBack);
 
-            animationRunning = true;
-            ImageView player = levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()];
-            ImageView wall = levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()];
-            TranslateTransition moveBack = new TranslateTransition(Duration.millis(50), wall);
-            TranslateTransition moveForward = new TranslateTransition(Duration.millis(150), wall);
-            setAnimationByDirection(moveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize / 10);
-            setAnimationByDirection(moveForward, moveAction.getDirection(), squareSize / 10);
-            SequentialTransition wallMove = new SequentialTransition(moveForward, moveBack);
+                boolean rotationRequired = 90 * moveAction.getPlayer().getWatchingDirection() != player.getRotate();
 
-            boolean rotationRequired = 90 * moveAction.getPlayer().getWatchingDirection() != player.getRotate();
+                TranslateTransition playerMoveBack = new TranslateTransition(Duration.millis(50), player);
+                TranslateTransition playerMoveForward = new TranslateTransition(Duration.millis(150), player);
+                setAnimationByDirection(playerMoveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize / 10 + squareSize / 4);
+                setAnimationByDirection(playerMoveForward, moveAction.getDirection(), squareSize / 10 + squareSize / 4);
+                SequentialTransition playerMove;
+                if (rotationRequired) {
+                    RotateTransition playerRotate = new RotateTransition(Duration.millis(50), player);
+                    playerRotate.setToAngle(90 * moveAction.getPlayer().getWatchingDirection());
+                    playerMoveBack.setDuration(Duration.millis(100));
+                    playerMove = new SequentialTransition(playerRotate, playerMoveForward, playerMoveBack);
+                } else {
+                    playerMove = new SequentialTransition(playerMoveForward, playerMoveBack);
+                }
 
-            TranslateTransition playerMoveBack = new TranslateTransition(Duration.millis(50), player);
-            TranslateTransition playerMoveForward = new TranslateTransition(Duration.millis(150), player);
-            setAnimationByDirection(playerMoveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize / 10 + squareSize / 4);
-            setAnimationByDirection(playerMoveForward, moveAction.getDirection(), squareSize / 10 + squareSize / 4);
-            SequentialTransition playerMove;
-            if (rotationRequired) {
-                RotateTransition playerRotate = new RotateTransition(Duration.millis(50), player);
-                playerRotate.setToAngle(90 * moveAction.getPlayer().getWatchingDirection());
-                playerMoveBack.setDuration(Duration.millis(100));
-                playerMove = new SequentialTransition(playerRotate, playerMoveForward, playerMoveBack);
-            } else {
-                playerMove = new SequentialTransition(playerMoveForward, playerMoveBack);
+                wallMove.setOnFinished(event -> animationRunning = false);
+                playerMove.play();
+                wallMove.play();
             }
-
-            wallMove.setOnFinished(event -> animationRunning = false);
-            playerMove.play();
-            wallMove.play();
         } else {
-            animationRunning = true;
             ImageView player = levelLayout[moveAction.getPlayer().getPosY() - FieldObject.getYMove(moveAction.getDirection())][moveAction.getPlayer().getPosX() - FieldObject.getXMove(moveAction.getDirection())];
             final ImageView crate;
             if (moveAction.getActionType() == MoveAction.ACTION_PUSH) {
@@ -174,52 +172,111 @@ class GameViewLevel extends GridPane {
             } else {
                 crate = null;
             }
-            //FIXME use config
-            boolean rotationRequired = 90 * moveAction.getPlayer().getWatchingDirection() != player.getRotate();
-            TranslateTransition playerMove = new TranslateTransition(Duration.millis(200), player);
+
+            if (Boolean.valueOf(config.get("Animation").toString())) {
+                //ANIMATION
+                //TODO less sharp turnings
+                animationRunning = true;
+                boolean rotationRequired = 90 * moveAction.getPlayer().getWatchingDirection() != player.getRotate();
+                TranslateTransition playerMove = new TranslateTransition(Duration.millis(200), player);
 
 
-            SequentialTransition playerSequence;
-            if (rotationRequired) {
-                RotateTransition playerRotate = new RotateTransition(Duration.millis(100), player);
-                playerRotate.setToAngle(90 * moveAction.getPlayer().getWatchingDirection());
-                playerSequence = new SequentialTransition(player, playerRotate, playerMove);
-            } else {
-                playerMove.setDuration(Duration.millis(300));
-                playerSequence = new SequentialTransition(player, playerMove);
-            }
-            player.setImage(playerImage[0]);
-
-            setAnimationByDirection(playerMove, moveAction.getDirection(), squareSize);
-            Timeline playerAnimation = new Timeline(new KeyFrame(Duration.millis(100), event -> {
-
-                if (!playerAnimationReverse) {
-                    if (++playerAnimationCount >= playerImage.length) {
-                        playerAnimationCount-=2;
-                        playerAnimationReverse = true;
-                    }
+                SequentialTransition playerSequence;
+                if (rotationRequired) {
+                    RotateTransition playerRotate = new RotateTransition(Duration.millis(100), player);
+                    playerRotate.setToAngle(90 * moveAction.getPlayer().getWatchingDirection());
+                    playerSequence = new SequentialTransition(player, playerRotate, playerMove);
                 } else {
-                    if (--playerAnimationCount < 0) {
-                        playerAnimationCount+=2;
-                        playerAnimationReverse = false;
-                    }
+                    playerMove.setDuration(Duration.millis(300));
+                    playerSequence = new SequentialTransition(player, playerMove);
                 }
-                player.setImage(playerImage[playerAnimationCount]);
-            }));
-            playerAnimation.setCycleCount(Timeline.INDEFINITE);
 
+                setAnimationByDirection(playerMove, moveAction.getDirection(), squareSize);
+                Timeline playerAnimation = new Timeline(new KeyFrame(Duration.millis(100), event -> {
 
-            playerSequence.setOnFinished(event -> {
-                playerAnimation.stop();
+                    if (!playerAnimationReverse) {
+                        if (++playerAnimationCount >= playerImage.length) {
+                            playerAnimationCount -= 2;
+                            playerAnimationReverse = true;
+                        }
+                    } else {
+                        if (--playerAnimationCount < 0) {
+                            playerAnimationCount += 2;
+                            playerAnimationReverse = false;
+                        }
+                    }
+                    player.setImage(playerImage[playerAnimationCount]);
+                }));
+                playerAnimation.setCycleCount(Timeline.INDEFINITE);
 
-                TranslateTransition playerMoveBack = new TranslateTransition(Duration.ONE, player);
-                setAnimationByDirection(playerMoveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize);
+                playerSequence.setOnFinished(event -> {
+                    playerAnimation.stop();
+                    TranslateTransition playerMoveBack = new TranslateTransition(Duration.ONE, player);
+                    setAnimationByDirection(playerMoveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize);
 
+                    //UPDATE images
+                    if (moveAction.getPlayer().isOnGoal()) {
+                        player.setImage(playerOnGoalImage);
+                    }
+                    player.setRotate(90 * moveAction.getPlayer().getWatchingDirection());
+                    if (crate != null) {
+                        if (((Crate) moveAction.getNextObject()).isOnGoal()) {
+                            crate.setImage(crateOnGoalImage);
+                        } else {
+                            crate.setImage(crateImage);
+                        }
+                    }
 
-                //UPDATE images
+                    playerMoveBack.setOnFinished(event1 -> {
+                        //ADD TO field
 
+                        this.add(player, moveAction.getPlayer().getPosX() + getColumnTopSpacing(), moveAction.getPlayer().getPosY() + getRowLeftSpacing());
+                        if (crate != null) {
+                            this.add(crate, moveAction.getNextObject().getPosX() + getColumnTopSpacing(), moveAction.getNextObject().getPosY() + getRowLeftSpacing());
+                        }
+                        animationRunning = false;
+                    });
+
+                    if (crate != null) {
+                        levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()] = crate;
+                    }
+                    levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()] = player;
+                    levelLayout[moveAction.getPlayer().getPosY() - FieldObject.getYMove(moveAction.getDirection())][moveAction.getPlayer().getPosX() - FieldObject.getXMove(moveAction.getDirection())] = null;
+
+                    //DELETE FROM field
+                    this.getChildren().remove(player);
+                    this.getChildren().remove(crate);
+                    playerMoveBack.play();
+
+                });
+
+                if (crate != null) {
+                    TranslateTransition crateMove = new TranslateTransition(Duration.millis(150), crate);
+                    if (rotationRequired) {
+                        crateMove.setDelay(Duration.millis(150));
+                    } else {
+                        crateMove.setDuration(Duration.millis(200));
+                        crateMove.setDelay(Duration.millis(100));
+                    }
+                    TranslateTransition crateMoveBack = new TranslateTransition(Duration.ONE, crate);
+                    setAnimationByDirection(crateMove, moveAction.getDirection(), squareSize);
+
+                    setAnimationByDirection(crateMoveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize);
+                    SequentialTransition crateSequence = new SequentialTransition(crateMove, crateMoveBack);
+
+                    crateSequence.play();
+                }
+
+                playerAnimation.play();
+                playerSequence.play();
+                //END ANIMATION
+
+            }else{
+                    //NO ANIMATION
                 if (moveAction.getPlayer().isOnGoal()) {
                     player.setImage(playerOnGoalImage);
+                }else{
+                    player.setImage(playerImage[0]);
                 }
                 player.setRotate(90 * moveAction.getPlayer().getWatchingDirection());
                 if (crate != null) {
@@ -230,16 +287,6 @@ class GameViewLevel extends GridPane {
                     }
                 }
 
-
-                playerMoveBack.setOnFinished(event1 -> {
-                    //ADD TO field
-
-                    this.add(player, moveAction.getPlayer().getPosX() + getColumnTopSpacing(), moveAction.getPlayer().getPosY() + getRowLeftSpacing());
-                    if (crate != null) {
-                        this.add(crate, moveAction.getNextObject().getPosX() + getColumnTopSpacing(), moveAction.getNextObject().getPosY() + getRowLeftSpacing());
-                    }
-                    animationRunning = false;
-                });
                 if (crate != null) {
                     levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()] = crate;
                 }
@@ -249,31 +296,12 @@ class GameViewLevel extends GridPane {
                 //DELETE FROM field
                 this.getChildren().remove(player);
                 this.getChildren().remove(crate);
-                playerMoveBack.play();
-
-            });
-
-            if (crate != null) {
-
-                TranslateTransition crateMove = new TranslateTransition(Duration.millis(150), crate);
-                if (rotationRequired) {
-                    crateMove.setDelay(Duration.millis(150));
-                } else {
-                    crateMove.setDuration(Duration.millis(200));
-                    crateMove.setDelay(Duration.millis(100));
+                this.add(player, moveAction.getPlayer().getPosX() + getColumnTopSpacing(), moveAction.getPlayer().getPosY() + getRowLeftSpacing());
+                if (crate != null) {
+                    this.add(crate, moveAction.getNextObject().getPosX() + getColumnTopSpacing(), moveAction.getNextObject().getPosY() + getRowLeftSpacing());
                 }
-                TranslateTransition crateMoveBack = new TranslateTransition(Duration.ONE, crate);
-                setAnimationByDirection(crateMove, moveAction.getDirection(), squareSize);
-
-                setAnimationByDirection(crateMoveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize);
-                SequentialTransition crateSequence = new SequentialTransition(crateMove, crateMoveBack);
-
-                crateSequence.play();
+                //END NO ANIMATION
             }
-
-            playerAnimation.play();
-            playerSequence.play();
-
         }
     }
 
@@ -317,8 +345,8 @@ class GameViewLevel extends GridPane {
     }
 
     void resizeLevel() {
-        double width = ((Pane)getParent()).getWidth();
-        double height = ((Pane)getParent()).getHeight();
+        double width = ((Pane) getParent()).getWidth();
+        double height = ((Pane) getParent()).getHeight();
         if (width <= height) {
             //Set to width
             resize(width, width);
