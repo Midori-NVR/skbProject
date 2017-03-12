@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.util.Arrays;
+import java.util.Properties;
 //TODO Clean-up code: remove goal image checks and removes only keep for array; remove extra checks and rotations.
 
 /**
@@ -31,6 +32,7 @@ class GameViewLevel extends GridPane {
     private boolean resizeLvl;
     private int playerAnimationCount = 0;
     private boolean playerAnimationReverse = false;
+    private Properties config;
 
     GameViewLevel() {
         initialise();
@@ -104,19 +106,21 @@ class GameViewLevel extends GridPane {
     }
 
     private void setAnimationByDirection(TranslateTransition transition, int direction, int distance) {
-        switch (direction) {
-            case FieldObject.MOVE_DOWN:
-                transition.setByY(distance);
-                break;
-            case FieldObject.MOVE_RIGHT:
-                transition.setByX(distance);
-                break;
-            case FieldObject.MOVE_UP:
-                transition.setByY(-distance);
-                break;
-            case FieldObject.MOVE_LEFT:
-                transition.setByX(-distance);
-                break;
+        if (Boolean.valueOf(config.get("Animation").toString())) {
+            switch (direction) {
+                case FieldObject.MOVE_DOWN:
+                    transition.setByY(distance);
+                    break;
+                case FieldObject.MOVE_RIGHT:
+                    transition.setByX(distance);
+                    break;
+                case FieldObject.MOVE_UP:
+                    transition.setByY(-distance);
+                    break;
+                case FieldObject.MOVE_LEFT:
+                    transition.setByX(-distance);
+                    break;
+            }
         }
     }
 
@@ -346,5 +350,7 @@ class GameViewLevel extends GridPane {
 
     }
 
-
+    public void setConfig(Properties config) {
+        this.config = config;
+    }
 }

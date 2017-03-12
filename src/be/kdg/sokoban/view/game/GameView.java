@@ -104,14 +104,14 @@ private Pane resizePane;
 
     //TODO max amount
     private void updateStats() {
-        lblTime.setText("Time:" + time/60 + ":" + time%60);
+        lblTime.setText("Time:" + time/60 + ":" + (time%60 < 10 ? "0"+time%60 : time%60));
         lblMoves.setText("Moves:" + moves);
         lblPushes.setText("Pushes:" + pushes);
         if (SokobanMain.DEBUG) lblPlayerCoords.setText("(" + playerX + "," + playerY + ")");
     }
 
     void levelFinished() {
-        gameEndView.setScore("This level took you " + moves + " moves, " + pushes + " pushes and " + time/60 + " minutes " + time%60);
+        gameEndView.setScore("This level took you " + moves + " moves, " + pushes + " pushes and " + time/60 + " minutes " + (time%60 < 10 ? "0"+time%60 : time%60));
         this.getChildren().add(1, gameEndView);
 //TODO finish level
     }

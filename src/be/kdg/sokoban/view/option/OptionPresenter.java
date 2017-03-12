@@ -21,6 +21,7 @@ public class OptionPresenter {
         long time = System.currentTimeMillis();
         this.model = model;
         this.view = view;
+
         view.setConfig(model.loadConfig());
         addStyleSheets();
         addEventHandlers();

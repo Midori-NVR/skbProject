@@ -133,7 +133,6 @@ public class SokobanModel {
             wasGoal = true;
         }
 
-
         if (player.isOnGoal()) {
             currentLevel[posY][posX] = new Goal(posX, posY);
             player.setOnGoal(false);
@@ -267,7 +266,6 @@ public class SokobanModel {
     }
 
     public void saveConfig(Properties properties){
-
         File configFile = new File("src/be/kdg/sokoban/model/files/config.properties");
         //todo check if works
         if (!configFile.exists()){
@@ -332,4 +330,9 @@ public class SokobanModel {
         save();
     }
 
+    public void setScore(int level, int score){
+        if (users[getCurrentUserIndex()].getHighscore(level) < score){
+            users[getCurrentUserIndex()].setHighscore(level, score);
+        }
+    }
 }

@@ -24,6 +24,7 @@ public class GamePresenter {
         addStyleSheets();
         addEventHandlers();
         model.startLevel(levelNumber);
+        view.getGameViewLevel().setConfig(model.loadConfig());
 
         view.startLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
         //FIXME resize later
@@ -44,13 +45,13 @@ public class GamePresenter {
     }
 
     private void addEventHandlers() {
-
     }
 
     private void addStyleSheets() {
         view.getStylesheets().add("be/kdg/sokoban/view/game/css/game.css");
         view.getMainPane().getStyleClass().add("body");
         view.getGameEndView().getStyleClass().add("finishBody");
+        view.getGameEndView().getBtnBox().getStyleClass().add("btnBox");
     }
 
     public void addWindowEventHandlers() {

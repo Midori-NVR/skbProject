@@ -64,6 +64,14 @@ public class UserSelectPresenter {
                 }
             });
         }
+
+        for (int i = 0; i < view.getUserView().getBtnDeleteUser().length; i++) {
+            final int j = i;
+            view.getUserView().getBtnDeleteUser()[i].setOnAction(event -> {
+                model.deleteUser(j);
+                updateView();
+            });
+        }
     }
 
     private void updateView() {
@@ -75,6 +83,10 @@ public class UserSelectPresenter {
         view.getStylesheets().add("/be/kdg/sokoban/view/userSelect/css/userSelect.css");
         for (int i = 0; i < view.getUserView().getBtnUser().length; i++) {
             view.getUserView().getBtnUser()[i].getStyleClass().add("userButton");
+        }
+        for (int i = 0; i < view.getUserView().getBtnDeleteUser().length; i++) {
+            view.getUserView().getBtnDeleteUser()[i].getStyleClass().add("userButton");
+            view.getUserView().getBtnDeleteUser()[i].getStyleClass().add("deleteButton");
         }
         view.getLblTitle().getStyleClass().add("title");
         view.getStyleClass().add("borderPane");

@@ -44,9 +44,29 @@ public class GameEndView extends BorderPane {
         this.setBottom(btnBox);
         setAlignment(lblTitle, Pos.CENTER);
         setAlignment(lblText, Pos.CENTER);
+
+        btnBox.setAlignment(Pos.CENTER);
+        setAlignment(btnSelect, Pos.CENTER);
+        setAlignment(btnNext, Pos.CENTER_RIGHT);
     }
 
     void setScore(String text) {
         lblText.setText(text);
+    }
+
+    public HBox getBtnBox() {
+        return btnBox;
+    }
+
+    public Button getBtnMenu() {
+        return btnMenu;
+    }
+
+    public Button getBtnNext() {
+        return btnNext;
+    }
+
+    public Button getBtnSelect() {
+        return btnSelect;
     }
 }
