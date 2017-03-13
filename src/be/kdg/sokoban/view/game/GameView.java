@@ -32,6 +32,7 @@ private Pane resizePane;
     private int playerX = 0, playerY = 0;
     private BorderPane mainPane;
     private GameEndView gameEndView;
+    private boolean resized;
 
     //TODO restart level and quit level
 
@@ -55,6 +56,7 @@ private Pane resizePane;
         lblPushes = new Label();
         lblTime = new Label();
         lblPlayerCoords = new Label();
+        resized = false;
     }
 
 
@@ -63,7 +65,6 @@ private Pane resizePane;
         resizePane.getChildren().add(gameViewLevel);
         mainPane.setCenter(resizePane);
         mainPane.setBottom(statsBar);
-
         updateStats();
         statsBar.getChildren().addAll(lblMoves, lblPushes, lblTime, lblPlayerCoords);
         //FIXME add to css file
@@ -72,7 +73,6 @@ private Pane resizePane;
         lblPushes.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
         lblTime.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
         lblPlayerCoords.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
-
         //FIXME center imageViewLevel
         /*setAlignment(gameViewLevel, Pos.CENTER);
         gameViewLevel.setAlignment(Pos.CENTER);*/
@@ -104,6 +104,11 @@ private Pane resizePane;
 
     //TODO max amount
     private void updateStats() {
+        //TODO resize quicker
+        if (!resized && resizePane.getHeight() > 0){
+            resizeView();
+            resized = true;
+        }
         lblTime.setText("Time:" + time/60 + ":" + (time%60 < 10 ? "0"+time%60 : time%60));
         lblMoves.setText("Moves:" + moves);
         lblPushes.setText("Pushes:" + pushes);
@@ -114,6 +119,10 @@ private Pane resizePane;
         gameEndView.setScore("This level took you " + moves + " moves, " + pushes + " pushes and " + time/60 + " minutes " + (time%60 < 10 ? "0"+time%60 : time%60));
         this.getChildren().add(1, gameEndView);
 //TODO finish level
+    }
+
+    public void resizeView(){
+        gameViewLevel.resizeLevel();
     }
 
     GameViewLevel getGameViewLevel() {
