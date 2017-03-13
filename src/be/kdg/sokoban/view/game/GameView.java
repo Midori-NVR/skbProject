@@ -35,7 +35,6 @@ public class GameView extends StackPane {
     private boolean paused;
     private GamePauseView gamePauseView;
 
-    //TODO restart level and quit level
 
     public GameView() {
         initialise();
@@ -85,12 +84,12 @@ public class GameView extends StackPane {
             updateStats();
         } else if (moveAction.getActionType() == MoveAction.ACTION_NULL) {
             //nothing atm
+            updateStats();
         }
         if (SokobanMain.DEBUG) {
             this.playerX = moveAction.getPlayer().getPosX();
             this.playerY = moveAction.getPlayer().getPosY();
         }
-        //gameViewLevel.updateLevel(moveAction);
         gameViewLevel.updateLevel(moveAction);
     }
 
@@ -99,22 +98,21 @@ public class GameView extends StackPane {
         timer.play();
     }
 
-    //TODO max amount
     private void updateStats() {
-        //TODO resize quicker
-        if (!resized && resizePane.getHeight() > 0){
+        //FIXME resize quicker
+        if (!resized && resizePane.getHeight() > 0) {
             resizeView();
             resized = true;
         }
-        lblTime.setText("Time:" + time/60 + ":" + (time%60 < 10 ? "0"+time%60 : time%60));
+        lblTime.setText("Time:" + time / 60 + ":" + (time % 60 < 10 ? "0" + time % 60 : time % 60));
         lblMoves.setText("Moves:" + moves);
         lblPushes.setText("Pushes:" + pushes);
         if (SokobanMain.DEBUG) lblPlayerCoords.setText("(" + playerX + "," + playerY + ")");
     }
 
     void levelFinished(boolean lastLevel) {
-        gameEndView.setScore("This level took you " + moves + " moves, " + pushes + " pushes and " + time/60 + " minutes " + (time%60 < 10 ? "0"+time%60 : time%60));
-        if (lastLevel){
+        gameEndView.setScore("This level took you " + moves + " moves, " + pushes + " pushes and " + time / 60 + " minutes " + (time % 60 < 10 ? "0" + time % 60 : time % 60));
+        if (lastLevel) {
             gameEndView.lastLevel();
         }
         this.getChildren().add(1, gameEndView);
@@ -124,10 +122,9 @@ public class GameView extends StackPane {
         gameEndView.getBtnMenu().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
         gameEndView.getBtnSelect().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
         gameEndView.getBtnNext().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
-//TODO finish level
     }
 
-    public void resizeView(){
+    void resizeView() {
         gameViewLevel.resizeLevel();
     }
 
@@ -143,27 +140,27 @@ public class GameView extends StackPane {
         return gameEndView;
     }
 
-    public HBox getStatsBar() {
+    HBox getStatsBar() {
         return statsBar;
     }
 
-    public Label getLblMoves() {
+    Label getLblMoves() {
         return lblMoves;
     }
 
-    public Label getLblPushes() {
+    Label getLblPushes() {
         return lblPushes;
     }
 
-    public Label getLblTime() {
+    Label getLblTime() {
         return lblTime;
     }
 
-    public Label getLblPlayerCoords() {
+    Label getLblPlayerCoords() {
         return lblPlayerCoords;
     }
 
-    public void showPauseMenu() {
+    void showPauseMenu() {
         paused = true;
         getChildren().add(1, gamePauseView);
         timer.pause();
@@ -174,21 +171,21 @@ public class GameView extends StackPane {
         gamePauseView.getBtnMenu().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));
     }
 
-    public void closePauseMenu() {
+    void closePauseMenu() {
         paused = false;
         getChildren().remove(gamePauseView);
         timer.play();
     }
 
-    public boolean isPaused() {
+    boolean isPaused() {
         return paused;
     }
 
-    public GamePauseView getGamePauseView() {
+    GamePauseView getGamePauseView() {
         return gamePauseView;
     }
 
-    public int[] getScores() {
-        return new int[]{moves,pushes,time};
+    int[] getScores() {
+        return new int[]{moves, pushes, time};
     }
 }

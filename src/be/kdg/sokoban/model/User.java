@@ -7,11 +7,13 @@ import java.io.Serializable;
  * @version 1.0 2/9/2017 3:03 PM
  */
 public class User implements Serializable {
+    static final long serialVersionUID = -6200919286368045528L;
+    static final int MOVES = 0, PUSHES = 1, TIME = 2;
     private String name;
-    private int highscores[][];
+    private int highScores[][];
 
-    public User(String name){
-        this.highscores = new int[50][3];
+    public User(String name) {
+        this.highScores = new int[50][3];
         this.name = name;
     }
 
@@ -19,36 +21,38 @@ public class User implements Serializable {
         return name;
     }
 
-    public void setHighscores(int levelNumber, int[] score){
-        this.highscores[levelNumber-1] = score;
+    @SuppressWarnings("unused")
+    void setHighScores(int levelNumber, int[] score) {
+        this.highScores[levelNumber - 1] = score;
     }
 
-    public void setHighscoreMoves(int levelNumber, int moves){
-        this.highscores[levelNumber-1][0] = moves;
+    void setHighScoreMoves(int levelNumber, int moves) {
+        this.highScores[levelNumber - 1][MOVES] = moves;
     }
 
-    public void setHighscorePushes(int levelNumber, int pushes){
-        this.highscores[levelNumber-1][1] = pushes;
+    void setHighScorePushes(int levelNumber, int pushes) {
+        this.highScores[levelNumber - 1][PUSHES] = pushes;
     }
 
-    public void setHighscoreTime(int levelNumber, int time){
-        this.highscores[levelNumber-1][2] = time;
+    void setHighScoreTime(int levelNumber, int time) {
+        this.highScores[levelNumber - 1][TIME] = time;
     }
 
-    public int getHighscoreMoves(int levelNumber){
-        return this.highscores[levelNumber-1][0];
+    int getHighScoreMoves(int levelNumber) {
+        return this.highScores[levelNumber - 1][MOVES];
     }
 
-    public int getHighscorePushes(int levelNumber){
-        return this.highscores[levelNumber-1][1];
+    int getHighScorePushes(int levelNumber) {
+        return this.highScores[levelNumber - 1][PUSHES];
     }
 
-    public int getHighscoreTime(int levelNumber){
-        return this.highscores[levelNumber-1][2];
+    int getHighScoreTime(int levelNumber) {
+        return this.highScores[levelNumber - 1][TIME];
     }
 
-    public int[] getHighscores(int levelNumber){
-        return highscores[levelNumber-1];
+    @SuppressWarnings("unused")
+    int[] getHighScores(int levelNumber) {
+        return highScores[levelNumber - 1];
     }
 
     @Override

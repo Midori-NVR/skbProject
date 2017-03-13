@@ -13,7 +13,6 @@ import javafx.util.Duration;
 
 import java.util.Arrays;
 import java.util.Properties;
-//TODO Clean-up code: remove goal image checks and removes only keep for array; remove extra checks and rotations.
 
 /**
  * @author Niels Van Reeth
@@ -29,7 +28,6 @@ class GameViewLevel extends GridPane {
     private ImageView[][] levelLayout;
     private int maxRows, maxColumns;
     private boolean animationRunning;
-    private boolean resizeLvl;
     private int playerAnimationCount = 0;
     private boolean playerAnimationReverse = false;
     private Properties config;
@@ -271,11 +269,11 @@ class GameViewLevel extends GridPane {
                 playerSequence.play();
                 //END ANIMATION
 
-            }else{
-                    //NO ANIMATION
+            } else {
+                //NO ANIMATION
                 if (moveAction.getPlayer().isOnGoal()) {
                     player.setImage(playerOnGoalImage);
-                }else{
+                } else {
                     player.setImage(playerImage[0]);
                 }
                 player.setRotate(90 * moveAction.getPlayer().getWatchingDirection());
@@ -378,7 +376,7 @@ class GameViewLevel extends GridPane {
 
     }
 
-    public void setConfig(Properties config) {
+    void setConfig(Properties config) {
         this.config = config;
     }
 }

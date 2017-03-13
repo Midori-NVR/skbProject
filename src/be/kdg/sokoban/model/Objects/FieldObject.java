@@ -8,8 +8,9 @@ package be.kdg.sokoban.model.Objects;
 public abstract class FieldObject {
     private int posX, posY;
     public static final int MOVE_UP = 2, MOVE_DOWN = 0, MOVE_LEFT = 1, MOVE_RIGHT = 3;
-    public static int getOppositeMove(int direction){
-        switch (direction){
+
+    public static int getOppositeMove(int direction) {
+        switch (direction) {
             case FieldObject.MOVE_UP:
                 return FieldObject.MOVE_DOWN;
             case FieldObject.MOVE_DOWN:
@@ -21,27 +22,25 @@ public abstract class FieldObject {
         }
         return direction;
     }
-    public static int getXMove(int direction){
-        if (direction == FieldObject.MOVE_LEFT){
+
+    public static int getXMove(int direction) {
+        if (direction == FieldObject.MOVE_LEFT) {
             return -1;
-        }else if(direction == FieldObject.MOVE_RIGHT){
+        } else if (direction == FieldObject.MOVE_RIGHT) {
             return +1;
-        }else{
-            return 0;
-        }
-    }
-    public static int getYMove(int direction){
-        if (direction == FieldObject.MOVE_UP){
-            return -1;
-        }else if(direction == FieldObject.MOVE_DOWN){
-            return +1;
-        }else{
+        } else {
             return 0;
         }
     }
 
-    FieldObject() {
-
+    public static int getYMove(int direction) {
+        if (direction == FieldObject.MOVE_UP) {
+            return -1;
+        } else if (direction == FieldObject.MOVE_DOWN) {
+            return +1;
+        } else {
+            return 0;
+        }
     }
 
     FieldObject(int x, int y) {

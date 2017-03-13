@@ -1,4 +1,4 @@
-.menuButton{
+.menuButton {
     -fx-border-style: none;
     /*-fx-background-color: linear-gradient(from 50% 0% to 50% 100%, black,white 50%,black);*/
     -fx-background-color: none;
@@ -6,27 +6,32 @@
     -fx-font-size: 300%;
     -fx-font-weight: bold;
 }
-.menuButton:hover, .menuButton:focused{
-    -fx-background-color: radial-gradient(radius 0%, rgba(128,0,128,0),rgba(128,0,128,0.5));
+
+.menuButton:hover, .menuButton:focused {
+    -fx-background-color: radial-gradient(radius 0%, rgba(128, 0, 128, 0), rgba(128, 0, 128, 0.5));
     -fx-text-fill: radial-gradient(radius 50%, blue, midnightblue 75%);
 }
-.menuButtonBox{
+
+.menuButtonBox {
 
 }
-.username{
+
+.username {
     -fx-text-fill: radial-gradient(radius 50%, blue, royalblue 75%);
     -fx-font-size: 150%;
     -fx-font-weight: bolder;
 }
 
-.body{
+.body {
     -fx-background-color: radial-gradient(radius 40%, orange, yellow, aquamarine)
 }
-.menuLabelFooter{
+
+.menuLabelFooter {
     -fx-background-color: green;
     -fx-text-fill: yellow;
 }
-.title{
+
+.title {
     -fx-text-fill: radial-gradient(radius 50%, darkmagenta, darkorchid 75%);
     -fx-font-size: 500%;
     -fx-font-weight: bold;

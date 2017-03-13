@@ -16,7 +16,7 @@ public class MoveAction {
     private FieldObject nextObject;
 
 
-    public MoveAction(int direction, Player player, int actionType, boolean wasGoal, FieldObject nextObject) {
+    MoveAction(int direction, Player player, int actionType, boolean wasGoal, FieldObject nextObject) {
         this.direction = direction;
         this.player = player;
         this.actionType = actionType;
@@ -32,6 +32,7 @@ public class MoveAction {
         return player;
     }
 
+    @SuppressWarnings("unused")
     public boolean wasGoal() {
         return wasGoal;
     }

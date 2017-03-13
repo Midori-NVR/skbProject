@@ -51,7 +51,7 @@ public class LevelSelectPresenter {
 
     }
 
-    //TODO selecting level with arrows.
+    //FIXME selecting level with arrows.
     public void addWindowEventHandlers() {
         view.getScene().setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.LEFT)) {
