@@ -6,7 +6,7 @@
     -fx-font-size: 300%;
     -fx-font-weight: bold;
 }
-.menuButton:hover{
+.menuButton:hover, .menuButton:focused{
     -fx-background-color: radial-gradient(radius 0%, rgba(128,0,128,0),rgba(128,0,128,0.5));
     -fx-text-fill: radial-gradient(radius 50%, blue, midnightblue 75%);
 }

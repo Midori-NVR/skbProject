@@ -7,10 +7,10 @@
     -fx-font-size: 225%;
     -fx-font-weight: bold;
 }
-.btnBack:hover{
+.btnBack:hover, btnBack:focused{
     -fx-text-fill: radial-gradient(radius 50%, slategrey, dimgrey 75%);
 }
-.btnBack:hover .text{
+.btnBack:hover .text, .btnBack:focused .text{
     -fx-stroke: dimgray;
 }
 .btnBack .text{
@@ -24,7 +24,7 @@
     -fx-stroke-dash-array: 5;
     -fx-stroke-dash-offset: 15;
 }
-.arrow:hover{
+.arrow:hover, .arrow:focused{
     -fx-fill: darkorchid;
     -fx-stroke: lightgrey;
 }

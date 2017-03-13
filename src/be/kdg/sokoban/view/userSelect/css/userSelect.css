@@ -7,7 +7,7 @@
     -fx-text-fill: radial-gradient(radius 75%, #ff8800, #ff0009);
 }
 
-.userButton:hover {
+.userButton:hover, .userButton:focused{
     -fx-background-color: linear-gradient(to bottom,rgba(0,0,0,0) 0%, rgba(254, 228, 0, 0.2) 50%,rgba(0,0,0,0) 100%);
 }
 
