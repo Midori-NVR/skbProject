@@ -31,6 +31,7 @@ public class GameView extends StackPane {
     private int playerX = 0, playerY = 0;
     private BorderPane mainPane;
     private GameEndView gameEndView;
+    private boolean resized;
     private boolean paused;
     private GamePauseView gamePauseView;
 
@@ -57,6 +58,7 @@ public class GameView extends StackPane {
         lblPushes = new Label();
         lblTime = new Label();
         lblPlayerCoords = new Label();
+        resized = false;
     }
 
 
@@ -99,6 +101,11 @@ public class GameView extends StackPane {
 
     //TODO max amount
     private void updateStats() {
+        //TODO resize quicker
+        if (!resized && resizePane.getHeight() > 0){
+            resizeView();
+            resized = true;
+        }
         lblTime.setText("Time:" + time/60 + ":" + (time%60 < 10 ? "0"+time%60 : time%60));
         lblMoves.setText("Moves:" + moves);
         lblPushes.setText("Pushes:" + pushes);
@@ -118,6 +125,10 @@ public class GameView extends StackPane {
         gameEndView.getBtnSelect().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
         gameEndView.getBtnNext().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
 //TODO finish level
+    }
+
+    public void resizeView(){
+        gameViewLevel.resizeLevel();
     }
 
     GameViewLevel getGameViewLevel() {

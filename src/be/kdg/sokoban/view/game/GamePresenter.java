@@ -37,7 +37,7 @@ public class GamePresenter {
     }
 
     private void resizeView() {
-        view.getGameViewLevel().resizeLevel();
+        view.resizeView();
     }
 
     private void updateView(MoveAction moveAction) {
