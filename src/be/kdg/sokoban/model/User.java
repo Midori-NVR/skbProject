@@ -8,10 +8,10 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
     private String name;
-    private int highscores[];
+    private int highscores[][];
 
     public User(String name){
-        this.highscores = new int[50];
+        this.highscores = new int[50][3];
         this.name = name;
     }
 
@@ -19,29 +19,36 @@ public class User implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    //TODO remove comments
-    public void getHighscores() {
-        for (int i = 0; i < highscores.length; i++) {
-            System.out.println("Lvl " + (i+1) + ": " + this.getHighscore(i+1));
-        }
-    }
-
-    public void setHighscore(int levelNumber, int score){
+    public void setHighscores(int levelNumber, int[] score){
         this.highscores[levelNumber-1] = score;
     }
 
-    public int getHighscore(int levelNumber){
-        return highscores[levelNumber-1];
+    public void setHighscoreMoves(int levelNumber, int moves){
+        this.highscores[levelNumber-1][0] = moves;
     }
 
-    public void resetHighscores(){
-        for (int i = 0; i < 50; i++) {
-            this.setHighscore(i+1, 0);
-        }
+    public void setHighscorePushes(int levelNumber, int pushes){
+        this.highscores[levelNumber-1][1] = pushes;
+    }
+
+    public void setHighscoreTime(int levelNumber, int time){
+        this.highscores[levelNumber-1][2] = time;
+    }
+
+    public int getHighscoreMoves(int levelNumber){
+        return this.highscores[levelNumber-1][0];
+    }
+
+    public int getHighscorePushes(int levelNumber){
+        return this.highscores[levelNumber-1][1];
+    }
+
+    public int getHighscoreTime(int levelNumber){
+        return this.highscores[levelNumber-1][2];
+    }
+
+    public int[] getHighscores(int levelNumber){
+        return highscores[levelNumber-1];
     }
 
     @Override

@@ -78,11 +78,6 @@ public class LevelLoader {
         return levelObjects;
     }
 
-    //TODO set key for reload
-    public void reloadLevels() throws IOException {
-        levels = loadLevels();
-    }
-
     List<String> getLevels() {
         return levels;
     }
@@ -125,13 +120,7 @@ public class LevelLoader {
      * @return null if the level doesn't exist.
      */
     String getLevel(int levelnumber) {
-        try {
-            return getLevels().get(levelnumber);
-        } catch (IndexOutOfBoundsException e) {
-            if (SokobanMain.DEBUG) e.printStackTrace();
-            //TODO exception ??
-            return null;
-        }
+        return getLevels().get(levelnumber);
     }
 
     Player getPlayer(FieldObject[][] level) {

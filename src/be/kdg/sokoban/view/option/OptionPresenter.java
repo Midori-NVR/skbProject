@@ -4,6 +4,9 @@ import be.kdg.sokoban.SokobanMain;
 import be.kdg.sokoban.model.SokobanModel;
 import be.kdg.sokoban.view.menu.MenuPresenter;
 import be.kdg.sokoban.view.menu.MenuView;
+import javafx.scene.control.Alert;
+
+import java.io.IOException;
 
 
 /**
@@ -22,7 +25,12 @@ public class OptionPresenter {
         this.model = model;
         this.view = view;
 
-        view.setConfig(model.loadConfig());
+        try {
+            view.setConfig(model.loadConfig());
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "can't save configFile\n" + e.getMessage());
+            alert.showAndWait();
+        }
         addStyleSheets();
         addEventHandlers();
         if (SokobanMain.DEBUG)
@@ -31,7 +39,12 @@ public class OptionPresenter {
 
     private void addEventHandlers() {
         view.getBtnBack().setOnAction(event -> {
-            model.saveConfig(view.getConfig());
+            try {
+                model.saveConfig(view.getConfig());
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "can't save configFile\n" + e.getMessage());
+                alert.showAndWait();
+            }
             mView = new MenuView();
             mPresenter = new MenuPresenter(model, mView);
             view.getScene().setRoot(mView);

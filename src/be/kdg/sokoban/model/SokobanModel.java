@@ -227,73 +227,48 @@ public class SokobanModel {
         return true;
     }
 
-    //TODO split in 2 functions
-    public void loadSaveFile() {
-        file = new File("src/be/kdg/sokoban/model/files/save.txt");
+    public void loadUsers() {
+        file = new File("src/be/kdg/sokoban/model/files/users.txt");
 
         if (file.exists()) {
             try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(file))) {
                 users = (User[]) input.readObject();
-            } catch (IOException | ClassNotFoundException e) {                
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-                //TODO exception
             }
         } else {
             users = new User[3];
         }
     }
 
-    public void save() {
-        //FIXME overwrite
-        if (!file.delete()){
-
-            //TODO exception
-        }
-        try {
-            if (!file.createNewFile()){
-                //TODO exception
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            //TODO exception
-        }
-
+    public void saveUsers() throws IOException {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file))) {
             output.writeObject(users);
-        } catch (IOException e) {
-            e.printStackTrace();
-            //TODO exception
         }
 
     }
 
-    public void saveConfig(Properties properties){
+    public void saveConfig(Properties properties) throws IOException {
         File configFile = new File("src/be/kdg/sokoban/model/files/config.properties");
-        if (!configFile.exists()){
-            try {
-                if (!configFile.createNewFile()){
-                    //TODO exception
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                //TODO exception
+        if (!configFile.exists()) {
+            if (!configFile.createNewFile()) {
+                throw new IOException("ConfigFile not created.");
             }
         }
         try (FileOutputStream output = new FileOutputStream(configFile)) {
             properties.store(output, "---Config Sokoban---");
         } catch (IOException e) {
             e.printStackTrace();
-            //TODO exception
+            throw new IOException("Can't write to configFile.");
         }
 
     }
 
-    public Properties loadConfig(){
+    public Properties loadConfig() throws IOException {
         File configFile = new File("src/be/kdg/sokoban/model/files/config.properties");
         Properties config = new Properties();
         if (configFile.exists()) {
             try (FileInputStream input = new FileInputStream(configFile)) {
-
                 config.load(input);
                 return config;
             } catch (IOException e) {
@@ -306,15 +281,11 @@ public class SokobanModel {
             config.setProperty("animation", "true");
             saveConfig(config);
             return config;
-            //TODO defaultProperties
         }
     }
-
-    //FIXME add user
-
-    public void deleteUser(int index) {
+    public void deleteUser(int index) throws IOException {
         users[index] = null;
-        save();
+        saveUsers();
     }
 
     public boolean isLevelFinished() {
@@ -325,18 +296,21 @@ public class SokobanModel {
         return users;
     }
 
-    public void addUser(int index, String name) {
+    public void addUser(int index, String name) throws IOException {
         users[index] = new User(name);
-        save();
+        saveUsers();
     }
 
-    public void setScore(int level, int score){
-        if (users[getCurrentUserIndex()].getHighscore(level) < score){
-            users[getCurrentUserIndex()].setHighscore(level, score);
+    public void setScore(int level, int[] score) {
+        //TODO change to static value for moves/pushes/time
+        if (users[getCurrentUserIndex()].getHighscoreMoves(level) < score[0]) {
+            users[getCurrentUserIndex()].setHighscoreMoves(level, score[0]);
         }
-    }
-
-    public void setLevelFinished(boolean levelFinished) {
-        this.levelFinished = levelFinished;
+        if (users[getCurrentUserIndex()].getHighscorePushes(level) < score[1]) {
+            users[getCurrentUserIndex()].setHighscorePushes(level, score[1]);
+        }
+        if (users[getCurrentUserIndex()].getHighscoreTime(level) < score[2]) {
+            users[getCurrentUserIndex()].setHighscoreTime(level, score[2]);
+        }
     }
 }

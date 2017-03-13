@@ -7,6 +7,8 @@ import be.kdg.sokoban.view.menu.MenuView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 
+import java.io.IOException;
+
 
 /**
  * @author Lies Van der Haegen
@@ -23,7 +25,7 @@ public class UserSelectPresenter {
         long time = System.currentTimeMillis();
         this.model = model;
         this.view = view;
-        model.loadSaveFile();
+        model.loadUsers();
         view.getUserView().setUsers(model.getUsers());
         addStyleSheets();
         addEventHandlers();
@@ -49,15 +51,20 @@ public class UserSelectPresenter {
                     dialog.setTitle("Create User");
                     dialog.setContentText("Give your character a name (only letters):");
                     String name = null;
-                    while (name == null){
+                    while (name == null) {
                         name = dialog.showAndWait().get();
-                        if (!name.trim().matches("^[A-Za-z' éèçáàêâëä]+$")){
+                        if (!name.trim().matches("^[A-Za-z' éèçáàêâëä]+$")) {
                             name = null;
-                            new Alert(Alert.AlertType.ERROR,"Only letters and spaces are allowed:\n(A-Za-z' éèçáàêâëä)").showAndWait();
+                            new Alert(Alert.AlertType.ERROR, "Only letters and spaces are allowed:\n(A-Za-z' éèçáàêâëä)").showAndWait();
                         }
 
                     }
-                    model.addUser(j, name.trim());
+                    try {
+                        model.addUser(j, name.trim());
+                    } catch (IOException e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "can't save file\n" + e.getMessage());
+                        alert.showAndWait();
+                    }
                     updateView();
                 }
             });
@@ -66,7 +73,12 @@ public class UserSelectPresenter {
         for (int i = 0; i < view.getUserView().getBtnDeleteUser().length; i++) {
             final int j = i;
             view.getUserView().getBtnDeleteUser()[i].setOnAction(event -> {
-                model.deleteUser(j);
+                try {
+                    model.deleteUser(j);
+                } catch (IOException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "can't save file\n" + e.getMessage());
+                    alert.showAndWait();
+                }
                 updateView();
             });
         }

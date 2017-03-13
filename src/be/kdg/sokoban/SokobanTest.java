@@ -13,9 +13,5 @@ public class SokobanTest {
     public static void main(String[] args) throws IOException {
         SokobanMain.DEBUG = true;
         SokobanModel model = new SokobanModel();
-        model.loadSaveFile();
-
-        model.save();
-
     }
 }

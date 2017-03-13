@@ -187,4 +187,8 @@ public class GameView extends StackPane {
     public GamePauseView getGamePauseView() {
         return gamePauseView;
     }
+
+    public int[] getScores() {
+        return new int[]{moves,pushes,time};
+    }
 }

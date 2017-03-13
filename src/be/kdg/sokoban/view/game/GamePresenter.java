@@ -8,7 +8,10 @@ import be.kdg.sokoban.view.levelSelect.LevelSelectPresenter;
 import be.kdg.sokoban.view.levelSelect.LevelSelectView;
 import be.kdg.sokoban.view.menu.MenuPresenter;
 import be.kdg.sokoban.view.menu.MenuView;
+import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
+
+import java.io.IOException;
 
 
 /**
@@ -28,7 +31,12 @@ public class GamePresenter {
         addStyleSheets();
         addEventHandlers();
         model.startLevel(levelNumber);
-        view.getGameViewLevel().setConfig(model.loadConfig());
+        try {
+            view.getGameViewLevel().setConfig(model.loadConfig());
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "can't save configFile\n" + e.getMessage());
+            alert.showAndWait();
+        }
 
         view.startLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
         //FIXME resize later, resize on fullscreen
@@ -44,28 +52,25 @@ public class GamePresenter {
         //view.updateLevel(model.getCurrentLevel());
         view.updateLevel(moveAction);
         if (model.isLevelFinished()) {
+            model.setScore(levelNumber, view.getScores());
             view.levelFinished(levelNumber + 1 >= model.getLevels().size());
         }
     }
 
     private void addEventHandlers() {
         view.getGameEndView().getBtnMenu().setOnAction(event -> {
-            //TODO save lvl
-            //model.setScore(levelNumber, view.getHighscore());
             MenuView mView = new MenuView();
             MenuPresenter mPresenter = new MenuPresenter(model, mView);
             view.getScene().setRoot(mView);
         });
 
         view.getGameEndView().getBtnSelect().setOnAction(event -> {
-            //TODO save lvl
             LevelSelectView lsView = new LevelSelectView();
             LevelSelectPresenter lsPresenter = new LevelSelectPresenter(model, lsView);
             view.getScene().setRoot(lsView);
         });
 
         view.getGameEndView().getBtnNext().setOnAction(event -> {
-            //TODO save lvl
             if (levelNumber + 1 <= model.getLevels().size()) {
                 GameView gView = new GameView();
                 view.getGameViewLevel().getScene().setRoot(gView);
