@@ -20,8 +20,7 @@ public class GameView extends StackPane {
     private GameViewLevel gameViewLevel;
     private HBox statsBar;
     private Label lblMoves;
-private Pane resizePane;
-
+    private Pane resizePane;
 
     private Label lblPushes;
     private int moves = 0, pushes = 0;
@@ -32,6 +31,8 @@ private Pane resizePane;
     private int playerX = 0, playerY = 0;
     private BorderPane mainPane;
     private GameEndView gameEndView;
+    private boolean paused;
+    private GamePauseView gamePauseView;
 
     //TODO restart level and quit level
 
@@ -44,6 +45,7 @@ private Pane resizePane;
         mainPane = new BorderPane();
         resizePane = new Pane();
         gameEndView = new GameEndView();
+        gamePauseView = new GamePauseView();
         gameViewLevel = new GameViewLevel();
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             time++;
@@ -59,20 +61,13 @@ private Pane resizePane;
 
 
     private void setup() {
-        this.getChildren().add(mainPane);
+        this.getChildren().add(0, mainPane);
         resizePane.getChildren().add(gameViewLevel);
         mainPane.setCenter(resizePane);
         mainPane.setBottom(statsBar);
-
         updateStats();
         statsBar.getChildren().addAll(lblMoves, lblPushes, lblTime, lblPlayerCoords);
-        //FIXME add to css file
-        statsBar.setStyle("-fx-background-color: white");
-        lblMoves.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
-        lblPushes.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
-        lblTime.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
-        lblPlayerCoords.setStyle("-fx-text-fill: black; -fx-font-weight: bold");
-
+        //getGameViewLevel().maxWidthProperty().bind(this.widthProperty().subtract(widthProperty().multiply(0.2)));
         //FIXME center imageViewLevel
         /*setAlignment(gameViewLevel, Pos.CENTER);
         gameViewLevel.setAlignment(Pos.CENTER);*/
@@ -110,9 +105,18 @@ private Pane resizePane;
         if (SokobanMain.DEBUG) lblPlayerCoords.setText("(" + playerX + "," + playerY + ")");
     }
 
-    void levelFinished() {
+    void levelFinished(boolean lastLevel) {
         gameEndView.setScore("This level took you " + moves + " moves, " + pushes + " pushes and " + time/60 + " minutes " + (time%60 < 10 ? "0"+time%60 : time%60));
+        if (lastLevel){
+            gameEndView.lastLevel();
+        }
         this.getChildren().add(1, gameEndView);
+        gameEndView.maxHeightProperty().bind(this.heightProperty().divide(1.8));
+        gameEndView.maxWidthProperty().bind(this.widthProperty().divide(1.5));
+        gameEndView.getLblTitle().maxWidthProperty().bind(gameEndView.widthProperty());
+        gameEndView.getBtnMenu().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
+        gameEndView.getBtnSelect().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
+        gameEndView.getBtnNext().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
 //TODO finish level
     }
 
@@ -126,5 +130,50 @@ private Pane resizePane;
 
     GameEndView getGameEndView() {
         return gameEndView;
+    }
+
+    public HBox getStatsBar() {
+        return statsBar;
+    }
+
+    public Label getLblMoves() {
+        return lblMoves;
+    }
+
+    public Label getLblPushes() {
+        return lblPushes;
+    }
+
+    public Label getLblTime() {
+        return lblTime;
+    }
+
+    public Label getLblPlayerCoords() {
+        return lblPlayerCoords;
+    }
+
+    public void showPauseMenu() {
+        paused = true;
+        getChildren().add(1, gamePauseView);
+        timer.pause();
+        gamePauseView.maxHeightProperty().bind(this.heightProperty().divide(1.8));
+        gamePauseView.maxWidthProperty().bind(this.widthProperty().divide(1.5));
+        gamePauseView.getBtnResume().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));
+        gamePauseView.getBtnRestart().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));
+        gamePauseView.getBtnMenu().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));
+    }
+
+    public void closePauseMenu() {
+        paused = false;
+        getChildren().remove(gamePauseView);
+        timer.play();
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public GamePauseView getGamePauseView() {
+        return gamePauseView;
     }
 }

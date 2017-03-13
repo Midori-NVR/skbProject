@@ -2,12 +2,32 @@
     -fx-background-image: url("../images/floor.png");
 }
 .finishBody{
-    -fx-min-width: 75%;
-    -fx-max-height: 60%;
     -fx-background-color: white;
+    -fx-alignment: center;
 }
 
-.btnBox{
+/*.btnBox{
     -fx-min-width: 100%;
     -fx-min-height: 100%;
+}*/
+
+.lblStatusBar{
+    -fx-text-fill: black; -fx-font-weight: bold;
 }
+
+.statusBar{
+    -fx-background-color: white;
+}
+.pauseBody{
+    -fx-background-color: white;
+    -fx-alignment: center;
+}
+
+.title{
+    -fx-font-size: 2em;
+    -fx-font-weight: bold;
+}
+
+/*.btnPauseMenu{
+    -fx-min-width: 80%;
+}*/

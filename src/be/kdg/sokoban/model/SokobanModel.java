@@ -44,6 +44,8 @@ public class SokobanModel {
     }
 
     public FieldObject[][] startLevel(int levelNumber) {
+        player = null;
+        levelFinished = false;
         currentLevel = levelLoader.generateLvl(levelLoader.getLevel(levelNumber));
         return currentLevel;
     }
@@ -267,7 +269,6 @@ public class SokobanModel {
 
     public void saveConfig(Properties properties){
         File configFile = new File("src/be/kdg/sokoban/model/files/config.properties");
-        //todo check if works
         if (!configFile.exists()){
             try {
                 if (!configFile.createNewFile()){
@@ -288,7 +289,6 @@ public class SokobanModel {
     }
 
     public Properties loadConfig(){
-        //todo check if works
         File configFile = new File("src/be/kdg/sokoban/model/files/config.properties");
         Properties config = new Properties();
         if (configFile.exists()) {
@@ -325,8 +325,8 @@ public class SokobanModel {
         return users;
     }
 
-    public void addUser(int index, User user) {
-        users[index] = user;
+    public void addUser(int index, String name) {
+        users[index] = new User(name);
         save();
     }
 
@@ -334,5 +334,9 @@ public class SokobanModel {
         if (users[getCurrentUserIndex()].getHighscore(level) < score){
             users[getCurrentUserIndex()].setHighscore(level, score);
         }
+    }
+
+    public void setLevelFinished(boolean levelFinished) {
+        this.levelFinished = levelFinished;
     }
 }

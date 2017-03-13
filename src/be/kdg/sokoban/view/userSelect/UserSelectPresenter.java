@@ -2,7 +2,6 @@ package be.kdg.sokoban.view.userSelect;
 
 import be.kdg.sokoban.SokobanMain;
 import be.kdg.sokoban.model.SokobanModel;
-import be.kdg.sokoban.model.User;
 import be.kdg.sokoban.view.menu.MenuPresenter;
 import be.kdg.sokoban.view.menu.MenuView;
 import javafx.scene.control.Alert;
@@ -35,7 +34,6 @@ public class UserSelectPresenter {
 
     private void addEventHandlers() {
         //TODO loop for all buttons at ones?
-        //TODO add createNewUser();
         //TODO make custom button with position to remove final statement.
         for (int i = 0; i < view.getUserView().getBtnUser().length; i++) {
             final int j = i;
@@ -59,7 +57,7 @@ public class UserSelectPresenter {
                         }
 
                     }
-                    model.addUser(j, new User(name.trim()));
+                    model.addUser(j, name.trim());
                     updateView();
                 }
             });
