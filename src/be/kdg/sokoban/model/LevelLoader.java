@@ -17,7 +17,7 @@ import java.util.Scanner;
  * @author Niels Van Reeth
  * @version 1.0 2/9/2017 2:56 PM
  */
-public class LevelLoader {
+class LevelLoader {
     private List<String> levels;
     private int maxRows;
 

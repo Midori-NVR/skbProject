@@ -33,7 +33,7 @@ public class UserSelectView extends BorderPane {
         //TODO set label css and scaling.
     }
 
-    public UserView getUserView() {
+    UserView getUserView() {
         return userView;
     }
 

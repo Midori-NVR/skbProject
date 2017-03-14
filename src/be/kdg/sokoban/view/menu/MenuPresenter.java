@@ -22,6 +22,7 @@ public class MenuPresenter {
     private UserSelectPresenter usPresenter;
     private UserSelectView usView;
     private OptionView oView;
+    @SuppressWarnings("unused")
     private OptionPresenter oPresenter;
 
     public MenuPresenter(SokobanModel model, MenuView view) {

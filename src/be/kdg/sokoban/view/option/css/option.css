@@ -43,7 +43,7 @@
     -fx-text-fill: radial-gradient(radius 50%, slategrey, dimgrey 75%);
 }
 
-.btnBack:hover .text, .btnBack:focused .text{
+.btnBack:hover .text, .btnBack:focused .text {
     -fx-stroke: dimgray;
 }
 

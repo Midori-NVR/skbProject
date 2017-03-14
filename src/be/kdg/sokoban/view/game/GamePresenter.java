@@ -21,6 +21,14 @@ public class GamePresenter {
     private SokobanModel model;
     private GameView view;
     private int levelNumber;
+    private MenuView mView;
+    @SuppressWarnings("unused")
+    private MenuPresenter mPresenter;
+    private LevelSelectView lsView;
+    private LevelSelectPresenter lsPresenter;
+    private GameView gView;
+    private GamePresenter gPresenter;
+
 
     public GamePresenter(SokobanModel model, GameView view, int levelNumber) {
         long time = System.currentTimeMillis();
@@ -38,7 +46,7 @@ public class GamePresenter {
         }
 
         view.startLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
-        //FIXME resize later, resize on fullscreen
+        //FIXME resize on fullscreen
         if (SokobanMain.DEBUG)
             System.out.println("LoadTime LevelSelect: " + (System.currentTimeMillis() - time) + " milliseconds");
     }
@@ -58,40 +66,39 @@ public class GamePresenter {
 
     private void addEventHandlers() {
         view.getGameEndView().getBtnMenu().setOnAction(event -> {
-            MenuView mView = new MenuView();
-            MenuPresenter mPresenter = new MenuPresenter(model, mView);
+            mView = new MenuView();
+            mPresenter = new MenuPresenter(model, mView);
             view.getScene().setRoot(mView);
         });
 
         view.getGameEndView().getBtnSelect().setOnAction(event -> {
-            LevelSelectView lsView = new LevelSelectView();
-            LevelSelectPresenter lsPresenter = new LevelSelectPresenter(model, lsView);
+            lsView = new LevelSelectView();
+            lsPresenter = new LevelSelectPresenter(model, lsView);
             view.getScene().setRoot(lsView);
+            lsPresenter.addWindowEventHandlers();
         });
 
         view.getGameEndView().getBtnNext().setOnAction(event -> {
             if (levelNumber + 1 <= model.getLevels().size()) {
-                GameView gView = new GameView();
+                gView = new GameView();
                 view.getGameViewLevel().getScene().setRoot(gView);
-                GamePresenter gPresenter = new GamePresenter(model, gView, levelNumber + 1);
+                gPresenter = new GamePresenter(model, gView, levelNumber + 1);
                 gPresenter.addWindowEventHandlers();
             }
         });
 
-        view.getGamePauseView().getBtnResume().setOnAction(event -> {
-            view.closePauseMenu();
-        });
+        view.getGamePauseView().getBtnResume().setOnAction(event -> view.closePauseMenu());
 
         view.getGamePauseView().getBtnRestart().setOnAction(event -> {
-            GameView gView = new GameView();
+            gView = new GameView();
             view.getGameViewLevel().getScene().setRoot(gView);
-            GamePresenter gPresenter = new GamePresenter(model, gView, levelNumber);
+            gPresenter = new GamePresenter(model, gView, levelNumber);
             gPresenter.addWindowEventHandlers();
         });
 
         view.getGamePauseView().getBtnMenu().setOnAction(event -> {
-            MenuView mView = new MenuView();
-            MenuPresenter mPresenter = new MenuPresenter(model, mView);
+            mView = new MenuView();
+            mPresenter = new MenuPresenter(model, mView);
             view.getScene().setRoot(mView);
         });
     }

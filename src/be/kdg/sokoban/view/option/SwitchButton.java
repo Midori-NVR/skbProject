@@ -6,16 +6,18 @@ import javafx.scene.control.Button;
  * @author Lies Van der Haegen
  * @version 1.0 3/11/2017 4:58 PM
  */
-public class SwitchButton extends Button {
+class SwitchButton extends Button {
     private boolean enabled;
 
-    public boolean isEnabled() {
+    boolean isEnabled() {
         return enabled;
     }
-    public SwitchButton() {
+
+    SwitchButton() {
         this(true);
     }
-    public SwitchButton(boolean enabled) {
+
+    private SwitchButton(boolean enabled) {
         setEnabled(enabled);
         setOnAction(event -> {
             this.enabled = !this.enabled;
@@ -24,17 +26,17 @@ public class SwitchButton extends Button {
         });
     }
 
-     void setEnabled(boolean enabled){
+    void setEnabled(boolean enabled) {
         this.enabled = enabled;
         updateText();
         updateColor();
     }
 
-    private void updateText(){
+    private void updateText() {
         setText(enabled ? "On" : "Off");
     }
 
-    private void updateColor(){
+    private void updateColor() {
         setStyle("-fx-background-color: " + (enabled ? "green" : "red"));
     }
 }

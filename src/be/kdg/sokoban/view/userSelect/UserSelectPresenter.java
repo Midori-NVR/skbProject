@@ -9,7 +9,6 @@ import javafx.scene.control.TextInputDialog;
 
 import java.io.IOException;
 
-
 /**
  * @author Lies Van der Haegen
  * @version 1.0 3/7/2017 9:51 AM
@@ -35,8 +34,6 @@ public class UserSelectPresenter {
     }
 
     private void addEventHandlers() {
-        //TODO loop for all buttons at ones?
-        //TODO make custom button with position to remove final statement.
         for (int i = 0; i < view.getUserView().getBtnUser().length; i++) {
             final int j = i;
             view.getUserView().getBtnUser()[i].setOnAction(event -> {
@@ -46,7 +43,6 @@ public class UserSelectPresenter {
                     mPresenter = new MenuPresenter(model, mView);
                     view.getScene().setRoot(mView);
                 } else {
-                    //TODO check if correct way and correct output
                     TextInputDialog dialog = new TextInputDialog();
                     dialog.setTitle("Create User");
                     dialog.setContentText("Give your character a name (only letters):");
@@ -88,7 +84,6 @@ public class UserSelectPresenter {
         view.getUserView().updateUsers(model.getUsers());
     }
 
-    //TODO bind selection with keys
     private void addStyleSheets() {
         view.getStylesheets().add("/be/kdg/sokoban/view/userSelect/css/userSelect.css");
         for (int i = 0; i < view.getUserView().getBtnUser().length; i++) {

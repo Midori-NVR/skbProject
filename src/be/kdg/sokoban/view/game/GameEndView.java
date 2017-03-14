@@ -18,14 +18,10 @@ public class GameEndView extends BorderPane {
     private Button btnSelect;
     private HBox btnBox;
 
-    public GameEndView() {
+    GameEndView() {
         initialise();
         setup();
     }
-
-    //FIXME fix css
-    //FIXME scaling
-    //FIXME saveScore
 
     private void initialise() {
         lblText = new Label();
@@ -43,30 +39,30 @@ public class GameEndView extends BorderPane {
         btnBox.getChildren().addAll(btnMenu, btnSelect, btnNext);
         this.setBottom(btnBox);
         lblTitle.setAlignment(Pos.CENTER);
-        btnMenu.setMinWidth(getWidth()/2);
+        btnMenu.setMinWidth(getWidth() / 2);
     }
 
     void setScore(String text) {
         lblText.setText(text);
     }
 
-    public HBox getBtnBox() {
+    HBox getBtnBox() {
         return btnBox;
     }
 
-    public Button getBtnMenu() {
+    Button getBtnMenu() {
         return btnMenu;
     }
 
-    public Button getBtnNext() {
+    Button getBtnNext() {
         return btnNext;
     }
 
-    public Button getBtnSelect() {
+    Button getBtnSelect() {
         return btnSelect;
     }
 
-    public void lastLevel() {
+    void lastLevel() {
         btnBox.getChildren().remove(btnNext);
     }
 

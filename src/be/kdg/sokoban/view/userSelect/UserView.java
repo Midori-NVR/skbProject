@@ -5,19 +5,21 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
+//TODO clean code
+
 /**
  * @author Lies Van der Haegen
  * @version 1.0 3/7/2017 9:52 AM
  */
-public class UserView extends GridPane {
+class UserView extends GridPane {
     private Button[] btnUser;
     private Button[] btnDeleteUser;
 
-    public Button[] getBtnUser() {
+    Button[] getBtnUser() {
         return btnUser;
     }
 
-    public Button[] getBtnDeleteUser(){
+    Button[] getBtnDeleteUser() {
         return btnDeleteUser;
     }
 
@@ -43,20 +45,15 @@ public class UserView extends GridPane {
         updateUsers(users);
     }
 
-    public void updateUsers(User[] users){
+    void updateUsers(User[] users) {
         for (int i = 0; i < users.length; i++) {
             if (users[i] != null) {
                 btnUser[i].setText(users[i].getName());
                 btnDeleteUser[i].setText("X");
-            }
-            else{
-                btnUser[i].setText("+ new user");
-                btnDeleteUser[i].setText("");
-            }
-
-            if (btnUser[i].getText() != "+ new user"){
                 btnDeleteUser[i].setVisible(true);
             } else {
+                btnUser[i].setText("+ new user");
+                btnDeleteUser[i].setText("");
                 btnDeleteUser[i].setVisible(false);
             }
         }

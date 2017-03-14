@@ -57,7 +57,7 @@ public class MenuView extends BorderPane {
         this.setBottom(lblFooter);
     }
 
-    void setUsername(String name){
+    void setUsername(String name) {
         lblUsername.setText("Welcome " + name);
     }
 

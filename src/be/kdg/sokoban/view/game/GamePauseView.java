@@ -8,13 +8,13 @@ import javafx.scene.layout.VBox;
  * @author Lies Van der Haegen
  * @version 1.0 3/13/2017 10:35 AM
  */
-public class GamePauseView extends VBox{
+public class GamePauseView extends VBox {
     private Label lblTitle;
     private Button btnResume;
     private Button btnRestart;
     private Button btnMenu;
 
-    public GamePauseView() {
+    GamePauseView() {
         initialise();
         setup();
     }
@@ -35,15 +35,15 @@ public class GamePauseView extends VBox{
         return lblTitle;
     }
 
-    public Button getBtnResume() {
+    Button getBtnResume() {
         return btnResume;
     }
 
-    public Button getBtnRestart() {
+    Button getBtnRestart() {
         return btnRestart;
     }
 
-    public Button getBtnMenu() {
+    Button getBtnMenu() {
         return btnMenu;
     }
 }

@@ -241,7 +241,7 @@ public class SokobanModel {
         }
     }
 
-    public void saveUsers() throws IOException {
+    private void saveUsers() throws IOException {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file))) {
             output.writeObject(users);
         }
@@ -273,7 +273,6 @@ public class SokobanModel {
                 return config;
             } catch (IOException e) {
                 e.printStackTrace();
-                //TODO exception
                 return null;
             }
         } else {
@@ -283,6 +282,7 @@ public class SokobanModel {
             return config;
         }
     }
+
     public void deleteUser(int index) throws IOException {
         users[index] = null;
         saveUsers();
@@ -302,15 +302,14 @@ public class SokobanModel {
     }
 
     public void setScore(int level, int[] score) {
-        //TODO change to static value for moves/pushes/time
-        if (users[getCurrentUserIndex()].getHighscoreMoves(level) < score[0]) {
-            users[getCurrentUserIndex()].setHighscoreMoves(level, score[0]);
+        if (users[getCurrentUserIndex()].getHighScoreMoves(level) < score[User.MOVES]) {
+            users[getCurrentUserIndex()].setHighScoreMoves(level, score[User.MOVES]);
         }
-        if (users[getCurrentUserIndex()].getHighscorePushes(level) < score[1]) {
-            users[getCurrentUserIndex()].setHighscorePushes(level, score[1]);
+        if (users[getCurrentUserIndex()].getHighScorePushes(level) < score[User.PUSHES]) {
+            users[getCurrentUserIndex()].setHighScorePushes(level, score[User.PUSHES]);
         }
-        if (users[getCurrentUserIndex()].getHighscoreTime(level) < score[2]) {
-            users[getCurrentUserIndex()].setHighscoreTime(level, score[2]);
+        if (users[getCurrentUserIndex()].getHighScoreTime(level) < score[User.TIME]) {
+            users[getCurrentUserIndex()].setHighScoreTime(level, score[User.TIME]);
         }
     }
 }

@@ -54,11 +54,10 @@ public class OptionView extends BorderPane {
     }
 
     void setConfig(Properties properties) {
-        //TODO easier way to convert boolean
         btnEnable.setEnabled(Boolean.valueOf(properties.getProperty("Animation", "true")));
     }
 
-    Properties getConfig(){
+    Properties getConfig() {
         Properties properties = new Properties();
         properties.setProperty("Animation", String.valueOf(btnEnable.isEnabled()));
         return properties;
@@ -68,19 +67,19 @@ public class OptionView extends BorderPane {
         return lblTitle;
     }
 
-    public Label getLblAnimation() {
+    Label getLblAnimation() {
         return lblAnimation;
     }
 
-    public Button getBtnEnable() {
+    Button getBtnEnable() {
         return btnEnable;
     }
 
-    public GridPane getGridPane() {
+    GridPane getGridPane() {
         return gridPane;
     }
 
-    public Button getBtnBack() {
+    Button getBtnBack() {
         return btnBack;
     }
 }
