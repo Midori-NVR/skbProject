@@ -54,12 +54,12 @@ public class OptionView extends BorderPane {
     }
 
     void setConfig(Properties properties) {
-        btnEnable.setEnabled(Boolean.valueOf(properties.getProperty("Animation", "true")));
+        btnEnable.setEnabled(Boolean.valueOf(properties.getProperty("animation", "true")));
     }
 
     Properties getConfig() {
         Properties properties = new Properties();
-        properties.setProperty("Animation", String.valueOf(btnEnable.isEnabled()));
+        properties.setProperty("animation", String.valueOf(btnEnable.isEnabled()));
         return properties;
     }
 

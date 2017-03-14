@@ -132,7 +132,7 @@ class GameViewLevel extends GridPane {
         int squareSize = (int) (this.getHeight() * this.getRowConstraints().get(0).getPercentHeight() / 100);
 
         if (moveAction.getActionType() == MoveAction.ACTION_NULL) {
-            if (Boolean.valueOf(config.get("Animation").toString())) {
+            if (Boolean.valueOf(config.get("animation").toString())) {
                 animationRunning = true;
                 ImageView player = levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()];
                 ImageView wall = levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()];
@@ -171,7 +171,7 @@ class GameViewLevel extends GridPane {
                 crate = null;
             }
 
-            if (Boolean.valueOf(config.get("Animation").toString())) {
+            if (Boolean.valueOf(config.get("animation").toString())) {
                 //ANIMATION
                 //TODO less sharp turnings
                 animationRunning = true;

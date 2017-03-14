@@ -59,7 +59,7 @@ public class GamePresenter {
         //view.updateLevel(model.getCurrentLevel());
         view.updateLevel(moveAction);
         if (model.isLevelFinished()) {
-            model.setScore(levelNumber, view.getScores());
+            model.setScore(levelNumber + 1, view.getScores());
             view.levelFinished(levelNumber + 1 >= model.getLevels().size());
         }
     }
