@@ -13,7 +13,7 @@ import javafx.scene.shape.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 
-//FIXME add score to screen / change to custom button
+//TODO change to custom button
 //TODO change to image of level
 
 /**
