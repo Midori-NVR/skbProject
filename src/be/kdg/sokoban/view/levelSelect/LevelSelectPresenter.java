@@ -27,7 +27,7 @@ public class LevelSelectPresenter {
         this.model = model;
         this.view = view;
 
-        view.initialiseLevels(model.getLevels(), model.getUsers()[model.getCurrentUserIndex()]);
+        view.initialiseLevels(model.getLevelLoader().getLevels(), model.getUsers()[model.getCurrentUserIndex()]);
         //view.setScore(model.getScore());
         addStyleSheets();
         addEventHandlers();

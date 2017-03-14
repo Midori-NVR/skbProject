@@ -45,7 +45,7 @@ public class GamePresenter {
             alert.showAndWait();
         }
 
-        view.startLevel(model.getCurrentLevel(), model.getMaxRows(), model.getMaxColumns());
+        view.startLevel(model.getCurrentLevel(), model.getLevelLoader().getMaxRows(), model.getLevelLoader().getMaxColumns());
         //FIXME resize on fullscreen
         if (SokobanMain.DEBUG)
             System.out.println("LoadTime LevelSelect: " + (System.currentTimeMillis() - time) + " milliseconds");
@@ -60,7 +60,7 @@ public class GamePresenter {
         view.updateLevel(moveAction);
         if (model.isLevelFinished()) {
             model.setScore(levelNumber + 1, view.getScores());
-            view.levelFinished(levelNumber + 1 >= model.getLevels().size());
+            view.levelFinished(levelNumber + 1 >= model.getLevelLoader().getLevels().size());
         }
     }
 
@@ -79,7 +79,7 @@ public class GamePresenter {
         });
 
         view.getGameEndView().getBtnNext().setOnAction(event -> {
-            if (levelNumber + 1 <= model.getLevels().size()) {
+            if (levelNumber + 1 <= model.getLevelLoader().getLevels().size()) {
                 gView = new GameView();
                 view.getGameViewLevel().getScene().setRoot(gView);
                 gPresenter = new GamePresenter(model, gView, levelNumber + 1);

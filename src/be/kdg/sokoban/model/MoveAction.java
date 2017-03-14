@@ -15,7 +15,14 @@ public class MoveAction {
     private int actionType;
     private FieldObject nextObject;
 
-
+    /**
+     * Creates a moveAction
+     * @param direction of the movement
+     * @param player in current level
+     * @param actionType moveActionType describing the type of event
+     * @param wasGoal if player was on goal
+     * @param nextObject object in front of the player
+     */
     MoveAction(int direction, Player player, int actionType, boolean wasGoal, FieldObject nextObject) {
         this.direction = direction;
         this.player = player;

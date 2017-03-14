@@ -6,10 +6,8 @@ import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Properties;
 
-//TODO make getter for levelLoader.
 /**
  * @author Niels Van Reeth
  * @version 1.0 7-2-2017 10:23
@@ -40,10 +38,6 @@ public class SokobanModel {
         }
     }
 
-    public List<String> getLevels() {
-        return levelLoader.getLevels();
-    }
-
     /**
      * Starts the given level
      * @param levelNumber number of the level
@@ -61,20 +55,6 @@ public class SokobanModel {
      */
     public FieldObject[][] getCurrentLevel() {
         return currentLevel;
-    }
-
-    /**
-     * @return int maximum number of rows of the level
-     */
-    public int getMaxRows() {
-        return levelLoader.getMaxRows();
-    }
-
-    /**
-     * @return maximum number of columns of the level
-     */
-    public int getMaxColumns() {
-        return levelLoader.getMaxColumns();
     }
 
     /**
@@ -407,5 +387,9 @@ public class SokobanModel {
         if (users[getCurrentUserIndex()].getHighScoreTime(level) < score[User.TIME]) {
             users[getCurrentUserIndex()].setHighScoreTime(level, score[User.TIME]);
         }
+    }
+
+    public LevelLoader getLevelLoader() {
+        return levelLoader;
     }
 }

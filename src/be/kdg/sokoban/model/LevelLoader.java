@@ -16,15 +16,15 @@ import java.util.Scanner;
  * @author Niels Van Reeth
  * @version 1.0 2/9/2017 2:56 PM
  */
-class LevelLoader {
+public class LevelLoader {
     private List<String> levels;
     private int maxRows;
 
-    int getMaxRows() {
+    public int getMaxRows() {
         return maxRows;
     }
 
-    int getMaxColumns() {
+    public int getMaxColumns() {
         return maxColumns;
     }
 
@@ -80,14 +80,14 @@ class LevelLoader {
     /**
      * @return list of String of levels
      */
-    List<String> getLevels() {
+    public List<String> getLevels() {
         return levels;
     }
 
     /**
-     *
+     * Loads the levels
      * @return list of strings of levels
-     * @throws IOException
+     * @throws IOException if level file not found
      */
     private List<String> loadLevels() throws IOException {
         Path levelsFile = Paths.get("src/be/kdg/sokoban/model/files/levels.txt");
@@ -112,6 +112,11 @@ class LevelLoader {
         return levelList;
     }
 
+    /**
+     * Checks if the given level is valid
+     * @param line level to check
+     * @return true if level is valid
+     */
     private static boolean isValidLevel(String line) {
 
         if (line.trim().matches("^\\d[\\s\\S]*#$")) {
@@ -123,11 +128,11 @@ class LevelLoader {
     }
 
     /**
-     * @param levelnumber The number of the level
+     * @param levelNumber The number of the level
      * @return null if the level doesn't exist.
      */
-    String getLevel(int levelnumber) {
-        return getLevels().get(levelnumber);
+    String getLevel(int levelNumber) {
+        return getLevels().get(levelNumber);
     }
 
     Player getPlayer(FieldObject[][] level) {
