@@ -6,6 +6,11 @@ package be.kdg.sokoban.model.Objects;
  */
 public class Goal extends FieldObject {
 
+    /**
+     * Creates a goal
+     * @param x coordinate for this goal
+     * @param y coordinate for this goal
+     */
     public Goal(int x, int y) {
         super(x, y);
     }

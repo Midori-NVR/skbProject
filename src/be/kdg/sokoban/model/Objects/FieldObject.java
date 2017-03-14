@@ -9,6 +9,20 @@ public abstract class FieldObject {
     private int posX, posY;
     public static final int MOVE_UP = 2, MOVE_DOWN = 0, MOVE_LEFT = 1, MOVE_RIGHT = 3;
 
+    /**
+     * Creates a FieldObject
+     * @param x coordinate of this FieldObject
+     * @param y coordinate of this FieldObject
+     */
+    FieldObject(int x, int y) {
+        setPosX(x);
+        setPosY(y);
+    }
+
+    /**
+     * @param direction the direction to get the opposite of to move
+     * @return static int of the opposite move of the given direction
+     */
     public static int getOppositeMove(int direction) {
         switch (direction) {
             case FieldObject.MOVE_UP:
@@ -23,6 +37,10 @@ public abstract class FieldObject {
         return direction;
     }
 
+    /**
+     * @param direction to move to
+     * @return the change to the current x coordinate needed to move into the given direction
+     */
     public static int getXMove(int direction) {
         if (direction == FieldObject.MOVE_LEFT) {
             return -1;
@@ -33,6 +51,10 @@ public abstract class FieldObject {
         }
     }
 
+    /**
+     * @param direction to move to
+     * @return the change to the current y coordinate needed to move into the given direction
+     */
     public static int getYMove(int direction) {
         if (direction == FieldObject.MOVE_UP) {
             return -1;
@@ -43,28 +65,41 @@ public abstract class FieldObject {
         }
     }
 
-    FieldObject(int x, int y) {
-        setPosX(x);
-        setPosY(y);
-    }
-
-
+    /**
+     * @return the current x position of this FieldObject
+     */
     public int getPosX() {
         return posX;
     }
 
+    /**
+     * Sets the current x position of this FieldObject to the given x position
+     * @param posX for this FieldObject
+     */
     public void setPosX(int posX) {
         this.posX = posX;
     }
 
+    /**
+     * @return the current y position of this FieldObject
+     */
     public int getPosY() {
         return posY;
     }
 
+    /**
+     * Sets the current y position of this FieldObject
+     * @param posY for this FieldObject
+     */
     public void setPosY(int posY) {
         this.posY = posY;
     }
 
+    /**
+     * Sets the current position of this FieldObject
+     * @param posX for this FieldObject
+     * @param posY for this FieldObject
+     */
     public void setPosition(int posX, int posY) {
         setPosX(posX);
         setPosY(posY);

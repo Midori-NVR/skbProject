@@ -10,8 +10,8 @@ public class Crate extends FieldObject {
     /**
      * Creates a crate
      * @param onGoal true if the crate is on a goal at this moment
-     * @param x coordinate of this crate
-     * @param y coordinate of this crate
+     * @param x coordinate for this crate
+     * @param y coordinate for this crate
      */
     public Crate(boolean onGoal, int x, int y) {
         super(x, y);

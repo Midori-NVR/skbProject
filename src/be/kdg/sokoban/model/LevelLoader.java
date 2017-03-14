@@ -5,7 +5,6 @@ import be.kdg.sokoban.SokobanMain;
 import be.kdg.sokoban.model.Objects.*;
 
 import java.io.IOException;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -78,10 +77,18 @@ class LevelLoader {
         return levelObjects;
     }
 
+    /**
+     * @return list of String of levels
+     */
     List<String> getLevels() {
         return levels;
     }
 
+    /**
+     *
+     * @return list of strings of levels
+     * @throws IOException
+     */
     private List<String> loadLevels() throws IOException {
         Path levelsFile = Paths.get("src/be/kdg/sokoban/model/files/levels.txt");
         List<String> levelList;
