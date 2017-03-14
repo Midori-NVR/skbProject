@@ -107,15 +107,12 @@ public class GamePresenter {
         view.getStylesheets().add("be/kdg/sokoban/view/game/css/game.css");
         view.getMainPane().getStyleClass().add("body");
         view.getStatsBar().getStyleClass().add("statusBar");
-
         view.getGameEndView().getStyleClass().add("finishBody");
         view.getGameEndView().getLblTitle().getStyleClass().add("title");
-
         view.getLblMoves().getStyleClass().add("lblStatusBar");
         view.getLblPushes().getStyleClass().add("lblStatusBar");
         view.getLblTime().getStyleClass().add("lblStatusBar");
         view.getLblPlayerCoords().getStyleClass().add("lblStatusBar");
-
         view.getGamePauseView().getStyleClass().add("pauseBody");
         view.getGamePauseView().getLblTitle().getStyleClass().add("title");
     }

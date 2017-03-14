@@ -1,24 +1,27 @@
 .body {
     -fx-background-image: url("../images/floor.png");
 }
-.finishBody{
+
+.finishBody {
     -fx-background-color: white;
     -fx-alignment: center;
 }
 
-.lblStatusBar{
-    -fx-text-fill: black; -fx-font-weight: bold;
+.lblStatusBar {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
 }
 
-.statusBar{
+.statusBar {
     -fx-background-color: white;
 }
-.pauseBody{
+
+.pauseBody {
     -fx-background-color: white;
     -fx-alignment: center;
 }
 
-.title{
+.title {
     -fx-font-size: 2em;
     -fx-font-weight: bold;
 }
