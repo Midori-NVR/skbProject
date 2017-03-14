@@ -1,5 +1,6 @@
 package be.kdg.sokoban.view.levelSelect;
 
+import be.kdg.sokoban.model.User;
 import javafx.scene.control.Button;
 
 /**
@@ -9,8 +10,8 @@ import javafx.scene.control.Button;
 class LevelButton extends Button {
     private int number;
 
-    LevelButton(String text, int number) {
-        super(text);
+    LevelButton(String text, int[] score, int number) {
+        super(text + "\n" + score[User.MOVES] + " moves\n" + score[User.PUSHES] + " pushes\n" + score[User.TIME] + " time");
         this.number = number;
     }
 

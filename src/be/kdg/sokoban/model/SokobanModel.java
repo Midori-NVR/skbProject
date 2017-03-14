@@ -43,6 +43,11 @@ public class SokobanModel {
         return levelLoader.getLevels();
     }
 
+    /**
+     * Starts the given level
+     * @param levelNumber number of the level
+     * @return array of FieldObjects of the given level
+     */
     public FieldObject[][] startLevel(int levelNumber) {
         player = null;
         levelFinished = false;
@@ -50,18 +55,32 @@ public class SokobanModel {
         return currentLevel;
     }
 
+    /**
+     * @return 2d array of FieldObjects of the current level
+     */
     public FieldObject[][] getCurrentLevel() {
         return currentLevel;
     }
 
+    /**
+     * @return int maximum number of rows of the level
+     */
     public int getMaxRows() {
         return levelLoader.getMaxRows();
     }
 
+    /**
+     * @return maximum number of columns of the level
+     */
     public int getMaxColumns() {
         return levelLoader.getMaxColumns();
     }
 
+    /**
+     * Moves the player in the given direction
+     * @param direction to move to
+     * @return MoveAction in given direction
+     */
     public MoveAction move(int direction) {
         if (player != null) {
             if (SokobanMain.DEBUG) System.out.println("Player(" + player.getPosY() + ", " + player.getPosX() + ")");
@@ -84,8 +103,6 @@ public class SokobanModel {
         if (isValidPush(player, direction)) {
             moveCrate(player, direction);
             return new MoveAction(direction, player, MoveAction.ACTION_PUSH, movePlayer(player, direction), getNextObject(player, direction));
-
-
         }
 
         if (isValidStep(player, direction)) {
@@ -94,6 +111,11 @@ public class SokobanModel {
         return new MoveAction(direction, player, MoveAction.ACTION_NULL, false, getNextObject(player, direction));
     }
 
+    /**
+     * Moves the crate in the given direction in front of the given player
+     * @param player to move crate of
+     * @param direction to move to
+     */
     private void moveCrate(Player player, int direction) {
         int posX = getNextObject(player, direction).getPosX();
         int posY = getNextObject(player, direction).getPosY();
@@ -124,6 +146,9 @@ public class SokobanModel {
     }
 
     /**
+     * Moves the given player into the given direction, sets the position of the player
+     * @param player to move
+     * @param direction to move to
      * @return true when the player was on a goal.
      */
     private boolean movePlayer(Player player, int direction) {
@@ -151,6 +176,13 @@ public class SokobanModel {
         return wasGoal;
     }
 
+    /**
+     * Sets the position of the given FieldObject to the given x and y coordinates into the given direction
+     * @param object to move
+     * @param posX x coordinate of the given object
+     * @param posY y coordinate of the given object
+     * @param direction to move into
+     */
     private void setPos(FieldObject object, int posX, int posY, int direction) {
         switch (direction) {
             case FieldObject.MOVE_UP:
@@ -168,12 +200,25 @@ public class SokobanModel {
         }
     }
 
+    /**
+     * Checks if the step of the given player into the given direction is valid
+     * @param player that steps
+     * @param direction to move into
+     * @return true if the next FieldObject in the given direction of the given player is not a Wall or Crate
+     */
     private boolean isValidStep(Player player, int direction) {
         FieldObject object = getNextObject(player, direction);
 
         return (!(object instanceof Wall) && !(object instanceof Crate));
     }
 
+    /**
+     * Checks if the push of the given player against the object into the given direction is valid
+     * @param player that pushes
+     * @param direction to push into
+     * @return true if the FieldObject in the direction of the player is a crate
+     * AND the FieldObject behind that crate is a Goal or null
+     */
     private boolean isValidPush(Player player, int direction) {
         FieldObject object1 = getNextObject(player, direction);
         if (object1 != null && !(object1 instanceof Wall)) {
@@ -184,6 +229,11 @@ public class SokobanModel {
         return false;
     }
 
+    /**
+     * @param fieldObject to get the next object of
+     * @param direction to check
+     * @return the FieldObject in the given direction of the given FieldObject
+     */
     private FieldObject getNextObject(FieldObject fieldObject, int direction) {
         FieldObject nextObject = null;
         int row = fieldObject.getPosY();
@@ -214,6 +264,10 @@ public class SokobanModel {
         return nextObject;
     }
 
+    /**
+     * Checks if all the goals off the current level are filled
+     * @return true if all the crates stand on a goal
+     */
     private boolean filledAllGoals() {
         for (FieldObject[] currentLevelRow : currentLevel) {
             for (FieldObject currentLevelField : currentLevelRow) {

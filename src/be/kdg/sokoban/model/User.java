@@ -8,12 +8,12 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
     static final long serialVersionUID = -6200919286368045528L;
-    static final int MOVES = 0, PUSHES = 1, TIME = 2;
+    public static final int MOVES = 0, PUSHES = 1, TIME = 2;
     private String name;
     private int highScores[][];
 
     public User(String name) {
-        this.highScores = new int[50][3];
+        this.highScores = new int[51][3];
         this.name = name;
     }
 
@@ -50,8 +50,7 @@ public class User implements Serializable {
         return this.highScores[levelNumber - 1][TIME];
     }
 
-    @SuppressWarnings("unused")
-    int[] getHighScores(int levelNumber) {
+    public int[] getHighScores(int levelNumber) {
         return highScores[levelNumber - 1];
     }
 

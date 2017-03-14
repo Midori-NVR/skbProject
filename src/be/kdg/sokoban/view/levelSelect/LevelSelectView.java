@@ -1,6 +1,7 @@
 package be.kdg.sokoban.view.levelSelect;
 
 import be.kdg.sokoban.SokobanMain;
+import be.kdg.sokoban.model.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -26,6 +27,8 @@ public class LevelSelectView extends BorderPane {
     private Polygon arrowLeft;
     private Polygon arrowRight;
     private int page = 1;
+    private User[] user;
+
 
     public LevelSelectView() {
         initialise();
@@ -70,7 +73,7 @@ public class LevelSelectView extends BorderPane {
         return buttonLevels;
     }
 
-    void initialiseLevels(List<String> stringLevels) {
+    void initialiseLevels(List<String> stringLevels, User user) {
         //buttonLevels = new LevelButton[(int)Math.ceil((double)stringLevels.size()/9)][3][3];
         buttonLevels = new ArrayList<>();
         for (int i = 0; i < (stringLevels != null ? stringLevels.size() : 9); i++) {
@@ -79,7 +82,7 @@ public class LevelSelectView extends BorderPane {
               1.2 2.2 3.2
               1.3 2.3 3.3
              */
-            LevelButton button = new LevelButton(stringLevels == null ? "ERROR" : "Level " + (i + 1), i);
+            LevelButton button = new LevelButton(stringLevels == null ? "ERROR" : "Level " + (i + 1), user.getHighScores(i + 1), i);
             buttonLevels.add(button);
         }
         setupLevels();
@@ -145,5 +148,9 @@ public class LevelSelectView extends BorderPane {
 
     Polygon getArrowRight() {
         return arrowRight;
+    }
+
+    public void setUser(User[] user) {
+        this.user = user;
     }
 }

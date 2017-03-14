@@ -7,15 +7,29 @@ package be.kdg.sokoban.model.Objects;
 public class Crate extends FieldObject {
     private boolean onGoal;
 
+    /**
+     * Creates a crate
+     * @param onGoal true if the crate is on a goal at this moment
+     * @param x coordinate of this crate
+     * @param y coordinate of this crate
+     */
     public Crate(boolean onGoal, int x, int y) {
         super(x, y);
         this.onGoal = onGoal;
     }
 
+    /**
+     * Checks if this crate is crate is on a goal
+     * @return true if this crate is on a goal
+     */
     public boolean isOnGoal() {
         return onGoal;
     }
 
+    /**
+     * Sets this crate on a goal
+     * @param onGoal true if this crate is on a goal
+     */
     public void setOnGoal(boolean onGoal) {
         this.onGoal = onGoal;
     }

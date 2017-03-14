@@ -21,7 +21,6 @@ public class GameView extends StackPane {
     private HBox statsBar;
     private Label lblMoves;
     private Pane resizePane;
-
     private Label lblPushes;
     private int moves = 0, pushes = 0;
     private Timeline timer;
