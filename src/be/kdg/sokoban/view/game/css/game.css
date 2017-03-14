@@ -6,11 +6,6 @@
     -fx-alignment: center;
 }
 
-/*.btnBox{
-    -fx-min-width: 100%;
-    -fx-min-height: 100%;
-}*/
-
 .lblStatusBar{
     -fx-text-fill: black; -fx-font-weight: bold;
 }
@@ -27,7 +22,3 @@
     -fx-font-size: 2em;
     -fx-font-weight: bold;
 }
-
-/*.btnPauseMenu{
-    -fx-min-width: 80%;
-}*/

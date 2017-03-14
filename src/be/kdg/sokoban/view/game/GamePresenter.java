@@ -13,7 +13,6 @@ import javafx.scene.input.KeyCode;
 
 import java.io.IOException;
 
-
 /**
  * @author Niels Van Reeth
  * @version 1.0 2/21/2017 11:43 AM
@@ -98,23 +97,20 @@ public class GamePresenter {
     }
 
     private void addStyleSheets() {
-        //TODO delete unnecessary
         view.getStylesheets().add("be/kdg/sokoban/view/game/css/game.css");
         view.getMainPane().getStyleClass().add("body");
+        view.getStatsBar().getStyleClass().add("statusBar");
+
         view.getGameEndView().getStyleClass().add("finishBody");
-        //view.getGameEndView().getBtnBox().getStyleClass().add("btnBox");
+        view.getGameEndView().getLblTitle().getStyleClass().add("title");
+
         view.getLblMoves().getStyleClass().add("lblStatusBar");
         view.getLblPushes().getStyleClass().add("lblStatusBar");
         view.getLblTime().getStyleClass().add("lblStatusBar");
         view.getLblPlayerCoords().getStyleClass().add("lblStatusBar");
-        view.getStatsBar().getStyleClass().add("statusBar");
+
         view.getGamePauseView().getStyleClass().add("pauseBody");
         view.getGamePauseView().getLblTitle().getStyleClass().add("title");
-        /*view.getGamePauseView().getLblTitle().getStyleClass().add("btnPauseMenu");
-        view.getGamePauseView().getBtnMenu().getStyleClass().add("btnPauseMenu");
-        view.getGamePauseView().getBtnRestart().getStyleClass().add("btnPauseMenu");*/
-        view.getGameEndView().getLblTitle().getStyleClass().add("title");
-        view.getGameEndView().getBtnBox().getStyleClass().add("box");
     }
 
     public void addWindowEventHandlers() {
