@@ -10,8 +10,11 @@ import be.kdg.sokoban.view.menu.MenuPresenter;
 import be.kdg.sokoban.view.menu.MenuView;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+
+//TODO BUGS: not resizing after first maximize, resize quicker (see updateStats function in GameView, center imageViewLevel.
 
 /**
  * @author Niels Van Reeth
@@ -46,7 +49,6 @@ public class GamePresenter {
         }
 
         view.startLevel(model.getCurrentLevel(), model.getLevelLoader().getMaxRows(), model.getLevelLoader().getMaxColumns());
-        //FIXME resize on fullscreen
         if (SokobanMain.DEBUG)
             System.out.println("LoadTime LevelSelect: " + (System.currentTimeMillis() - time) + " milliseconds");
     }
@@ -107,19 +109,26 @@ public class GamePresenter {
         view.getStylesheets().add("be/kdg/sokoban/view/game/css/game.css");
         view.getMainPane().getStyleClass().add("body");
         view.getStatsBar().getStyleClass().add("statusBar");
-        view.getGameEndView().getStyleClass().add("finishBody");
+        view.getGameEndView().getStyleClass().add("stackBody");
         view.getGameEndView().getLblTitle().getStyleClass().add("title");
         view.getLblMoves().getStyleClass().add("lblStatusBar");
         view.getLblPushes().getStyleClass().add("lblStatusBar");
         view.getLblTime().getStyleClass().add("lblStatusBar");
         view.getLblPlayerCoords().getStyleClass().add("lblStatusBar");
-        view.getGamePauseView().getStyleClass().add("pauseBody");
+        view.getGamePauseView().getStyleClass().add("stackBody");
         view.getGamePauseView().getLblTitle().getStyleClass().add("title");
+        view.getGamePauseView().getBtnResume().getStyleClass().add("btn");
+        view.getGamePauseView().getBtnRestart().getStyleClass().add("btn");
+        view.getGamePauseView().getBtnMenu().getStyleClass().add("btn");
+        view.getGameEndView().getBtnMenu().getStyleClass().add("btn");
+        view.getGameEndView().getBtnSelect().getStyleClass().add("btn");
+        view.getGameEndView().getBtnNext().getStyleClass().add("btn");
     }
 
     public void addWindowEventHandlers() {
         view.getScene().widthProperty().addListener(observable -> resizeView());
         view.getScene().heightProperty().addListener(observable -> resizeView());
+        ((Stage) view.getScene().getWindow()).maximizedProperty().addListener(observable -> view.setToBeResized());
         view.getScene().setOnKeyPressed(event -> {
             if (!model.isLevelFinished()) {
                 if (!view.getGameViewLevel().isAnimationRunning() && !view.isPaused()) {

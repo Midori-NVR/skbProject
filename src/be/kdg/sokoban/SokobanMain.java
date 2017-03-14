@@ -10,10 +10,6 @@ import javafx.stage.Stage;
 public class SokobanMain extends Application {
     public static boolean DEBUG = false;
     //FIXME format lines / clean code from comments
-    //FIXME change buttons css
-    //FIXME change backButton css to more readable hover/focus
-    //FIXME change css to more universal lay-out
-    //TODO add comments for explanation.
 
     @Override
     public void start(Stage primaryStage) throws Exception {

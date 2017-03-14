@@ -67,10 +67,6 @@ public class GameView extends StackPane {
         mainPane.setBottom(statsBar);
         updateStats();
         statsBar.getChildren().addAll(lblMoves, lblPushes, lblTime, lblPlayerCoords);
-        //getGameViewLevel().maxWidthProperty().bind(this.widthProperty().subtract(widthProperty().multiply(0.2)));
-        //FIXME center imageViewLevel
-        /*setAlignment(gameViewLevel, Pos.CENTER);
-        gameViewLevel.setAlignment(Pos.CENTER);*/
     }
 
     void updateLevel(MoveAction moveAction) {
@@ -98,7 +94,7 @@ public class GameView extends StackPane {
     }
 
     private void updateStats() {
-        //FIXME resize quicker
+        //current resize option
         if (!resized && resizePane.getHeight() > 0) {
             resizeView();
             resized = true;
@@ -110,18 +106,18 @@ public class GameView extends StackPane {
     }
 
     void levelFinished(boolean lastLevel) {
-        gameEndView.setScore("This level took you " + moves + " moves, " + pushes + " pushes and " + time / 60 + " minutes " + (time % 60 < 10 ? "0" + time % 60 : time % 60));
+        gameEndView.setScore("This level took you:\n" + moves + " moves\n" + pushes + " pushes\n" + time / 60 + " minutes " + (time % 60 < 10 ? "0" + time % 60 : time % 60));
         if (lastLevel) {
             gameEndView.lastLevel();
         }
         this.getChildren().add(1, gameEndView);
-        gameEndView.maxHeightProperty().bind(this.heightProperty().divide(1.8));
+       /* gameEndView.maxHeightProperty().bind(this.heightProperty().divide(1.8));
         gameEndView.maxWidthProperty().bind(this.widthProperty().divide(1.5));
         gameEndView.getLblTitle().maxWidthProperty().bind(gameEndView.widthProperty());
         gameEndView.getBtnMenu().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
         gameEndView.getBtnSelect().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
         gameEndView.getBtnNext().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
-    }
+    */}
 
     void resizeView() {
         gameViewLevel.resizeLevel();
@@ -163,11 +159,11 @@ public class GameView extends StackPane {
         paused = true;
         getChildren().add(1, gamePauseView);
         timer.pause();
-        gamePauseView.maxHeightProperty().bind(this.heightProperty().divide(1.8));
+        /*gamePauseView.maxHeightProperty().bind(this.heightProperty().divide(1.8));
         gamePauseView.maxWidthProperty().bind(this.widthProperty().divide(1.5));
         gamePauseView.getBtnResume().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));
         gamePauseView.getBtnRestart().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));
-        gamePauseView.getBtnMenu().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));
+        gamePauseView.getBtnMenu().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));*/
     }
 
     void closePauseMenu() {
@@ -186,5 +182,9 @@ public class GameView extends StackPane {
 
     int[] getScores() {
         return new int[]{moves, pushes, time};
+    }
+
+    void setToBeResized() {
+        this.resized = false;
     }
 }

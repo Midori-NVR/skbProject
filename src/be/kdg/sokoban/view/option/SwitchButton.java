@@ -19,6 +19,7 @@ class SwitchButton extends Button {
 
     private SwitchButton(boolean enabled) {
         setEnabled(enabled);
+
         setOnAction(event -> {
             this.enabled = !this.enabled;
             updateText();

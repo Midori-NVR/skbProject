@@ -3,22 +3,13 @@
     -fx-border-width: none;
     -fx-background-color: none;
 
-    -fx-text-fill: radial-gradient(radius 75%, #ff8800, #ff0009);
+    -fx-text-fill: radial-gradient(radius 50%, purple, mediumpurple 75%);
     -fx-font-size: 225%;
     -fx-font-weight: bold;
 }
 
-.btnBack:hover, btnBack:focused {
-    -fx-text-fill: radial-gradient(radius 50%, slategrey, dimgrey 75%);
-}
-
-.btnBack:hover .text, .btnBack:focused .text {
-    -fx-stroke: dimgray;
-}
-
-.btnBack .text {
-    -fx-stroke-width: 1px;
-    -fx-stroke: grey;
+.btnBack:hover, .btnBack:focused {
+    -fx-text-fill: radial-gradient(radius 50%, blue, midnightblue 75%);
 }
 
 .arrow {
@@ -31,11 +22,11 @@
 
 .arrow:hover, .arrow:focused {
     -fx-fill: darkorchid;
-    -fx-stroke: lightgrey;
+    -fx-stroke: blue;
 }
 
 .body {
-    -fx-background-color: radial-gradient(radius 75%, orange, orangered);
+    -fx-background-color: radial-gradient(radius 0, orange, yellow, aquamarine);
 }
 
 .title {
@@ -47,4 +38,15 @@
 .title .text {
     -fx-stroke-width: 1px;
     -fx-stroke: grey;
+}
+.levelButton{
+    -fx-background-color: grey;
+    -fx-background-radius: 15px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,150,0.3), 5, 1.0, 3, 3);
+}
+
+.levelButton:focused, .levelButton:hover{
+    -fx-background-color: blue;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,150,0.6), 5, 1.0, 1, 1);
 }

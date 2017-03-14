@@ -63,7 +63,8 @@ public class GameEndView extends BorderPane {
     }
 
     void lastLevel() {
-        btnBox.getChildren().remove(btnNext);
+        btnNext.setText("Last Level");
+        btnNext.setDisable(true);
     }
 
     public Label getLblTitle() {

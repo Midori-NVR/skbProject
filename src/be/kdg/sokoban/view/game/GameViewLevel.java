@@ -53,8 +53,6 @@ class GameViewLevel extends GridPane {
     private void setup() {
         this.setManaged(false);
         this.setAlignment(Pos.CENTER);
-        this.setPrefWidth(Double.MAX_VALUE);
-        this.setPrefHeight(Double.MAX_VALUE);
     }
 
     void setLevel(FieldObject[][] level, int maxRows, int maxColumns) {
@@ -151,7 +149,13 @@ class GameViewLevel extends GridPane {
                 SequentialTransition playerMove;
                 if (rotationRequired) {
                     RotateTransition playerRotate = new RotateTransition(Duration.millis(50), player);
-                    playerRotate.setToAngle(90 * moveAction.getPlayer().getWatchingDirection());
+                    double rotation = 90 * moveAction.getPlayer().getWatchingDirection() - player.getRotate();
+                    if (rotation > 180) {
+                        rotation -= 360;
+                    } else if (rotation < -180) {
+                        rotation += 360;
+                    }
+                    playerRotate.setByAngle(rotation);
                     playerMoveBack.setDuration(Duration.millis(100));
                     playerMove = new SequentialTransition(playerRotate, playerMoveForward, playerMoveBack);
                 } else {
@@ -173,7 +177,6 @@ class GameViewLevel extends GridPane {
 
             if (Boolean.valueOf(config.get("animation").toString())) {
                 //ANIMATION
-                //TODO less sharp turnings
                 animationRunning = true;
                 boolean rotationRequired = 90 * moveAction.getPlayer().getWatchingDirection() != player.getRotate();
                 TranslateTransition playerMove = new TranslateTransition(Duration.millis(200), player);
@@ -182,7 +185,14 @@ class GameViewLevel extends GridPane {
                 SequentialTransition playerSequence;
                 if (rotationRequired) {
                     RotateTransition playerRotate = new RotateTransition(Duration.millis(100), player);
-                    playerRotate.setToAngle(90 * moveAction.getPlayer().getWatchingDirection());
+                    double rotation = 90 * moveAction.getPlayer().getWatchingDirection() - player.getRotate();
+                    if (rotation > 180) {
+                        rotation -= 360;
+                    } else if (rotation < -180) {
+                        rotation += 360;
+                    }
+                    System.out.println(rotation);
+                    playerRotate.setByAngle(rotation);
                     playerSequence = new SequentialTransition(player, playerRotate, playerMove);
                 } else {
                     playerMove.setDuration(Duration.millis(300));
@@ -345,12 +355,15 @@ class GameViewLevel extends GridPane {
     void resizeLevel() {
         double width = ((Pane) getParent()).getWidth();
         double height = ((Pane) getParent()).getHeight();
+
         if (width <= height) {
             //Set to width
+            //noinspection SuspiciousNameCombination
             resize(width, width);
 
         } else {
             //Set to height
+            //noinspection SuspiciousNameCombination
             resize(height, height);
 
         }

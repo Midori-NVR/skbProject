@@ -109,39 +109,29 @@ public class LevelSelectView extends BorderPane {
     }
 
     /**
-     * @return true if successful, false if failed
+     * goes to next page if most right focus
      */
-    boolean next() {
-        if (page * 9 < buttonLevels.size()) {
-            Node focusNode = getScene().getFocusOwner();
-            if (focusNode instanceof LevelButton) {
-                LevelButton focusLevelButton = ((LevelButton) focusNode);
-                if (focusLevelButton.getNumber() % 9 == 2 || focusLevelButton.getNumber() % 9 == 5 || focusLevelButton.getNumber() % 9 == 8) {
-                    page++;
-                    setupLevels();
-                    return true;
-                }
+    void next() {
+        Node focusNode = getScene().getFocusOwner();
+        if (focusNode instanceof LevelButton) {
+            LevelButton focusLevelButton = ((LevelButton) focusNode);
+            if (focusLevelButton.getNumber() % 9 == 2 || focusLevelButton.getNumber() % 9 == 5 || focusLevelButton.getNumber() % 9 == 8) {
+                nextPage();
             }
         }
-        return false;
     }
 
     /**
-     * @return true if successful, false if failed
+     * goes to previous page if most left focus
      */
-    boolean previous() {
-        if (page > 1) {
-            Node focusNode = getScene().getFocusOwner();
-            if (focusNode instanceof LevelButton) {
-                LevelButton focusLevelButton = ((LevelButton) focusNode);
-                if (focusLevelButton.getNumber() % 9 ==  0 || focusLevelButton.getNumber() % 9 == 3 || focusLevelButton.getNumber() % 9 == 6) {
-                    page--;
-                    setupLevels();
-                    return true;
-                }
+    void previous() {
+        Node focusNode = getScene().getFocusOwner();
+        if (focusNode instanceof LevelButton) {
+            LevelButton focusLevelButton = ((LevelButton) focusNode);
+            if (focusLevelButton.getNumber() % 9 == 0 || focusLevelButton.getNumber() % 9 == 3 || focusLevelButton.getNumber() % 9 == 6) {
+                previousPage();
             }
         }
-        return false;
     }
 
     Button getBtnBack() {
@@ -166,5 +156,25 @@ public class LevelSelectView extends BorderPane {
 
     public void setUser(User[] user) {
         this.user = user;
+    }
+
+    /**
+     * goes to previous page if possible
+     */
+    void previousPage() {
+        if (page > 1) {
+            page--;
+            setupLevels();
+        }
+    }
+
+    /**
+     * goes to next page if possible
+     */
+    void nextPage() {
+        if (page * 9 < buttonLevels.size()) {
+            page++;
+            setupLevels();
+        }
     }
 }

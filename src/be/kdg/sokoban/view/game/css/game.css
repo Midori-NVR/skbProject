@@ -2,26 +2,45 @@
     -fx-background-image: url("../images/floor.png");
 }
 
-.finishBody {
-    -fx-background-color: white;
+.stackBody {
+    -fx-background-radius: 5;
     -fx-alignment: center;
+    -fx-font-size: 1.5em;
+    -fx-min-width: 500px;
+    -fx-max-width: 500px;
+    -fx-min-height: 380px;
+    -fx-max-height: 380px;
+    -fx-background-color: cornflowerblue;
+    -fx-border-color: royalblue;
+    -fx-border-width: 4px;
+    -fx-border-style: solid;
+    -fx-border-radius: 5px;
 }
 
 .lblStatusBar {
     -fx-text-fill: black;
     -fx-font-weight: bold;
+    -fx-font-size: 1em;
 }
 
 .statusBar {
     -fx-background-color: white;
 }
 
-.pauseBody {
-    -fx-background-color: white;
+.title {
+
     -fx-alignment: center;
+    -fx-font-size: 2.5em;
+    -fx-font-weight: bold;
+    -fx-min-width: 500px;
 }
 
-.title {
-    -fx-font-size: 2em;
-    -fx-font-weight: bold;
+.btn {
+    -fx-min-width: 166px;
+    -fx-background-color: radial-gradient(radius 50%, rgba(0,0,0,0),rgba(0,0,0,0.1), rgba(0,0,0,0.2));
+}
+
+
+.btn:focused,.btn:hover{
+-fx-background-color: radial-gradient(radius 100%, rgba(0,0,0,0),rgba(0,0,0,0.2), rgba(0,0,0,0.5));
 }

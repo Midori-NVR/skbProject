@@ -30,7 +30,6 @@ public class UserSelectView extends BorderPane {
         column.setPercentWidth(10);
         getUserView().getColumnConstraints().add(column);
 
-        //TODO set label css and scaling.
     }
 
     UserView getUserView() {

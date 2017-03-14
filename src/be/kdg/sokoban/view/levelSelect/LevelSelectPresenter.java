@@ -44,6 +44,9 @@ public class LevelSelectPresenter {
         view.getLevelPane().getStyleClass().add("innerBody");
         view.getTitle().getStyleClass().add("title");
         view.getStyleClass().add("body");
+        for (int i = 0; i < view.getButtonLevels().size(); i++) {
+            view.getButtonLevels().get(i).getStyleClass().add("levelButton");
+        }
         if (SokobanMain.DEBUG) System.out.println("StyleSheets loaded!");
     }
 
@@ -68,8 +71,8 @@ public class LevelSelectPresenter {
             view.getScene().setRoot(mView);
             //mView.getScene().getWindow().sizeToScene();
         });
-        view.getArrowLeft().setOnMouseClicked(event -> view.previous());
-        view.getArrowRight().setOnMouseClicked(event -> view.next());
+        view.getArrowLeft().setOnMouseClicked(event -> view.previousPage());
+        view.getArrowRight().setOnMouseClicked(event -> view.nextPage());
         for (int i = 0; i < view.getButtonLevels().size(); i++) {
             view.getButtonLevels().get(i).setOnAction(event -> {
                 gameView = new GameView();

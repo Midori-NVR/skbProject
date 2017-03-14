@@ -275,7 +275,7 @@ public class SokobanModel {
                 e.printStackTrace();
             }
         } else {
-            users = new User[3];
+            users = new User[9];
         }
     }
 
