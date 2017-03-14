@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
+//TODO make getter for levelLoader.
 /**
  * @author Niels Van Reeth
  * @version 1.0 7-2-2017 10:23
@@ -227,8 +228,11 @@ public class SokobanModel {
         return true;
     }
 
+    /**
+     * Loads users.
+     */
     public void loadUsers() {
-        file = new File("src/be/kdg/sokoban/model/files/users.txt");
+        file = new File("users.txt");
 
         if (file.exists()) {
             try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(file))) {
@@ -241,6 +245,10 @@ public class SokobanModel {
         }
     }
 
+    /**
+     * saves users to file
+     * @throws IOException when saving of new users fails.
+     */
     private void saveUsers() throws IOException {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file))) {
             output.writeObject(users);
@@ -248,8 +256,13 @@ public class SokobanModel {
 
     }
 
+    /**
+     * saves given properties
+     * @param properties to save
+     * @throws IOException when saving of new config fails.
+     */
     public void saveConfig(Properties properties) throws IOException {
-        File configFile = new File("src/be/kdg/sokoban/model/files/config.properties");
+        File configFile = new File("config.properties");
         if (!configFile.exists()) {
             if (!configFile.createNewFile()) {
                 throw new IOException("ConfigFile not created.");
@@ -264,6 +277,11 @@ public class SokobanModel {
 
     }
 
+    /**
+     * Loads the configFile from the disk.
+     * @return Properties of configFile.
+     * @throws IOException when saving of new config fails.
+     */
     public Properties loadConfig() throws IOException {
         File configFile = new File("src/be/kdg/sokoban/model/files/config.properties");
         Properties config = new Properties();
@@ -283,24 +301,48 @@ public class SokobanModel {
         }
     }
 
+    /**
+     * deletes user from given index and saves changes.
+     * @param index index of user to delete.
+     * @throws IOException when saving of new config fails.
+     */
     public void deleteUser(int index) throws IOException {
         users[index] = null;
         saveUsers();
     }
 
+    /**
+     * Get if the level is finished.
+     * @return true if the level is finished.
+     */
     public boolean isLevelFinished() {
         return levelFinished;
     }
 
+    /**
+     * Get the users.
+     * @return the array of users
+     */
     public User[] getUsers() {
         return users;
     }
 
+    /**
+     * adds a user and save the changes
+     * @param index of the new user
+     * @param name of the new user
+     * @throws IOException when saving of new config fails.
+     */
     public void addUser(int index, String name) throws IOException {
         users[index] = new User(name);
         saveUsers();
     }
 
+    /**
+     * sets score for user of specific level
+     * @param level to save the score too.
+     * @param score to set of given level
+     */
     public void setScore(int level, int[] score) {
         if (users[getCurrentUserIndex()].getHighScoreMoves(level) < score[User.MOVES]) {
             users[getCurrentUserIndex()].setHighScoreMoves(level, score[User.MOVES]);

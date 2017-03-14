@@ -3,6 +3,7 @@ package be.kdg.sokoban.view.levelSelect;
 import be.kdg.sokoban.SokobanMain;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -13,6 +14,7 @@ import java.util.List;
 
 //FIXME add score to screen / change to custom button
 //TODO change to image of level
+
 /**
  * @author Niels Van Reeth
  * @version 1.0 2/9/2017 1:47 PM
@@ -108,9 +110,15 @@ public class LevelSelectView extends BorderPane {
      */
     boolean next() {
         if (page * 9 < buttonLevels.size()) {
-            page++;
-            setupLevels();
-            return true;
+            Node focusNode = getScene().getFocusOwner();
+            if (focusNode instanceof LevelButton) {
+                LevelButton focusLevelButton = ((LevelButton) focusNode);
+                if (focusLevelButton.getNumber() % 9 == 2 || focusLevelButton.getNumber() % 9 == 5 || focusLevelButton.getNumber() % 9 == 8) {
+                    page++;
+                    setupLevels();
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -120,9 +128,15 @@ public class LevelSelectView extends BorderPane {
      */
     boolean previous() {
         if (page > 1) {
-            page--;
-            setupLevels();
-            return true;
+            Node focusNode = getScene().getFocusOwner();
+            if (focusNode instanceof LevelButton) {
+                LevelButton focusLevelButton = ((LevelButton) focusNode);
+                if (focusLevelButton.getNumber() % 9 ==  0 || focusLevelButton.getNumber() % 9 == 3 || focusLevelButton.getNumber() % 9 == 6) {
+                    page--;
+                    setupLevels();
+                    return true;
+                }
+            }
         }
         return false;
     }
