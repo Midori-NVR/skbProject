@@ -232,7 +232,7 @@ public class SokobanModel {
      * Loads users.
      */
     public void loadUsers() {
-        file = new File("users.txt");
+        file = new File("src/be/kdg/sokoban/model/files/users.txt");
 
         if (file.exists()) {
             try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(file))) {
@@ -262,7 +262,7 @@ public class SokobanModel {
      * @throws IOException when saving of new config fails.
      */
     public void saveConfig(Properties properties) throws IOException {
-        File configFile = new File("config.properties");
+        File configFile = new File("src/be/kdg/sokoban/model/files/config.properties");
         if (!configFile.exists()) {
             if (!configFile.createNewFile()) {
                 throw new IOException("ConfigFile not created.");
