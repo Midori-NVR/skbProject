@@ -106,24 +106,20 @@ public class GamePresenter {
     private void addStyleSheets() {
         view.getStylesheets().add("be/kdg/sokoban/view/game/css/game.css");
         view.getMainPane().getStyleClass().add("body");
-        view.getStatsBar().getStyleClass().add("statusBar");
         view.getGameEndView().getStyleClass().add("stackBody");
-        view.getGameEndView().getLblTitle().getStyleClass().add("title");
+        view.getGamePauseView().getStyleClass().add("stackBody");
+        view.getStatsBar().getStyleClass().add("statsBar");
         view.getLblMoves().getStyleClass().add("lblStatusBar");
         view.getLblPushes().getStyleClass().add("lblStatusBar");
         view.getLblTime().getStyleClass().add("lblStatusBar");
-        view.getLblTime().getStyleClass().add("lblTime");
-
-        view.getLblPlayerCoords().getStyleClass().add("lblStatusBar");
-        view.getStatsBar().getStyleClass().add("statsBar");
-        view.getGamePauseView().getStyleClass().add("stackBody");
+        view.getGameEndView().getLblTitle().getStyleClass().add("title");
+        view.getGameEndView().getBtnMenu().getStyleClass().add("btn");
+        view.getGameEndView().getBtnSelect().getStyleClass().add("btn");
+        view.getGameEndView().getBtnNext().getStyleClass().add("btn");
         view.getGamePauseView().getLblTitle().getStyleClass().add("title");
         view.getGamePauseView().getBtnResume().getStyleClass().add("btn");
         view.getGamePauseView().getBtnRestart().getStyleClass().add("btn");
         view.getGamePauseView().getBtnMenu().getStyleClass().add("btn");
-        view.getGameEndView().getBtnMenu().getStyleClass().add("btn");
-        view.getGameEndView().getBtnSelect().getStyleClass().add("btn");
-        view.getGameEndView().getBtnNext().getStyleClass().add("btn");
     }
 
     public void addWindowEventHandlers() {

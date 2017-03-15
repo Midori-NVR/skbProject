@@ -5,6 +5,7 @@ import be.kdg.sokoban.model.MoveAction;
 import be.kdg.sokoban.model.Objects.FieldObject;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -72,6 +73,7 @@ public class GameView extends StackPane {
         statsBar.getChildren().addAll(lblMoves, lblPushes, lblTime, lblPlayerCoords);
         resizeTimer.play();
         BorderPane.setAlignment(gameViewLevel, Pos.CENTER);
+        statsBar.setSpacing(getWidth() * 0.1);
     }
 
     void updateLevel(MoveAction moveAction) {
@@ -103,6 +105,13 @@ public class GameView extends StackPane {
         lblTime.setText("Time:" + time / 60 + ":" + (time % 60 < 10 ? "0" + time % 60 : time % 60));
         lblMoves.setText("Moves:" + moves);
         lblPushes.setText("Pushes:" + pushes);
+        lblTime.setMinWidth(100);
+        lblMoves.setMinWidth(100);
+        lblPushes.setMinWidth(100);
+        lblTime.setPadding(new Insets(0, 33, 0, 33));
+        lblMoves.setPadding(new Insets(0, 33, 0, 33));
+        lblPushes.setPadding(new Insets(0, 33, 0, 33));
+        statsBar.setAlignment(Pos.CENTER);
         if (SokobanMain.DEBUG) lblPlayerCoords.setText("(" + playerX + "," + playerY + ")");
     }
 
@@ -112,16 +121,10 @@ public class GameView extends StackPane {
             gameEndView.lastLevel();
         }
         this.getChildren().add(1, gameEndView);
-       /* gameEndView.maxHeightProperty().bind(this.heightProperty().divide(1.8));
-        gameEndView.maxWidthProperty().bind(this.widthProperty().divide(1.5));
-        gameEndView.getLblTitle().maxWidthProperty().bind(gameEndView.widthProperty());
-        gameEndView.getBtnMenu().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
-        gameEndView.getBtnSelect().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
-        gameEndView.getBtnNext().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
-    */}
+    }
 
     void resizeView() {
-        gameViewLevel.resizeLevel(getScene().getWidth(),getScene().getHeight() - statsBar.getHeight());
+        gameViewLevel.resizeLevel(getScene().getWidth(), getScene().getHeight() - statsBar.getHeight());
     }
 
     GameViewLevel getGameViewLevel() {
@@ -160,11 +163,6 @@ public class GameView extends StackPane {
         paused = true;
         getChildren().add(1, gamePauseView);
         timer.pause();
-        /*gamePauseView.maxHeightProperty().bind(this.heightProperty().divide(1.8));
-        gamePauseView.maxWidthProperty().bind(this.widthProperty().divide(1.5));
-        gamePauseView.getBtnResume().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));
-        gamePauseView.getBtnRestart().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));
-        gamePauseView.getBtnMenu().maxWidthProperty().bind(getGamePauseView().widthProperty().divide(2));*/
     }
 
     void closePauseMenu() {

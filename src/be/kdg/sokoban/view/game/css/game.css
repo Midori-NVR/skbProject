@@ -23,12 +23,7 @@
     -fx-font-size: 1em;
 }
 
-.statusBar {
-    -fx-background-color: white;
-}
-
 .title {
-
     -fx-alignment: center;
     -fx-font-size: 2.5em;
     -fx-font-weight: bold;
@@ -37,17 +32,15 @@
 
 .btn {
     -fx-min-width: 164px;
-    -fx-background-color: radial-gradient(radius 50%, rgba(0,0,0,0),rgba(0,0,0,0.1), rgba(0,0,0,0.2));
+    -fx-background-color: radial-gradient(radius 50%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
 }
 
-
-.btn:focused,.btn:hover{
--fx-background-color: radial-gradient(radius 100%, rgba(0,0,0,0),rgba(0,0,0,0.2), rgba(0,0,0,0.5));
+.btn:focused, .btn:hover {
+    -fx-background-color: radial-gradient(radius 100%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
 }
 
-.statsBar{
+.statsBar {
     -fx-border-color: white;
     -fx-border-style: solid;
     -fx-border-width: 5px, 5, 0, 0;
-
 }
