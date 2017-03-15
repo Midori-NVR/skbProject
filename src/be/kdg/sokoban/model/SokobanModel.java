@@ -384,7 +384,7 @@ public class SokobanModel {
         if (users[getCurrentUserIndex()].getHighScorePushes(level) < score[User.PUSHES]) {
             users[getCurrentUserIndex()].setHighScorePushes(level, score[User.PUSHES]);
         }
-        if (users[getCurrentUserIndex()].getHighScoreTime(level) < score[User.TIME]) {
+        if (users[getCurrentUserIndex()].getHighScoreTime(level) > score[User.TIME]) {
             users[getCurrentUserIndex()].setHighScoreTime(level, score[User.TIME]);
         }
     }

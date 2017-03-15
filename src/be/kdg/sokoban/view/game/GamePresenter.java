@@ -123,6 +123,7 @@ public class GamePresenter {
     }
 
     public void addWindowEventHandlers() {
+        //TODO remove eventhandlers
         view.getScene().widthProperty().addListener(observable -> resizeView());
         view.getScene().heightProperty().addListener(observable -> resizeView());
         ((Stage) view.getScene().getWindow()).maximizedProperty().addListener(observable -> view.setToBeResized());
