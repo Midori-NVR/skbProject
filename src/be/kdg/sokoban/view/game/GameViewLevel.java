@@ -354,6 +354,7 @@ class GameViewLevel extends GridPane {
         return maxRows < maxColumns ? (int) Math.floor(((double) maxColumns - maxRows) / 2) : 0;
     }
 
+    //TODO fix random spacing
     void resizeLevel(double width, double height) {
         //double width = ((Pane) getParent()).getWidth();
         //double height = ((Pane) getParent()).getHeight();
