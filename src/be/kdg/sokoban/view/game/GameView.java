@@ -112,13 +112,7 @@ public class GameView extends StackPane {
             gameEndView.lastLevel();
         }
         this.getChildren().add(1, gameEndView);
-       /* gameEndView.maxHeightProperty().bind(this.heightProperty().divide(1.8));
-        gameEndView.maxWidthProperty().bind(this.widthProperty().divide(1.5));
-        gameEndView.getLblTitle().maxWidthProperty().bind(gameEndView.widthProperty());
-        gameEndView.getBtnMenu().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
-        gameEndView.getBtnSelect().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
-        gameEndView.getBtnNext().maxWidthProperty().bind(getGameEndView().widthProperty().divide(3));
-    */}
+    }
 
     void resizeView() {
         gameViewLevel.resizeLevel(getScene().getWidth(),getScene().getHeight() - statsBar.getHeight());

@@ -29,7 +29,6 @@ public class LevelSelectView extends BorderPane {
     private Polygon arrowLeft;
     private Polygon arrowRight;
     private int page = 1;
-    private User[] user;
 
 
     public LevelSelectView() {
@@ -152,10 +151,6 @@ public class LevelSelectView extends BorderPane {
 
     Polygon getArrowRight() {
         return arrowRight;
-    }
-
-    public void setUser(User[] user) {
-        this.user = user;
     }
 
     /**
