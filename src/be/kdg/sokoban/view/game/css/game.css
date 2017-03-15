@@ -45,3 +45,9 @@
 -fx-background-color: radial-gradient(radius 100%, rgba(0,0,0,0),rgba(0,0,0,0.2), rgba(0,0,0,0.5));
 }
 
+.statsBar{
+    -fx-border-color: white;
+    -fx-border-style: solid;
+    -fx-border-width: 5px, 5, 0, 0;
+
+}

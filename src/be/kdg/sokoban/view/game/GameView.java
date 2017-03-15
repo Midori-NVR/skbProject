@@ -67,7 +67,7 @@ public class GameView extends StackPane {
     private void setup() {
         this.getChildren().add(0, mainPane);
         mainPane.setCenter(gameViewLevel);
-        mainPane.setBottom(statsBar);
+        mainPane.setTop(statsBar);
         updateStats();
         statsBar.getChildren().addAll(lblMoves, lblPushes, lblTime, lblPlayerCoords);
         resizeTimer.play();

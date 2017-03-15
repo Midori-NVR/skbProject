@@ -3,7 +3,9 @@ package be.kdg.sokoban.view.userSelect;
 import be.kdg.sokoban.model.User;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 
 /**
  * @author Lies Van der Haegen
@@ -30,7 +32,17 @@ class UserView extends GridPane {
         }
 
         btnDeleteUser = new Button[users.length];
+        ColumnConstraints column = new ColumnConstraints();
+        column.setPercentWidth(90);
+        getColumnConstraints().add(column);
+        column = new ColumnConstraints();
+        column.setPercentWidth(10);
+        getColumnConstraints().add(column);
+        RowConstraints row = new RowConstraints();
+        row.setPercentHeight(100/users.length);
+
         for (int i = 0; i < users.length; i++) {
+            getRowConstraints().add(row);
             btnDeleteUser[i] = new Button("X");
             btnDeleteUser[i].setPadding(new Insets(1));
             btnDeleteUser[i].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -52,4 +64,6 @@ class UserView extends GridPane {
             }
         }
     }
+
+
 }

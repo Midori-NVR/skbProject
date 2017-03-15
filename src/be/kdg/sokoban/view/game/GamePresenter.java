@@ -29,7 +29,7 @@ public class GamePresenter {
     private LevelSelectPresenter lsPresenter;
     private GameView gView;
     private GamePresenter gPresenter;
-
+    //TODO centrate labels
 
     public GamePresenter(SokobanModel model, GameView view, int levelNumber) {
         long time = System.currentTimeMillis();
@@ -112,7 +112,10 @@ public class GamePresenter {
         view.getLblMoves().getStyleClass().add("lblStatusBar");
         view.getLblPushes().getStyleClass().add("lblStatusBar");
         view.getLblTime().getStyleClass().add("lblStatusBar");
+        view.getLblTime().getStyleClass().add("lblTime");
+
         view.getLblPlayerCoords().getStyleClass().add("lblStatusBar");
+        view.getStatsBar().getStyleClass().add("statsBar");
         view.getGamePauseView().getStyleClass().add("stackBody");
         view.getGamePauseView().getLblTitle().getStyleClass().add("title");
         view.getGamePauseView().getBtnResume().getStyleClass().add("btn");
