@@ -5,10 +5,10 @@ import be.kdg.sokoban.model.MoveAction;
 import be.kdg.sokoban.model.Objects.FieldObject;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -20,17 +20,16 @@ public class GameView extends StackPane {
     private GameViewLevel gameViewLevel;
     private HBox statsBar;
     private Label lblMoves;
-    private Pane resizePane;
     private Label lblPushes;
     private int moves = 0, pushes = 0;
     private Timeline timer;
+    private Timeline resizeTimer;
     private int time = 0;
     private Label lblTime;
     private Label lblPlayerCoords;
     private int playerX = 0, playerY = 0;
     private BorderPane mainPane;
     private GameEndView gameEndView;
-    private boolean resized;
     private boolean paused;
     private GamePauseView gamePauseView;
 
@@ -42,7 +41,6 @@ public class GameView extends StackPane {
 
     private void initialise() {
         mainPane = new BorderPane();
-        resizePane = new Pane();
         gameEndView = new GameEndView();
         gamePauseView = new GamePauseView();
         gameViewLevel = new GameViewLevel();
@@ -51,22 +49,29 @@ public class GameView extends StackPane {
             updateStats();
         }));
         timer.setCycleCount(Timeline.INDEFINITE);
+        resizeTimer = new Timeline(new KeyFrame(Duration.millis(100), event -> {
+            if (mainPane.getHeight() > 0) {
+                resizeView();
+                resizeTimer.stop();
+            }
+        }));
+        timer.setCycleCount(Timeline.INDEFINITE);
         statsBar = new HBox();
         lblMoves = new Label();
         lblPushes = new Label();
         lblTime = new Label();
         lblPlayerCoords = new Label();
-        resized = false;
     }
 
 
     private void setup() {
         this.getChildren().add(0, mainPane);
-        resizePane.getChildren().add(gameViewLevel);
-        mainPane.setCenter(resizePane);
+        mainPane.setCenter(gameViewLevel);
         mainPane.setBottom(statsBar);
         updateStats();
         statsBar.getChildren().addAll(lblMoves, lblPushes, lblTime, lblPlayerCoords);
+        resizeTimer.play();
+        BorderPane.setAlignment(gameViewLevel, Pos.CENTER);
     }
 
     void updateLevel(MoveAction moveAction) {
@@ -95,10 +100,6 @@ public class GameView extends StackPane {
 
     private void updateStats() {
         //current resize option
-        if (!resized && resizePane.getHeight() > 0) {
-            resizeView();
-            resized = true;
-        }
         lblTime.setText("Time:" + time / 60 + ":" + (time % 60 < 10 ? "0" + time % 60 : time % 60));
         lblMoves.setText("Moves:" + moves);
         lblPushes.setText("Pushes:" + pushes);
@@ -120,7 +121,7 @@ public class GameView extends StackPane {
     */}
 
     void resizeView() {
-        gameViewLevel.resizeLevel();
+        gameViewLevel.resizeLevel(getScene().getWidth(),getScene().getHeight() - statsBar.getHeight());
     }
 
     GameViewLevel getGameViewLevel() {
@@ -185,6 +186,8 @@ public class GameView extends StackPane {
     }
 
     void setToBeResized() {
-        this.resized = false;
+        resizeTimer.play();
     }
+
+
 }

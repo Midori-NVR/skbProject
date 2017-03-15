@@ -8,7 +8,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.util.Duration;
 
 import java.util.Arrays;
@@ -51,7 +54,7 @@ class GameViewLevel extends GridPane {
     }
 
     private void setup() {
-        this.setManaged(false);
+        this.setManaged(true);
         this.setAlignment(Pos.CENTER);
     }
 
@@ -123,8 +126,6 @@ class GameViewLevel extends GridPane {
         return animationRunning;
     }
 
-
-    //FIXME fix one millisecond disappearing glitch after movement
     //TODO make sound
     void updateLevel(MoveAction moveAction) {
         int squareSize = (int) (this.getHeight() * this.getRowConstraints().get(0).getPercentHeight() / 100);
@@ -219,8 +220,6 @@ class GameViewLevel extends GridPane {
 
                 playerSequence.setOnFinished(event -> {
                     playerAnimation.stop();
-                    TranslateTransition playerMoveBack = new TranslateTransition(Duration.ONE, player);
-                    setAnimationByDirection(playerMoveBack, FieldObject.getOppositeMove(moveAction.getDirection()), squareSize);
 
                     //UPDATE images
                     if (moveAction.getPlayer().isOnGoal()) {
@@ -234,27 +233,30 @@ class GameViewLevel extends GridPane {
                             crate.setImage(crateImage);
                         }
                     }
+                    System.out.println(this.getChildren());
+                    GridPane newGrid = new GridPane();
+                    newGrid.getChildren().addAll(this.getChildren());
+                    newGrid.getChildren().remove(crate);
+                    newGrid.getChildren().remove(player);
+                    ImageView newPlayer = new ImageView(player.getImage());
+                    newPlayer.setRotate(player.getRotate());
 
-                    playerMoveBack.setOnFinished(event1 -> {
-                        //ADD TO field
-
-                        this.add(player, moveAction.getPlayer().getPosX() + getColumnTopSpacing(), moveAction.getPlayer().getPosY() + getRowLeftSpacing());
-                        if (crate != null) {
-                            this.add(crate, moveAction.getNextObject().getPosX() + getColumnTopSpacing(), moveAction.getNextObject().getPosY() + getRowLeftSpacing());
-                        }
-                        animationRunning = false;
-                    });
-
+                    newGrid.add(newPlayer, moveAction.getPlayer().getPosX() + getColumnTopSpacing(), moveAction.getPlayer().getPosY() + getRowLeftSpacing());
                     if (crate != null) {
-                        levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()] = crate;
+                        ImageView newCrate = new ImageView(crate.getImage());
+                        newGrid.add(newCrate, moveAction.getNextObject().getPosX() + getColumnTopSpacing(), moveAction.getNextObject().getPosY() + getRowLeftSpacing());
+                        levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()] = newCrate;
                     }
-                    levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()] = player;
+                    System.out.println(newGrid.getChildren());
+                    levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()] = newPlayer;
                     levelLayout[moveAction.getPlayer().getPosY() - FieldObject.getYMove(moveAction.getDirection())][moveAction.getPlayer().getPosX() - FieldObject.getXMove(moveAction.getDirection())] = null;
-
+                    this.getChildren().setAll(newGrid.getChildren());
+                    System.out.println(this.getChildren());
+                    System.out.println(newGrid.getChildren());
+                    //25 is base height of bottom borderPane
+                    resizeLevel(getScene().getWidth(),getScene().getHeight()-25);
+                    animationRunning = false;
                     //DELETE FROM field
-                    this.getChildren().remove(player);
-                    this.getChildren().remove(crate);
-                    playerMoveBack.play();
 
                 });
 
@@ -337,7 +339,7 @@ class GameViewLevel extends GridPane {
                     } else if (level[row][column] instanceof Goal) {
                         levelLayout[row][column] = new ImageView(goalImage);
                     }
-                    levelLayout[row][column].setPreserveRatio(true);
+                    levelLayout[row][column].setPreserveRatio(false);
                     this.add(levelLayout[row][column], column + getColumnTopSpacing(), row + getRowLeftSpacing());
                 }
             }
@@ -352,29 +354,36 @@ class GameViewLevel extends GridPane {
         return maxRows < maxColumns ? (int) Math.floor(((double) maxColumns - maxRows) / 2) : 0;
     }
 
-    void resizeLevel() {
-        double width = ((Pane) getParent()).getWidth();
-        double height = ((Pane) getParent()).getHeight();
-
+    void resizeLevel(double width, double height) {
+        //double width = ((Pane) getParent()).getWidth();
+        //double height = ((Pane) getParent()).getHeight();
         if (width <= height) {
             //Set to width
+
+            setMaxWidth(width);
+            setMaxHeight(width);
             //noinspection SuspiciousNameCombination
             resize(width, width);
 
         } else {
             //Set to height
+
+            setMaxWidth(height);
+            setMaxHeight(height);
             //noinspection SuspiciousNameCombination
             resize(height, height);
 
         }
+        resizeImages();
+    }
+
+    private void resizeImages() {
         if (maxRows > maxColumns) {
-            for (ImageView[] levelLayoutRow : levelLayout) {
-                for (ImageView levelLayoutImage : levelLayoutRow) {
-                    if (levelLayoutImage != null) {
-                        double size = this.getHeight() / maxRows;
-                        levelLayoutImage.setFitWidth(size);
-                        levelLayoutImage.setFitHeight(size);
-                    }
+            for (Node node : this.getChildren()) {
+                if (node != null && node instanceof ImageView) {
+                    double size = this.getHeight() / maxRows;
+                    ((ImageView) node).setFitWidth(size);
+                    ((ImageView) node).setFitHeight(size);
                 }
             }
         } else {
@@ -386,7 +395,6 @@ class GameViewLevel extends GridPane {
                 }
             }
         }
-
     }
 
     void setConfig(Properties config) {

@@ -14,8 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-//TODO BUGS: not resizing after first maximize, resize quicker (see updateStats function in GameView, center imageViewLevel.
-
 /**
  * @author Niels Van Reeth
  * @version 1.0 2/21/2017 11:43 AM
