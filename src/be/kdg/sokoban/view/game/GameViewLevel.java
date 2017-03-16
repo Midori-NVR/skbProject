@@ -233,7 +233,6 @@ class GameViewLevel extends GridPane {
                             crate.setImage(crateImage);
                         }
                     }
-                    System.out.println(this.getChildren());
                     GridPane newGrid = new GridPane();
                     newGrid.getChildren().addAll(this.getChildren());
                     newGrid.getChildren().remove(crate);
@@ -247,12 +246,9 @@ class GameViewLevel extends GridPane {
                         newGrid.add(newCrate, moveAction.getNextObject().getPosX() + getColumnTopSpacing(), moveAction.getNextObject().getPosY() + getRowLeftSpacing());
                         levelLayout[moveAction.getNextObject().getPosY()][moveAction.getNextObject().getPosX()] = newCrate;
                     }
-                    System.out.println(newGrid.getChildren());
                     levelLayout[moveAction.getPlayer().getPosY()][moveAction.getPlayer().getPosX()] = newPlayer;
                     levelLayout[moveAction.getPlayer().getPosY() - FieldObject.getYMove(moveAction.getDirection())][moveAction.getPlayer().getPosX() - FieldObject.getXMove(moveAction.getDirection())] = null;
                     this.getChildren().setAll(newGrid.getChildren());
-                    System.out.println(this.getChildren());
-                    System.out.println(newGrid.getChildren());
                     //25 is base height of bottom borderPane
                     resizeLevel(getScene().getWidth(),getScene().getHeight()-25);
                     animationRunning = false;
