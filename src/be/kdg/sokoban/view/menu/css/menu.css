@@ -12,10 +12,6 @@
     -fx-text-fill: radial-gradient(radius 50%, blue, midnightblue 75%);
 }
 
-.menuButtonBox {
-
-}
-
 .username {
     -fx-text-fill: radial-gradient(radius 50%, blue, royalblue 75%);
     -fx-font-size: 150%;

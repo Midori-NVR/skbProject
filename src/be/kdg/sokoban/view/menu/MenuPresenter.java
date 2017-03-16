@@ -43,7 +43,6 @@ public class MenuPresenter {
         view.getBtnOptions().getStyleClass().add("menuButton");
         view.getBtnChangeUser().getStyleClass().add("menuButton");
         view.getBtnExit().getStyleClass().add("menuButton");
-        view.getButtonBox().getStyleClass().add("menuButtonBox");
         view.getLblFooter().getStyleClass().add("menuLabelFooter");
         view.getStyleClass().add("body");
         view.getLblTitle().getStyleClass().add("title");
